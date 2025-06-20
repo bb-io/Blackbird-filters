@@ -1,0 +1,179 @@
+﻿using Blackbird.Filters.Coders;
+using Blackbird.Filters.Content;
+using Blackbird.Filters.Enums;
+using Blackbird.Filters.Tests.CustomAssertions;
+using Blackbird.Filters.Xliff;
+using Blackbird.Filters.Xliff.Xliff2;
+using System.Text;
+
+namespace Blackbird.Filters.Tests.Html;
+
+[TestFixture]
+public class HtmlCoderTests : TestBase
+{
+    private (string, CodedContent, string) Process(string file)
+    {
+        var html = File.ReadAllText(file, Encoding.UTF8);
+        var content = HtmlContentCoder.Deserialize(html);
+        var transformation = content.CreateTransformation("en", "nl");
+        var xliff = new XliffFile("en", Xliff2Version.Xliff22) { Transformations = [transformation] };
+        var serialized = Xliff2Serializer.Serialize(xliff);
+        var deserialized = Xliff2Serializer.Deserialize(serialized);
+        var transformation2 = deserialized.Transformations.FirstOrDefault();
+        var returned = HtmlContentCoder.Serialize(transformation2!.Source());
+        DisplayXml(serialized);
+        Console.WriteLine("------");
+        DisplayHtml(returned);
+
+        return (html, content, returned);
+    }
+
+    [Test]
+    public void Is_html()
+    {
+        // Arrange
+        var html = "<html><head></head><body></body></html>";
+        var notHtml = "<xml><root>Test</root></xml>";
+        var notHtml2 = "Plain string";
+
+        // Act
+        var result = HtmlContentCoder.IsHtml(html);
+        var result2 = HtmlContentCoder.IsHtml(notHtml);
+        var result3 = HtmlContentCoder.IsHtml(notHtml2);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.IsFalse(result2);
+        Assert.IsFalse(result3);
+    }
+
+    [Test]
+    public void Empty()
+    {
+        var (html, content, returned) = Process("Html/Files/empty.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void Simple()
+    {
+        var (html, content, returned) = Process("Html/Files/simple.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
+    }
+
+    [Test]
+    public void With_br()
+    {
+        var (html, content, returned) = Process("Html/Files/with_br.html");
+        
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void Inline_tags()
+    {
+        var (html, content, returned) = Process("Html/Files/inline_tags.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void Floating_text()
+    {
+        var (html, content, returned) = Process("Html/Files/floating_text.html");
+      
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
+    }
+
+    [Test]
+    public void Img_alt_text()
+    {
+        var (html, content, returned) = Process("Html/Files/img_alt_text.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
+        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
+    }
+
+    [Test]
+    public void Button_subflows()
+    {
+        var (html, content, returned) = Process("Html/Files/subflows.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
+        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Click here to start!", StringComparison.InvariantCultureIgnoreCase)));
+    }
+
+    [Test]
+    public void Img_title_attr()
+    {
+        var (html, content, returned) = Process("Html/Files/img_title_attr.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("I'm a tooltip", StringComparison.InvariantCultureIgnoreCase)));
+    }
+
+    [Test]
+    public void Comments()
+    {
+        var (html, content, returned) = Process("Html/Files/comments.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void Script()
+    {
+        var (html, content, returned) = Process("Html/Files/script.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsFalse(content.TextUnits.Any(x => x.GetCodedText().Contains("function", StringComparison.InvariantCultureIgnoreCase)));
+    }
+
+    [Test]
+    public void Meta_content()
+    {
+        var (html, content, returned) = Process("Html/Files/meta_content.html");
+
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Free Web tutorials", StringComparison.InvariantCultureIgnoreCase)));
+    }
+
+    [Test]
+    public void Full_example()
+    {
+        var (html, content, returned) = Process("Html/Files/contentful.html");
+
+        HtmlAssert.AreEqual(html, returned);
+    }
+
+    //[Test]
+    //public void Full_example_with_transformation()
+    //{
+    //    // Arrange
+    //    var html = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
+
+    //    // Act
+    //    var content = HtmlContentCoder.Deserialize(html);
+    //    var transformation = content.Transform("en", "nl", (c) => c + "!");
+    //    var returned = HtmlContentCoder.Serialize(transformation.Target());
+    //    DisplayHtml(returned);
+
+    //    // Assert
+    //    HtmlAssert.AreNotEqual(html, returned);
+    //}
+
+
+}

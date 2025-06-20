@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackbird.Filters", "Blackbird.Filters\Blackbird.Filters.csproj", "{927D09EB-8A4A-4649-A0D8-F62B2AA68A78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackbird.Filters.Tests", "Blackbird.Filters.Tests\Blackbird.Filters.Tests.csproj", "{3F05B19E-5B73-40CE-8D0F-0CC43860C833}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{927D09EB-8A4A-4649-A0D8-F62B2AA68A78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{927D09EB-8A4A-4649-A0D8-F62B2AA68A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{927D09EB-8A4A-4649-A0D8-F62B2AA68A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{927D09EB-8A4A-4649-A0D8-F62B2AA68A78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F05B19E-5B73-40CE-8D0F-0CC43860C833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F05B19E-5B73-40CE-8D0F-0CC43860C833}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F05B19E-5B73-40CE-8D0F-0CC43860C833}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F05B19E-5B73-40CE-8D0F-0CC43860C833}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B85A2E6-32B2-430F-9394-E76A3046B389}
+	EndGlobalSection
+EndGlobal

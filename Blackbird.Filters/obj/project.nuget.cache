@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "6LCKpPCTxZ+1WWH8fAAkbyIJTxvzrbpawu2xoHfWV0IZrvy7NFAnmH5BOLEYJyoEZeu0oDeARkegN8kDmoRGAg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mathi\\Documents\\Blackbird\\repos\\Blackbird.Filters\\Blackbird.Filters\\Blackbird.Filters.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mathi\\.nuget\\packages\\htmlagilitypack\\1.12.1\\htmlagilitypack.1.12.1.nupkg.sha512"
+  ],
+  "logs": []
+}

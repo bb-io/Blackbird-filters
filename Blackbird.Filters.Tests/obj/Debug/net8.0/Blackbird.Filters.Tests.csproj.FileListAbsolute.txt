@@ -1,0 +1,152 @@
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_Blackbird.Filters.Tests
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\testhost.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\testhost.exe
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\NUnit3.TestAdapter.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\NUnit3.TestAdapter.pdb
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\nunit.engine.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\nunit.engine.api.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\nunit.engine.core.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\testcentric.engine.metadata.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Blackbird.Filters.Tests.deps.json
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Blackbird.Filters.Tests.runtimeconfig.json
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Blackbird.Filters.Tests.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Blackbird.Filters.Tests.pdb
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\HtmlAgilityPack.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Microsoft.TestPlatform.CoreUtilities.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Microsoft.TestPlatform.PlatformAbstractions.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Microsoft.TestPlatform.CommunicationUtilities.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Microsoft.TestPlatform.CrossPlatEngine.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Microsoft.TestPlatform.Utilities.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.Common.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\NuGet.Frameworks.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\nunit.framework.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\cs\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\cs\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\de\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\de\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\es\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\es\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\fr\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\fr\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\it\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\it\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ja\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ja\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ko\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ko\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pl\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pl\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pt-BR\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pt-BR\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ru\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ru\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\tr\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\tr\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hans\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hans\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\cs\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\cs\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\cs\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\de\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\de\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\de\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\es\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\es\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\es\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\fr\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\fr\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\fr\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\it\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\it\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\it\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ja\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ja\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ja\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ko\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ko\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ko\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pl\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pl\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pl\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pt-BR\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pt-BR\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\pt-BR\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ru\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ru\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\ru\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\tr\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\tr\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\tr\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hans\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hans\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hans\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Blackbird.Filters.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Blackbird.Filters.pdb
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.csproj.AssemblyReference.cache
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.AssemblyInfoInputs.cache
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.AssemblyInfo.cs
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.csproj.CoreCompileInputs.cache
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.sourcelink.json
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.csproj.CopyComplete
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\refint\Blackbird.Filters.Tests.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.pdb
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\Blackbird.Filters.Tests.genruntimeconfig.cache
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\obj\Debug\net8.0\ref\Blackbird.Filters.Tests.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\empty.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\simple.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\img_alt_text.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\subflows.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\img_title_attr.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\comments.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\script.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\meta_content.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\floating_text.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\inline_tags.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\with_br.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Html\Files\contentful.html
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\AngleSharp.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\AngleSharp.Css.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\AngleSharp.Diffing.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\Files\basic.xliff
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\Files\empty.xliff
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\xmlunit-core.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\Files\complex.xliff
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\Files\contentful.xliff
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\Files\annotations.xliff
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\Files\custom-xml.xliff
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\Files\groups.xliff
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\allExtensions.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\almostEmpty.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\emptySkeletonWithHref.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\everything-core.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\nonEmptySkeletonWithoutHref.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\sample1.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\sourceOnly.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\testTranslateWithTarget.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\toJoin.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\toSegment.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\toSegmentAndOrder.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\typeSubTypeValues.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withCDataSections.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withCommentAnnotations.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withGlossary.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withMatches.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withModulesAttributesInEc.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withNotes.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withNotes_complex.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withReferences.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withReorderedCodes.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withTBXExtension.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withValidation.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withXmlLang.xlf
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters.Tests\bin\Debug\net8.0\Xliff2\XLIFF valid\withXmlSpace.xlf

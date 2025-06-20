@@ -1,0 +1,13 @@
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\bin\Debug\net8.0\Blackbird.Filters.deps.json
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\bin\Debug\net8.0\Blackbird.Filters.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\bin\Debug\net8.0\Blackbird.Filters.pdb
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\Blackbird.Filters.csproj.AssemblyReference.cache
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\Blackbird.Filters.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\Blackbird.Filters.AssemblyInfoInputs.cache
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\Blackbird.Filters.AssemblyInfo.cs
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\Blackbird.Filters.csproj.CoreCompileInputs.cache
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\Blackbird.Filters.sourcelink.json
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\Blackbird.Filters.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\refint\Blackbird.Filters.dll
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\Blackbird.Filters.pdb
+C:\Users\mathi\Documents\Blackbird\repos\Blackbird.Filters\Blackbird.Filters\obj\Debug\net8.0\ref\Blackbird.Filters.dll

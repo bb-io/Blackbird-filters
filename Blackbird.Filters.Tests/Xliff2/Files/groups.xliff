@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.2" version="2.2" srcLang="en" trgLang="fr">
+	<file id="f1">
+		<notes>
+			<note id="n1">note for file.</note>
+		</notes>
+		<group id="g1">
+			<notes>
+				<note id="n1">note for group</note>
+			</notes>
+			<unit id="u1">				
+				<notes>
+					<note id="n1">note for unit</note>
+				</notes>
+				<segment id="s1">
+					<source>
+						<pc id="1">
+							Hello World!
+						</pc>
+					</source>
+					<target>
+						<pc id="1">
+							Bonjour le Monde!
+						</pc>
+					</target>
+				</segment>
+			</unit>
+		</group>
+		<unit id="u2">
+			<notes>
+				<note id="n1">note for unit</note>
+			</notes>
+			<segment id="s1">
+				<source>
+					Hello World!
+				</source>
+				<target>
+					Bonjour le Monde!
+				</target>
+			</segment>
+		</unit>
+	</file>
+</xliff>
