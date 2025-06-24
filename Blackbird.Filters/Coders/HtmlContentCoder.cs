@@ -21,7 +21,6 @@ public static class HtmlContentCoder
         {
             Original = content,
             TextUnits = ExtractTextUnits(doc.DocumentNode),
-            CodeType = CodeType.Html,
         };
 
         return codedContent;
@@ -122,7 +121,7 @@ public static class HtmlContentCoder
 
     internal static List<TextUnit> BuildUnits(HtmlNode node)
     {
-        var unit = new TextUnit(node.XPath);
+        var unit = new TextUnit(node.XPath, CodeType.Html);
 
         if (node.NodeType == HtmlNodeType.Text)
         {
@@ -178,7 +177,7 @@ public static class HtmlContentCoder
         return parts;
     }
 
-    private static TextUnit BuildUnit(HtmlAttribute attribute) => new TextUnit(attribute.XPath) { Parts = [new TextPart { Value = attribute.Value }] };
+    private static TextUnit BuildUnit(HtmlAttribute attribute) => new(attribute.XPath, CodeType.PlainText) { Parts = [new TextPart { Value = attribute.Value }] };
 
     private static (string StartTag, string Content, string EndTag) ParseHtmlParts(string html)
     {

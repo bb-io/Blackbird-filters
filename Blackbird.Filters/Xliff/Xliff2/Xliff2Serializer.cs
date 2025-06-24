@@ -1,11 +1,9 @@
 ﻿using Blackbird.Filters.Content;
-using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -13,6 +11,8 @@ using System.Xml.Linq;
 namespace Blackbird.Filters.Xliff.Xliff2;
 public static class Xliff2Serializer
 {
+    private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
+
     public static XliffFile Deserialize(string fileContent)
     {
         var xliffNode = GetRootNode(fileContent);
@@ -81,9 +81,10 @@ public static class Xliff2Serializer
                     TargetDirection = node.GetDirection("trgDir"),
                     Notes = DeserializeNotes(node.Element(ns + "notes"))
                 };
+                var codeType = node.GetCodeType(BlackbirdNs + "tagHandling");
 
                 unit.Other.AddRange(node.Elements().GetRemaining([ns + "originalData", ns + "notes", ns + "segment", ns + "ignorable"]));
-                unit.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir"]));
+                unit.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir", BlackbirdNs + "tagHandling"]));
 
                 Dictionary<string, XElement> data = node.Element(ns + "originalData")?.Elements()?.ToDictionary(x => x.Get("id", Optionality.Required)!, x => x) ?? [];
 
@@ -316,6 +317,7 @@ public static class Xliff2Serializer
                         SubState = node.Get("subState"),
                         Ignorable = node.Name == ns + "ignorable",
                         SourceAttributes = sourceNode.Attributes().ToList(),
+                        CodeType = codeType,
                     };
 
                     if (targetNode != null)
@@ -635,6 +637,7 @@ public static class Xliff2Serializer
                 root.Add(SerializeNotes(unit.Notes));
                 root.Add(unit.Segments.Select(SerializeSegment));
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
+                root.SetCodeType(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.CodeType);
                 root.Add(unit.Other);
 
                 return root;
@@ -784,4 +787,22 @@ public static class Xliff2Serializer
         }
     }
 
+    public static bool IsXliff2(string content)
+    {
+        try
+        {
+            var xliffNode = GetRootNode(content);
+            if (xliffNode == null)
+            {
+                return false;
+            }
+
+            var version = xliffNode.Get("version", Optionality.Required)!;
+            return float.Parse(version) > 2;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
 }

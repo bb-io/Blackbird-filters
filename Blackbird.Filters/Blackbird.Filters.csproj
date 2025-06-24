@@ -1,10 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+      <TargetFramework>net8.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+	  <Title>Blackbird.Filters</Title>
+	  <Description>The library enables seamless parsing, conversion, and generation of XLIFF files from other file formats with support for complex inline tags, translation units, and file groups. Designed for localization specialists and developers working with translation workflows, it provides a unified API to handle different XLIFF dialects. Easily read, modify, and write XLIFF files with full support for source/target languages, metadata, and document structure preservation.</Description>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
+	  <PackageTags>Blackbird</PackageTags>
+	  <Copyright>Copyright © 2021-2025 Blackbird.io</Copyright>
+	  <Version>1.0.0</Version>
   </PropertyGroup>
+
+	<ItemGroup>
+		<None Include="LICENSE" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="logo.jpg" />
+		<Resource Include="logo.jpg">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</Resource>
+	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />

@@ -20,14 +20,9 @@ public class CodedContent
     /// </summary>
     public List<TextUnit> TextUnits { get; internal set; } = [];
 
-    /// <summary>
-    /// The type of content
-    /// </summary>
-    public CodeType CodeType { get; internal set; } = CodeType.PlainText;
-
     public Transformation CreateTransformation(string sourceLanguage, string? targetLanguage = null)
     {
-        var transformation = new Transformation(sourceLanguage, targetLanguage) { Original = Original, CodeType = CodeType };
+        var transformation = new Transformation(sourceLanguage, targetLanguage) { Original = Original };
         var unitReferences = new Dictionary<InlineTag, List<TextUnit>>();
         var unitsDictionary = new Dictionary<TextUnit, Unit>();
 
@@ -72,7 +67,7 @@ public class CodedContent
                
             }
 
-            unit.Segments = [new Segment() { Source = parts }];
+            unit.Segments = [new Segment() { Source = parts, CodeType = textUnit.CodeType }];
             transformation.Children.Add(unit);
         }
 

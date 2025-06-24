@@ -155,13 +155,27 @@ public static class Xliff2XmlExtensions
         element.SetAttributeValue(xml + "space", handling == WhiteSpaceHandling.Default ? "default" : "preserve");
     }
 
-    public static List<XAttribute> GetRemaining(this IEnumerable<XAttribute> attributes, string[] usedAttributes)
+    public static List<XAttribute> GetRemaining(this IEnumerable<XAttribute> attributes, XName[] usedAttributes)
     {
-        return attributes.Where(a => !usedAttributes.Select(n => (XName)n).Contains(a.Name)).ToList();
+        return attributes.Where(a => !usedAttributes.Contains(a.Name)).ToList();
     }
 
     public static List<XElement> GetRemaining(this IEnumerable<XElement> elements, XName[] usedElements)
     {
         return elements.Where(a => !usedElements.Contains(a.Name)).ToList();
+    }
+
+    public static CodeType? GetCodeType(this XElement element, XName name, Optionality optional = Optionality.Optional)
+    {
+        var value = element.Get(name, optional);
+        return value?.ToCodeType();
+    }
+
+    public static void SetCodeType(this XElement element, XName name, CodeType? value)
+    {
+        if (value.HasValue)
+        {
+            element.SetAttributeValue(name, value.Value.Serialize());
+        }
     }
 }

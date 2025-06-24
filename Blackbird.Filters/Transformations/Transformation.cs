@@ -1,5 +1,9 @@
-﻿using Blackbird.Filters.Content;
+﻿using Blackbird.Filters.Coders;
+using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Xliff.Xliff2;
+using Blackbird.Filters.Xliff;
+using System.Text;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
@@ -32,12 +36,23 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
         }
     }
 
+    public IEnumerable<Segment> GetSegments()
+    {
+        foreach(var unit in GetUnits())
+        {
+            foreach(var segment in unit.Segments)
+            {
+                yield return segment;
+            }
+        }
+    }
+
     public CodedContent Source()
     {
-        var codedContent = new CodedContent() { Original = Original, CodeType = CodeType };
+        var codedContent = new CodedContent() { Original = Original };
         foreach (var unit in GetUnits().Where(x => x.Name is not null))
         {
-            var textUnit = new TextUnit(unit.Name!)
+            var textUnit = new TextUnit(unit.Name!, CodeType)
             {
                 Parts = unit.Segments.SelectMany(x => x.Source).ToList()
             };
@@ -48,10 +63,10 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
 
     public CodedContent Target()
     {
-        var codedContent = new CodedContent() { Original = Original, CodeType = CodeType };
+        var codedContent = new CodedContent() { Original = Original };
         foreach(var unit in GetUnits().Where(x => x.Name is not null))
         {
-            var textUnit = new TextUnit(unit.Name!)
+            var textUnit = new TextUnit(unit.Name!, CodeType)
             {
                 Parts = unit.Segments.SelectMany(x => x.Target).ToList()
             };
@@ -59,6 +74,5 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
         }
         return codedContent;
     }
-
 
 }

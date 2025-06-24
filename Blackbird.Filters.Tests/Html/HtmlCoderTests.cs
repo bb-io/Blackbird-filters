@@ -11,7 +11,7 @@ namespace Blackbird.Filters.Tests.Html;
 [TestFixture]
 public class HtmlCoderTests : TestBase
 {
-    private (string, CodedContent, string) Process(string file)
+    private (string, CodedContent, string) ProcessSource(string file)
     {
         var html = File.ReadAllText(file, Encoding.UTF8);
         var content = HtmlContentCoder.Deserialize(html);
@@ -26,6 +26,38 @@ public class HtmlCoderTests : TestBase
         DisplayHtml(returned);
 
         return (html, content, returned);
+    }
+
+    private (string, CodedContent, string) ProcessTarget(string file)
+    {
+        var html = File.ReadAllText(file, Encoding.UTF8);
+        var content = HtmlContentCoder.Deserialize(html);
+        var transformation = content.CreateTransformation("en", "nl");
+        var xliff = new XliffFile("en", Xliff2Version.Xliff22) { Transformations = [transformation] };
+        var serialized = Xliff2Serializer.Serialize(xliff);
+        serialized = PseudoTranslateXliff(serialized);
+        var deserialized = Xliff2Serializer.Deserialize(serialized);
+        var transformation2 = deserialized.Transformations.FirstOrDefault();
+        var returned = HtmlContentCoder.Serialize(transformation2!.Target());
+        DisplayXml(serialized);
+        Console.WriteLine("------");
+        DisplayHtml(returned);
+
+        return (html, content, returned);
+    }
+
+    private string PseudoTranslateXliff(string xliff)
+    {
+        var group = Xliff2Serializer.Deserialize(xliff);
+        foreach( var transformation in group.Transformations )
+        {
+            foreach(var segment in transformation.GetSegments())
+            {
+                segment.SetTarget(segment.GetSource() + "TRANSLATED");
+                segment.State = SegmentState.Translated;
+            }
+        }
+        return Xliff2Serializer.Serialize(group);
     }
 
     [Test]
@@ -50,7 +82,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Empty()
     {
-        var (html, content, returned) = Process("Html/Files/empty.html");
+        var (html, content, returned) = ProcessSource("Html/Files/empty.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(0));
@@ -59,7 +91,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Simple()
     {
-        var (html, content, returned) = Process("Html/Files/simple.html");
+        var (html, content, returned) = ProcessSource("Html/Files/simple.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
@@ -68,7 +100,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void With_br()
     {
-        var (html, content, returned) = Process("Html/Files/with_br.html");
+        var (html, content, returned) = ProcessSource("Html/Files/with_br.html");
         
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(1));
@@ -77,7 +109,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Inline_tags()
     {
-        var (html, content, returned) = Process("Html/Files/inline_tags.html");
+        var (html, content, returned) = ProcessSource("Html/Files/inline_tags.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(2));
@@ -86,7 +118,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Floating_text()
     {
-        var (html, content, returned) = Process("Html/Files/floating_text.html");
+        var (html, content, returned) = ProcessSource("Html/Files/floating_text.html");
       
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
@@ -95,7 +127,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Img_alt_text()
     {
-        var (html, content, returned) = Process("Html/Files/img_alt_text.html");
+        var (html, content, returned) = ProcessSource("Html/Files/img_alt_text.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
@@ -105,7 +137,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Button_subflows()
     {
-        var (html, content, returned) = Process("Html/Files/subflows.html");
+        var (html, content, returned) = ProcessSource("Html/Files/subflows.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
@@ -115,7 +147,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Img_title_attr()
     {
-        var (html, content, returned) = Process("Html/Files/img_title_attr.html");
+        var (html, content, returned) = ProcessSource("Html/Files/img_title_attr.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
@@ -125,7 +157,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Comments()
     {
-        var (html, content, returned) = Process("Html/Files/comments.html");
+        var (html, content, returned) = ProcessSource("Html/Files/comments.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(1));
@@ -134,7 +166,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Script()
     {
-        var (html, content, returned) = Process("Html/Files/script.html");
+        var (html, content, returned) = ProcessSource("Html/Files/script.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
@@ -144,7 +176,7 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Meta_content()
     {
-        var (html, content, returned) = Process("Html/Files/meta_content.html");
+        var (html, content, returned) = ProcessSource("Html/Files/meta_content.html");
 
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
@@ -154,26 +186,17 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Full_example()
     {
-        var (html, content, returned) = Process("Html/Files/contentful.html");
+        var (html, content, returned) = ProcessSource("Html/Files/contentful.html");
 
         HtmlAssert.AreEqual(html, returned);
     }
 
-    //[Test]
-    //public void Full_example_with_transformation()
-    //{
-    //    // Arrange
-    //    var html = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
+    [Test]
+    public void Full_translated()
+    {
+        var (html, content, returned) = ProcessTarget("Html/Files/contentful.html");
 
-    //    // Act
-    //    var content = HtmlContentCoder.Deserialize(html);
-    //    var transformation = content.Transform("en", "nl", (c) => c + "!");
-    //    var returned = HtmlContentCoder.Serialize(transformation.Target());
-    //    DisplayHtml(returned);
-
-    //    // Assert
-    //    HtmlAssert.AreNotEqual(html, returned);
-    //}
-
+        HtmlAssert.AreNotEqual(html, returned);
+    }
 
 }
