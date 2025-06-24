@@ -1,0 +1,3 @@
+﻿# Blackbird Filters
+
+The library enables seamless parsing, conversion, and generation of XLIFF files from other file formats with support for complex inline tags, translation units, and file groups. Designed for localization specialists and developers working with translation workflows, it provides a unified API to handle different XLIFF dialects. Easily read, modify, and write XLIFF files with full support for source/target languages, metadata, and document structure preservation.
