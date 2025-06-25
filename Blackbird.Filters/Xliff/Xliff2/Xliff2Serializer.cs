@@ -13,7 +13,7 @@ public static class Xliff2Serializer
 {
     private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
 
-    public static XliffFile Deserialize(string fileContent)
+    public static Transformation Deserialize(string fileContent)
     {
         var xliffNode = GetRootNode(fileContent);
 
@@ -368,16 +368,25 @@ public static class Xliff2Serializer
             return transformation;
         }
 
-        var xliff = new XliffFile(sourceLanguage, xliffNode.GetXliffVersion("version", Optionality.Required));
-        xliff.TargetLanguage = targetLanguage;
-        xliff.Transformations.AddRange(xliffNode.Elements(ns + "file").Select(DeserializeTransformation));
-        xliff.Other = xliffNode.Attributes().GetRemaining(["srcLang", "trgLang", "version"]);
-        return xliff;
+        var files = xliffNode.Elements(ns + "file").Select(DeserializeTransformation);
+        Transformation transformation;
+        if (files.Count() == 1)
+        {
+            transformation = files.First();
+        }
+        else
+        {
+            transformation = new Transformation(sourceLanguage, targetLanguage);
+            transformation.Children.AddRange(files); 
+        }
+        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["srcLang", "trgLang"]));
+        return transformation;
     }
 
-    public static string Serialize(XliffFile xliffFile)
+    public static string Serialize(Transformation xliffTransformation)
     {
-        XNamespace ns = $"urn:oasis:names:tc:xliff:document:{xliffFile.Version.Serialize()}";
+        var xmlnsAttribute = xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns");;
+        XNamespace ns = xmlnsAttribute?.Value ?? $"urn:oasis:names:tc:xliff:document:2.2";
 
         XElement? SerializeNotes(List<Note> notes)
         {
@@ -685,11 +694,18 @@ public static class Xliff2Serializer
         }
 
         var root = new XElement(ns + "xliff");
-        root.Set("version", xliffFile.Version.Serialize());
-        root.Set("srcLang", xliffFile.SourceLanguage);
-        root.Set("trgLang", xliffFile.TargetLanguage);
-        root.Add(xliffFile.Transformations.Select(SerializeTransformation));
-        root.Add(xliffFile.Other);
+        root.Set("srcLang", xliffTransformation.SourceLanguage);
+        root.Set("trgLang", xliffTransformation.TargetLanguage);
+        root.Add(xliffTransformation.XliffOther);
+
+        if (!xliffTransformation.Children.OfType<Transformation>().Any())
+        {
+            root.Add(SerializeTransformation(xliffTransformation));
+        }
+        else
+        {
+            root.Add(xliffTransformation.Children.OfType<Transformation>().Select(SerializeTransformation));
+        }        
         var doc = new XDocument(root);
         return doc.ToString();
     }

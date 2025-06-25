@@ -14,9 +14,9 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
     public string? Original { get; set; }
     public string? OriginalReference { get; set; }
     public IEnumerable<XElement> SkeletonOther { get; set; } = [];
-    public CodeType CodeType { get; set; } = CodeType.PlainText;
     public string? ExternalReference { get; set; }
-    public List<UnitGrouping> Children { get; set; } = [];
+    public List<Node> Children { get; set; } = [];
+    public List<XObject> XliffOther { get; set; } = [];
 
     public IEnumerable<Unit> GetUnits()
     {
@@ -29,6 +29,13 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
             else if (child is Group group)
             {
                 foreach (var subUnit in group.GetUnits())
+                {
+                    yield return subUnit;
+                }
+            }
+            else if (child is Transformation transformation)
+            {
+                foreach (var subUnit in transformation.GetUnits())
                 {
                     yield return subUnit;
                 }
@@ -49,10 +56,12 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
 
     public CodedContent Source()
     {
+        if (Original is null) throw new Exception("Cannot convert to content, no original data found");
         var codedContent = new CodedContent() { Original = Original };
         foreach (var unit in GetUnits().Where(x => x.Name is not null))
         {
-            var textUnit = new TextUnit(unit.Name!, CodeType)
+            var codeType = unit.Segments.FirstOrDefault()?.CodeType ?? CodeType.PlainText;
+            var textUnit = new TextUnit(unit.Name!, codeType)
             {
                 Parts = unit.Segments.SelectMany(x => x.Source).ToList()
             };
@@ -63,10 +72,12 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
 
     public CodedContent Target()
     {
+        if (Original is null) throw new Exception("Cannot convert to content, no original data found");
         var codedContent = new CodedContent() { Original = Original };
         foreach(var unit in GetUnits().Where(x => x.Name is not null))
         {
-            var textUnit = new TextUnit(unit.Name!, CodeType)
+            var codeType = unit.Segments.FirstOrDefault()?.CodeType ?? CodeType.PlainText;
+            var textUnit = new TextUnit(unit.Name!, codeType)
             {
                 Parts = unit.Segments.SelectMany(x => x.Target).ToList()
             };
@@ -75,4 +86,30 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
         return codedContent;
     }
 
+    public static Transformation? TryParse(string content, string sourceLanguage = "")
+    {
+        if (Xliff2Serializer.IsXliff2(content))
+        {
+            return Xliff2Serializer.Deserialize(content);
+        }
+        else if (HtmlContentCoder.IsHtml(content))
+        {
+            return HtmlContentCoder.Deserialize(content).CreateTransformation(sourceLanguage);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static async Task<Transformation?> TryParse(Stream content)
+    {
+        byte[] bytes;
+        await using (MemoryStream resultFileStream = new())
+        {
+            await content.CopyToAsync(resultFileStream);
+            bytes = resultFileStream.ToArray();
+        }
+        return TryParse(Encoding.UTF8.GetString(bytes));
+    }
 }

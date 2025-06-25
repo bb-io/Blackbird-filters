@@ -63,6 +63,9 @@
     <None Update="Xliff2\Files\annotations.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Xliff2\Files\multifile.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Xliff2\Files\groups.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

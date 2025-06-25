@@ -23,7 +23,7 @@ public class BaseXliff2SerializationTests : TestBase
         Display(content);
 
         // Assert
-        Assert.That(content.Transformations.Count(), Is.EqualTo(0));
+        Assert.That(content.Children.Count(), Is.EqualTo(0));
     }
 
     [Test]
@@ -39,13 +39,12 @@ public class BaseXliff2SerializationTests : TestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
-        Assert.That(content.Transformations.Count(), Is.EqualTo(1));        
+        Assert.That(content.Children.Count(), Is.EqualTo(1));        
 
         // Additional assertions to verify structure
-        var file = content.Transformations[0];
-        Assert.That(file.GetUnits().Count(), Is.EqualTo(1));
-        Assert.That(file.Id, Is.EqualTo("f1"));
-        Assert.That(file.GetUnits().FirstOrDefault()!.Notes.Count, Is.EqualTo(1));
+        Assert.That(content.GetUnits().Count(), Is.EqualTo(1));
+        Assert.That(content.Id, Is.EqualTo("f1"));
+        Assert.That(content.GetUnits().FirstOrDefault()!.Notes.Count, Is.EqualTo(1));
     }
 
     [Test]
@@ -114,6 +113,22 @@ public class BaseXliff2SerializationTests : TestBase
     {
         // Arrange
         var xliff = File.ReadAllText("Xliff2/Files/annotations.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff2Serializer.Deserialize(xliff);
+        var returned = Xliff2Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        // Assert
+        XmlAssert.AreEqual(xliff, returned);
+    }
+
+
+    [Test]
+    public void Multifile()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff2/Files/multifile.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff2Serializer.Deserialize(xliff);

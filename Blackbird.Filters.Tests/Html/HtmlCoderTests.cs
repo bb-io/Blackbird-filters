@@ -16,11 +16,9 @@ public class HtmlCoderTests : TestBase
         var html = File.ReadAllText(file, Encoding.UTF8);
         var content = HtmlContentCoder.Deserialize(html);
         var transformation = content.CreateTransformation("en", "nl");
-        var xliff = new XliffFile("en", Xliff2Version.Xliff22) { Transformations = [transformation] };
-        var serialized = Xliff2Serializer.Serialize(xliff);
+        var serialized = Xliff2Serializer.Serialize(transformation);
         var deserialized = Xliff2Serializer.Deserialize(serialized);
-        var transformation2 = deserialized.Transformations.FirstOrDefault();
-        var returned = HtmlContentCoder.Serialize(transformation2!.Source());
+        var returned = HtmlContentCoder.Serialize(deserialized!.Source());
         DisplayXml(serialized);
         Console.WriteLine("------");
         DisplayHtml(returned);
@@ -33,12 +31,10 @@ public class HtmlCoderTests : TestBase
         var html = File.ReadAllText(file, Encoding.UTF8);
         var content = HtmlContentCoder.Deserialize(html);
         var transformation = content.CreateTransformation("en", "nl");
-        var xliff = new XliffFile("en", Xliff2Version.Xliff22) { Transformations = [transformation] };
-        var serialized = Xliff2Serializer.Serialize(xliff);
+        var serialized = Xliff2Serializer.Serialize(transformation);
         serialized = PseudoTranslateXliff(serialized);
         var deserialized = Xliff2Serializer.Deserialize(serialized);
-        var transformation2 = deserialized.Transformations.FirstOrDefault();
-        var returned = HtmlContentCoder.Serialize(transformation2!.Target());
+        var returned = HtmlContentCoder.Serialize(deserialized!.Target());
         DisplayXml(serialized);
         Console.WriteLine("------");
         DisplayHtml(returned);
@@ -48,16 +44,13 @@ public class HtmlCoderTests : TestBase
 
     private string PseudoTranslateXliff(string xliff)
     {
-        var group = Xliff2Serializer.Deserialize(xliff);
-        foreach( var transformation in group.Transformations )
+        var transformation = Xliff2Serializer.Deserialize(xliff);
+        foreach (var segment in transformation.GetSegments())
         {
-            foreach(var segment in transformation.GetSegments())
-            {
-                segment.SetTarget(segment.GetSource() + "TRANSLATED");
-                segment.State = SegmentState.Translated;
-            }
+            segment.SetTarget(segment.GetSource() + "TRANSLATED");
+            segment.State = SegmentState.Translated;
         }
-        return Xliff2Serializer.Serialize(group);
+        return Xliff2Serializer.Serialize(transformation);
     }
 
     [Test]

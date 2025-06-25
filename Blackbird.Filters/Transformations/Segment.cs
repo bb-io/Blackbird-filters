@@ -23,7 +23,8 @@ public class Segment()
     public List<XAttribute> TargetAttributes { get; set; } = [];
     public CodeType? CodeType { get; set; }
 
-    internal bool IsIgnorbale => Ignorable.HasValue && Ignorable.Value;
+    public bool IsIgnorbale => Ignorable.HasValue && Ignorable.Value;
+    public bool IsInitial => State.HasValue ? State.Value == SegmentState.Initial : true;
 
     /// <summary>
     /// Get the source text including tags
