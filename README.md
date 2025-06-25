@@ -67,6 +67,11 @@ The XLIFF serializer is compatible with the entire XLIFF 2.x standard. It suppor
             // More state manipulations can be performed here
             segment.State = SegmentState.Translated; 
         }
+
+        // To continue and pass it as a transformation
+        return Xliff2Serializer.Serialize(transformation);
+
+        // To get the target as HTML:
         return HtmlContentCoder.Serialize(transformation.Target());
     }
 ```
