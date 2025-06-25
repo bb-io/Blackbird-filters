@@ -1,0 +1,206 @@
+[
+  {
+    "SourceLanguage": "en",
+    "TargetLanguage": "fr",
+    "Original": "",
+    "CodeType": 0,
+    "Children": [
+      {
+        "Children": [
+          {
+            "Segments": [
+              {
+                "Source": [
+                  {
+                    "Id": "1",
+                    "UnitReferences": [],
+                    "EndTagReference": {
+                      "UnitReferences": [],
+                      "Value": ""
+                    },
+                    "WellFormed": true,
+                    "Value": ""
+                  },
+                  {
+                    "Value": "\n\t\t\t\t\t\t\tHello World!\n\t\t\t\t\t\t"
+                  },
+                  {
+                    "UnitReferences": [],
+                    "StartTagReference": {
+                      "Id": "1",
+                      "UnitReferences": [],
+                      "WellFormed": true,
+                      "Value": ""
+                    },
+                    "Value": ""
+                  }
+                ],
+                "Target": [
+                  {
+                    "Id": "1",
+                    "UnitReferences": [],
+                    "EndTagReference": {
+                      "UnitReferences": [],
+                      "Value": ""
+                    },
+                    "WellFormed": true,
+                    "Value": ""
+                  },
+                  {
+                    "Value": "\n\t\t\t\t\t\t\tBonjour le Monde!\n\t\t\t\t\t\t"
+                  },
+                  {
+                    "UnitReferences": [],
+                    "StartTagReference": {
+                      "Id": "1",
+                      "UnitReferences": [],
+                      "WellFormed": true,
+                      "Value": ""
+                    },
+                    "Value": ""
+                  }
+                ],
+                "Id": "s1"
+              }
+            ],
+            "Id": "u1",
+            "Notes": [
+              {
+                "Id": "n1",
+                "Text": "note for unit"
+              }
+            ],
+            "Other": []
+          }
+        ],
+        "Id": "g1",
+        "Notes": [
+          {
+            "Id": "n1",
+            "Text": "note for group"
+          }
+        ],
+        "Other": []
+      },
+      {
+        "Segments": [
+          {
+            "Source": [
+              {
+                "Id": "1",
+                "UnitReferences": [],
+                "EndTagReference": {
+                  "UnitReferences": [],
+                  "Value": ""
+                },
+                "WellFormed": true,
+                "Value": ""
+              },
+              {
+                "Value": "\n\t\t\t\t\t\tHello World!\n\t\t\t\t\t"
+              },
+              {
+                "UnitReferences": [],
+                "StartTagReference": {
+                  "Id": "1",
+                  "UnitReferences": [],
+                  "WellFormed": true,
+                  "Value": ""
+                },
+                "Value": ""
+              }
+            ],
+            "Target": [
+              {
+                "Id": "1",
+                "UnitReferences": [],
+                "EndTagReference": {
+                  "UnitReferences": [],
+                  "Value": ""
+                },
+                "WellFormed": true,
+                "Value": ""
+              },
+              {
+                "Value": "\n\t\t\t\t\t\tBonjour le Monde!\n\t\t\t\t\t"
+              },
+              {
+                "UnitReferences": [],
+                "StartTagReference": {
+                  "Id": "1",
+                  "UnitReferences": [],
+                  "WellFormed": true,
+                  "Value": ""
+                },
+                "Value": ""
+              }
+            ],
+            "Id": "s1"
+          }
+        ],
+        "Id": "u2",
+        "Notes": [
+          {
+            "Id": "n1",
+            "Text": "note for unit"
+          }
+        ],
+        "Other": []
+      }
+    ],
+    "Id": "f1",
+    "Notes": [
+      {
+        "Id": "n1",
+        "Text": "note for file."
+      }
+    ],
+    "Other": []
+  }
+]
+<xliff version="2.2" srcLang="en" trgLang="fr" xmlns="urn:oasis:names:tc:xliff:document:2.2">
+  <file id="f1">
+    <notes>
+      <note id="n1">note for file.</note>
+    </notes>
+    <group id="g1">
+      <notes>
+        <note id="n1">note for group</note>
+      </notes>
+      <unit id="u1">
+        <notes>
+          <note id="n1">note for unit</note>
+        </notes>
+        <segment id="s1">
+          <source>
+            <pc id="1">
+							Hello World!
+						</pc>
+          </source>
+          <target>
+            <pc id="1">
+							Bonjour le Monde!
+						</pc>
+          </target>
+        </segment>
+      </unit>
+    </group>
+    <unit id="u2">
+      <notes>
+        <note id="n1">note for unit</note>
+      </notes>
+      <segment id="s1">
+        <source>
+          <pc id="1">
+						Hello World!
+					</pc>
+        </source>
+        <target>
+          <pc id="1">
+						Bonjour le Monde!
+					</pc>
+        </target>
+      </segment>
+    </unit>
+  </file>
+</xliff>

@@ -20,7 +20,7 @@ public class CodedContent
     /// </summary>
     public List<TextUnit> TextUnits { get; internal set; } = [];
 
-    public Transformation CreateTransformation(string sourceLanguage, string? targetLanguage = null)
+    public Transformation CreateTransformation(string? sourceLanguage = null, string? targetLanguage = null)
     {
         var transformation = new Transformation(sourceLanguage, targetLanguage) { Original = Original };
         var unitReferences = new Dictionary<InlineTag, List<TextUnit>>();

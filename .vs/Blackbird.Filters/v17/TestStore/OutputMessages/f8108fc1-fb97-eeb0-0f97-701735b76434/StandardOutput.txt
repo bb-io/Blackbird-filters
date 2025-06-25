@@ -1,0 +1,1845 @@
+{
+  "SourceLanguage": "en-US",
+  "TargetLanguage": "nl",
+  "Original": "<html>\n  <head>\n    <meta name=\"blackbird-entry-id\" content=\"5746dLKTkEZjOQX21HX2KI\" />\n    <meta name=\"blackbird-locale\" content=\"en-US\" />\n  </head>\n  <body>\n    <div data-contentful-entry-id=\"5746dLKTkEZjOQX21HX2KI\">\n      <h1 data-contentful-field-type=\"Symbol\" data-contentful-field-id=\"title\">The Loire Valley</h1>\n      <div\n        data-contentful-field-type=\"Array\"\n        data-contentful-field-id=\"content\"\n        data-contentful-link-type=\"Entry\"\n        data-contentful-link-ids=\"4avSNl953GJYUmIZ8cJg6S,Tp9LF4pw5n3ydWs58YvOc\"\n        data-contentful-localized=\"True\"\n      ></div>\n      <div\n        data-contentful-field-type=\"Link\"\n        data-contentful-field-id=\"footer\"\n        data-contentful-link-type=\"Entry\"\n        data-contentful-link-id=\"6eZfQFZIjT5p5uHqYqMGQZ\"\n        data-contentful-localized=\"True\"\n      ></div>\n    </div>\n    <div data-contentful-entry-id=\"6eZfQFZIjT5p5uHqYqMGQZ\">\n      <h1 data-contentful-field-type=\"Symbol\" data-contentful-field-id=\"title\">\n        Ready to Discover the Magic of the Loire Valley for Yourself?\n      </h1>\n      <div data-contentful-field-type=\"RichText\" data-contentful-field-id=\"text\">\n        <p>\n          Embark on an unforgettable journey through France's most enchanting countryside. Wander through majestic\n          châteaux, savor the finest Loire wines, and lose yourself in picturesque villages. Whether you're a history\n          buff, a wine enthusiast, or simply a lover of beautiful landscapes, the Loire Valley offers a travel\n          experience unlike any other.\n        </p>\n        <p>\n          <strong>Book your Loire Valley adventure today and step into a world where fairytales come to life! </strong>\n        </p>\n      </div>\n    </div>\n    <div data-contentful-entry-id=\"4avSNl953GJYUmIZ8cJg6S\">\n      <h1 data-contentful-field-type=\"Symbol\" data-contentful-field-id=\"title\">\n        A Day in the Heart of Loire: Châteaux and Vineyards\n      </h1>\n      <div data-contentful-field-type=\"RichText\" data-contentful-field-id=\"text\">\n        <p>\n          <strong>Morning: Château de Chambord</strong> Begin your day with a visit to the legendary Château de\n          Chambord, a masterpiece of French Renaissance architecture. This sprawling castle, with its 400 rooms, iconic\n          double-helix staircase, and forested grounds, was designed for King Francis I as a hunting lodge. Wander the\n          grand halls and rooftop terraces, where you’ll find sweeping views of the Loire landscape. Arrive early to\n          enjoy the castle’s peaceful grandeur before the crowds arrive.\n        </p>\n        <p>\n          <strong>Midday: Lunch in Blois</strong> Just a short drive away, the town of Blois offers a taste of\n          quintessential Loire Valley charm. Explore its medieval center, winding alleyways, and the regal Château de\n          Blois, known for its eclectic mix of architectural styles. For lunch, stop by a local bistro where you can\n          savor Loire specialties like goat cheese tartine or rillettes. Pair it with a glass of crisp Sancerre wine,\n          cultivated just a few miles away.\n        </p>\n        <p>\n          <strong>Afternoon: Amboise and the Legacy of Leonardo da Vinci</strong> Head to the Château d’Amboise, perched\n          dramatically over the Loire River, once home to kings and visionaries alike. Stroll through royal apartments,\n          visit the Gothic chapel where Leonardo da Vinci is buried, and soak in panoramic views of the river and town\n          below. Just up the hill, the Clos Lucé mansion was Da Vinci’s residence for his final years. Inside, you’ll\n          find intricate models of his inventions, bringing the genius of the Renaissance to life.\n        </p>\n        <p>You can read more about the Loire valley in this book:</p>\n        <p>\n          <span></span\n          ><a\n            id=\"embedded-entry-inline_3MvZ2M38zOBdztgQJAzw0B\"\n            href=\"https://app.contentful.com/spaces/12ktqqmw656e/entries/3MvZ2M38zOBdztgQJAzw0B\"\n          ></a\n          ><span></span>\n        </p>\n        <br />\n      </div>\n    </div>\n    <div data-contentful-entry-id=\"3MvZ2M38zOBdztgQJAzw0B\">\n      <div data-contentful-field-type=\"RichText\" data-contentful-field-id=\"description\">\n        <p>\n          Embark on a journey through <i>France Unveiled: A Journey Through Culture, Cuisine, and Countryside</i>, a\n          unique travel guide that weaves together the romantic charm of Paris, the sun-soaked allure of Provence, and\n          the vineyard-laden trails of Bordeaux. This guide goes beyond the usual tourist stops to introduce you to\n          hidden villages, local markets, and timeworn chateaux where history and modern French life blend seamlessly.\n        </p>\n        <p>\n          Whether sipping coffee in a quiet Marais café, wandering through medieval streets in Alsace, or savoring fresh\n          seafood along the Côte d'Azur, <i>France Unveiled</i> offers insights, local tips, and immersive experiences\n          for travelers who want to explore like a local. Packed with detailed itineraries, insider recommendations, and\n          stories that bring each region to life, this guide will help you uncover the heart of France—from its iconic\n          sites to its best-kept secrets.\n        </p>\n        <p>\n          <i\n            >Perfect for first-time visitors and seasoned Francophiles alike, this guide will make every trip\n            unforgettable</i\n          >\n        </p>\n      </div>\n      <img\n        src=\"https://images.ctfassets.net/12ktqqmw656e/7jS4PhCf07nFGDbM2Xj5fT/513a21df5f6493964373bf152a6fd2bb/tower.jfif\"\n        data-contentful-field-type=\"Link\"\n        data-contentful-field-id=\"file\"\n        data-contentful-link-type=\"Asset\"\n        data-contentful-link-id=\"7jS4PhCf07nFGDbM2Xj5fT\"\n        alt=\"Eiffel tower\"\n      />\n      <h1 data-contentful-field-type=\"Symbol\" data-contentful-field-id=\"title\">\n        France Unveiled: A Journey Through Culture, Cuisine, and Countryside\n      </h1>\n    </div>\n    <div data-contentful-entry-id=\"Tp9LF4pw5n3ydWs58YvOc\">\n      <h1 data-contentful-field-type=\"Symbol\" data-contentful-field-id=\"title\">Exploring Loire Valley Wines</h1>\n      <div data-contentful-field-type=\"RichText\" data-contentful-field-id=\"text\">\n        <p>\n          The Loire Valley is known for its diverse wine offerings, from crisp whites to delicate reds. To experience\n          the region’s viniculture, stop by a local winery in the Vouvray or Chinon area, where family-run vineyards\n          offer tastings and tours. Here, you can sample Loire’s famous Chenin Blancs, earthy Cabernet Francs, and\n          refreshing Rosés, often accompanied by local cheeses and bread. It’s a truly immersive way to connect with the\n          region’s rich agricultural traditions and taste the terroir of the Loire Valley.\n        </p>\n        <h3><strong>Local Tips for Exploring the Loire Valley</strong></h3>\n        <ul>\n          <li>\n            <p><strong>Best Time to Visit:</strong></p>\n            <p>\n              Spring and autumn offer pleasant weather and fewer crowds, while summer brings the region to life with\n              festivals and outdoor concerts.\n            </p>\n          </li>\n          <li>\n            <p><strong>Getting Around:</strong></p>\n            <p>\n              Renting a bike is a great way to explore the scenic Loire à Vélo cycling routes, which connect many of the\n              region’s major sights.\n            </p>\n          </li>\n          <li>\n            <p><strong>Hidden Gem:</strong></p>\n            <p>\n              Don’t miss the lesser-known Château de Villandry, celebrated for its Renaissance gardens. Spend a serene\n              afternoon wandering through its maze of perfectly manicured flowerbeds, orchards, and ornamental vegetable\n              plots.\n            </p>\n          </li>\n        </ul>\n        <br />\n      </div>\n    </div>\n  </body>\n</html>\n",
+  "SkeletonOther": [],
+  "Children": [
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "The Loire Valley"
+            }
+          ],
+          "Target": [
+            {
+              "Value": "De Loirevallei"
+            }
+          ],
+          "Id": "1",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[1]/h1[1]",
+      "Id": "u1",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Ready to Discover the Magic of the Loire Valley for Yourself?"
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Klaar om zelf de magie van de Loirevallei te ontdekken?"
+            }
+          ],
+          "Id": "2",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[2]/h1[1]",
+      "Id": "u2",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Embark on an unforgettable journey through France's most enchanting countryside. Wander through majestic\n          châteaux, savor the finest Loire wines, and lose yourself in picturesque villages. Whether you're a history\n          buff, a wine enthusiast, or simply a lover of beautiful landscapes, the Loire Valley offers a travel\n          experience unlike any other."
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Ga op een onvergetelijke reis door het meest betoverende platteland van Frankrijk. Dwaal door majestueuze\n          kastelen, proef de beste Loirewijnen en verlies jezelf in schilderachtige dorpjes. Of je nu een geschiedenisliefhebber,\n          een wijnliefhebber of gewoon dol bent op mooie landschappen, de Loirevallei biedt een reiservaring van een\n          ongekende orde."
+            }
+          ],
+          "Id": "3",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[2]/div[1]/p[1]",
+      "Id": "u3",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Book your Loire Valley adventure today and step into a world where fairytales come to life!"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Boek vandaag nog jouw avontuur in de Loirevallei en betreed een wereld waar sprookjes tot leven komen!"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Id": "4",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[2]/div[1]/p[2]",
+      "Id": "u4",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "A Day in the Heart of Loire: Châteaux and Vineyards"
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Een Dag in het Hart van Loire: Kastelen en Wijngaarden"
+            }
+          ],
+          "Id": "5",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[3]/h1[1]",
+      "Id": "u5",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Morning: Château de Chambord"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            },
+            {
+              "Value": "Begin your day with a visit to the legendary Château de\n          Chambord, a masterpiece of French Renaissance architecture. This sprawling castle, with its 400 rooms, iconic\n          double-helix staircase, and forested grounds, was designed for King Francis I as a hunting lodge. Wander the\n          grand halls and rooftop terraces, where you’ll find sweeping views of the Loire landscape. Arrive early to\n          enjoy the castle’s peaceful grandeur before the crowds arrive."
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Ochtend: Château de Chambord"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            },
+            {
+              "Value": "Begin je dag met een bezoek aan het legendarische Château de\n          Chambord, een meesterwerk van Franse Renaissance-architectuur. Dit uitgestrekte kasteel, met zijn 400 kamers, iconische\n          dubbelspiraaltrap en beboste terreinen, werd ontworpen voor koning Frans I als jachtverblijf. Dwaal door de\n          grote zalen en dakterrassen, waar je een weids uitzicht hebt over het landschap van de Loire. Kom vroeg om te genieten van\n          de rustige grandeur van het kasteel voordat de menigte arriveert."
+            }
+          ],
+          "Id": "6",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[3]/div[1]/p[1]",
+      "Id": "u6",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Midday: Lunch in Blois"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            },
+            {
+              "Value": "Just a short drive away, the town of Blois offers a taste of\n          quintessential Loire Valley charm. Explore its medieval center, winding alleyways, and the regal Château de\n          Blois, known for its eclectic mix of architectural styles. For lunch, stop by a local bistro where you can\n          savor Loire specialties like goat cheese tartine or rillettes. Pair it with a glass of crisp Sancerre wine,\n          cultivated just a few miles away."
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Middag: Lunch in Blois"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            },
+            {
+              "Value": "Slechts een korte rit verderop biedt de stad Blois een voorproefje van\n          de charmante Loireregio. Verken het middeleeuwse centrum, kronkelige steegjes en het vorstelijke Château de\n          Blois, bekend om zijn eclectische mix van bouwstijlen. Voor de lunch stop je bij een lokaal bistro waar je \n          kunt genieten van specialiteiten uit de Loire, zoals geitenkaastartine of rillettes. Combineer dit met een glas frisse Sancerre \n          wijn, die slechts op enkele kilometers afstand wordt verbouwd."
+            }
+          ],
+          "Id": "7",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[3]/div[1]/p[2]",
+      "Id": "u7",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Afternoon: Amboise and the Legacy of Leonardo da Vinci"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            },
+            {
+              "Value": "Head to the Château d’Amboise, perched\n          dramatically over the Loire River, once home to kings and visionaries alike. Stroll through royal apartments,\n          visit the Gothic chapel where Leonardo da Vinci is buried, and soak in panoramic views of the river and town\n          below. Just up the hill, the Clos Lucé mansion was Da Vinci’s residence for his final years. Inside, you’ll\n          find intricate models of his inventions, bringing the genius of the Renaissance to life."
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Namiddag: Amboise en de nalatenschap van Leonardo da Vinci"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            },
+            {
+              "Value": "Bezoek het Château d’Amboise, dat\n          dramatisch over de Loire uitkijkt en ooit het thuis was van koningen en visionairs. Wandel door de koninklijke\n          appartementen, bezoek de gotische kapel waar Leonardo da Vinci is begraven en geniet van panoramische uitzichten \n          over de rivier en de stad beneden. Iets verderop ligt het herenhuis Clos Lucé, waar Da Vinci zijn laatste jaren doorbracht. \n          Binnen vind je ingewikkelde modellen van zijn uitvindingen, die de genialiteit van de Renaissance tot leven brengen."
+            }
+          ],
+          "Id": "8",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[3]/div[1]/p[3]",
+      "Id": "u8",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "You can read more about the Loire valley in this book:"
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Je kunt meer lezen over de Loirevallei in dit boek:"
+            }
+          ],
+          "Id": "9",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[3]/div[1]/p[4]",
+      "Id": "u9",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<span></span\n          >"
+            },
+            {
+              "Id": "2",
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<a id=\"embedded-entry-inline_3MvZ2M38zOBdztgQJAzw0B\" href=\"https://app.contentful.com/spaces/12ktqqmw656e/entries/3MvZ2M38zOBdztgQJAzw0B\"></a>"
+            },
+            {
+              "Id": "3",
+              "DataId": "d3",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<span></span>"
+            }
+          ],
+          "Target": [
+            {
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<span></span\n          >"
+            },
+            {
+              "Id": "2",
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<a id=\"embedded-entry-inline_3MvZ2M38zOBdztgQJAzw0B\" href=\"https://app.contentful.com/spaces/12ktqqmw656e/entries/3MvZ2M38zOBdztgQJAzw0B\"></a>"
+            },
+            {
+              "Id": "3",
+              "DataId": "d3",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<span></span>"
+            }
+          ],
+          "Id": "10",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[3]/div[1]/p[5]",
+      "Id": "u10",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Embark on a journey through"
+            },
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</i>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<i>"
+            },
+            {
+              "Value": "France Unveiled: A Journey Through Culture, Cuisine, and Countryside"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<i>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</i>"
+            },
+            {
+              "Value": ", a\n          unique travel guide that weaves together the romantic charm of Paris, the sun-soaked allure of Provence, and\n          the vineyard-laden trails of Bordeaux. This guide goes beyond the usual tourist stops to introduce you to\n          hidden villages, local markets, and timeworn chateaux where history and modern French life blend seamlessly."
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Ga op reis met"
+            },
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</i>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<i>"
+            },
+            {
+              "Value": "Frankrijk Ontsluierd: Een Reis Door Cultuur, Keuken en Platteland"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<i>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</i>"
+            },
+            {
+              "Value": ", een uniek reisgids\n          die de romantische charme van Parijs, de zonovergoten aantrekkingskracht van de Provence en de wijnrijke\n          paden van Bordeaux samenbrengt. Deze gids gaat verder dan de gebruikelijke toeristenpleisters en introduceert je\n          aan verborgen dorpjes, lokale markten en oude kastelen waar geschiedenis en het moderne Franse leven naadloos samensmelten."
+            }
+          ],
+          "Id": "11",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[4]/div[1]/p[1]",
+      "Id": "u11",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Whether sipping coffee in a quiet Marais café, wandering through medieval streets in Alsace, or savoring fresh\n          seafood along the Côte d'Azur,"
+            },
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</i>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<i>"
+            },
+            {
+              "Value": "France Unveiled"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<i>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</i>"
+            },
+            {
+              "Value": "offers insights, local tips, and immersive experiences\n          for travelers who want to explore like a local. Packed with detailed itineraries, insider recommendations, and\n          stories that bring each region to life, this guide will help you uncover the heart of France—from its iconic\n          sites to its best-kept secrets."
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Of je nu koffie drinkt in een rustig café in de Marais, door middeleeuwse straten in de Elzas wandelt of van verse\n          zeevruchten langs de Côte d'Azur geniet,"
+            },
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</i>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<i>"
+            },
+            {
+              "Value": "Frankrijk Ontsluierd"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<i>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</i>"
+            },
+            {
+              "Value": "biedt inzichten, lokale tips en meeslepende \n          ervaringen voor reizigers die als een local willen verkennen. Boordevol gedetailleerde reisroutes, insider-aanbevelingen en\n          verhalen die elke regio tot leven brengen, helpt deze gids je om het hart van Frankrijk te ontdekken—van de iconische\n          sites tot de best bewaarde geheimen."
+            }
+          ],
+          "Id": "12",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[4]/div[1]/p[2]",
+      "Id": "u12",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</i>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<i>"
+            },
+            {
+              "Value": "Perfect for first-time visitors and seasoned Francophiles alike, this guide will make every trip\n            unforgettable"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<i>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</i>"
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</i>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<i>"
+            },
+            {
+              "Value": "Perfect voor zowel nieuwe bezoekers als doorgewinterde Francofielen, deze gids maakt elke trip onvergetelijk"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<i>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</i>"
+            }
+          ],
+          "Id": "13",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[4]/div[1]/p[3]",
+      "Id": "u13",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Eiffel tower"
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Eiffeltoren"
+            }
+          ],
+          "Id": "14",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[4]/img[1]/@alt[1]",
+      "Id": "u14",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "France Unveiled: A Journey Through Culture, Cuisine, and Countryside"
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Frankrijk Ontsluierd: Een Reis Door Cultuur, Keuken en Platteland"
+            }
+          ],
+          "Id": "15",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[4]/h1[1]",
+      "Id": "u15",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Exploring Loire Valley Wines"
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Ontdek de Wijnen van de Loirevallei"
+            }
+          ],
+          "Id": "16",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/h1[1]",
+      "Id": "u16",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "The Loire Valley is known for its diverse wine offerings, from crisp whites to delicate reds. To experience\n          the region’s viniculture, stop by a local winery in the Vouvray or Chinon area, where family-run vineyards\n          offer tastings and tours. Here, you can sample Loire’s famous Chenin Blancs, earthy Cabernet Francs, and\n          refreshing Rosés, often accompanied by local cheeses and bread. It’s a truly immersive way to connect with the\n          region’s rich agricultural traditions and taste the terroir of the Loire Valley."
+            }
+          ],
+          "Target": [
+            {
+              "Value": "De Loirevallei staat bekend om zijn diverse wijnaanbod, van frisse witte wijnen tot delicate rode wijnen. Om de\n          wijnbouw van de regio te ervaren, bezoek je een lokale wijnmakerij in de Vouvray- of Chinon-gebieden, waar familiebedrijven\n          proeverijen en rondleidingen aanbieden. Hier kun je de beroemde Chenin Blancs van de Loire proeven, aardse Cabernet Francs en\n          verfrissende Rosés, vaak vergezeld van lokale kazen en brood. Het is een echt meeslepende manier om in contact te komen met de\n          rijke landbouwtradities van de regio en de terroir van de Loirevallei te proeven."
+            }
+          ],
+          "Id": "17",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/div[1]/p[1]",
+      "Id": "u17",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Local Tips for Exploring the Loire Valley"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Lokale Tips voor het Verkennen van de Loirevallei"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Id": "18",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/div[1]/h3[1]",
+      "Id": "u18",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Best Time to Visit:"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Beste Tijd om te Bezoeken:"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Id": "19",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/div[1]/ul[1]/li[1]/p[1]",
+      "Id": "u19",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Spring and autumn offer pleasant weather and fewer crowds, while summer brings the region to life with\n              festivals and outdoor concerts."
+            }
+          ],
+          "Target": [
+            {
+              "Value": "De lente en de herfst bieden aangenaam weer en minder drukte, terwijl de zomer de regio tot leven brengt met\n              festivals en openluchtconcerten."
+            }
+          ],
+          "Id": "20",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/div[1]/ul[1]/li[1]/p[2]",
+      "Id": "u20",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Getting Around:"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Vervoer:"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Id": "21",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/div[1]/ul[1]/li[2]/p[1]",
+      "Id": "u21",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Renting a bike is a great way to explore the scenic Loire à Vélo cycling routes, which connect many of the\n              region’s major sights."
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Het huren van een fiets is een geweldige manier om de schilderachtige Loire à Vélo fietsroutes te verkennen,\n              die vele van de belangrijke bezienswaardigheden in de regio verbinden."
+            }
+          ],
+          "Id": "22",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/div[1]/ul[1]/li[2]/p[2]",
+      "Id": "u22",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Hidden Gem:"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Target": [
+            {
+              "WellFormed": false,
+              "EndTag": {
+                "DataId": "d2",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "</strong>"
+              },
+              "Id": "1",
+              "DataId": "d1",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "<strong>"
+            },
+            {
+              "Value": "Verborgen Parel:"
+            },
+            {
+              "StartTag": {
+                "WellFormed": false,
+                "Id": "1",
+                "DataId": "d1",
+                "UnitReferences": [],
+                "Other": [],
+                "Value": "<strong>"
+              },
+              "DataId": "d2",
+              "UnitReferences": [],
+              "Other": [],
+              "Value": "</strong>"
+            }
+          ],
+          "Id": "23",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/div[1]/ul[1]/li[3]/p[1]",
+      "Id": "u23",
+      "Notes": [],
+      "Other": []
+    },
+    {
+      "Segments": [
+        {
+          "Source": [
+            {
+              "Value": "Don’t miss the lesser-known Château de Villandry, celebrated for its Renaissance gardens. Spend a serene\n              afternoon wandering through its maze of perfectly manicured flowerbeds, orchards, and ornamental vegetable\n              plots."
+            }
+          ],
+          "Target": [
+            {
+              "Value": "Mis het minder bekende Château de Villandry niet, beroemd om zijn Renaissance-tuinen. Breng een rustige middag\n              door met wandelen door het doolhof van perfect onderhouden bloembedden, boomgaarden en siergroentetuinen."
+            }
+          ],
+          "Id": "24",
+          "State": 1,
+          "Ignorable": false,
+          "SourceWhiteSpaceHandling": 0,
+          "TargetWhiteSpaceHandling": 0,
+          "SourceAttributes": [],
+          "TargetAttributes": [],
+          "IsIgnorbale": false,
+          "IsInitial": false
+        }
+      ],
+      "Name": "/html[1]/body[1]/div[5]/div[1]/ul[1]/li[3]/p[2]",
+      "Id": "u24",
+      "Notes": [],
+      "Other": []
+    }
+  ],
+  "XliffOther": [
+    {
+      "@version": "2.2"
+    },
+    {
+      "@xmlns": "urn:oasis:names:tc:xliff:document:2.2"
+    }
+  ],
+  "Id": "f1",
+  "Notes": [],
+  "Other": []
+}
+<xliff srcLang="en-US" trgLang="nl" version="2.2" xmlns="urn:oasis:names:tc:xliff:document:2.2">
+  <file id="f1">
+    <skeleton>&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta name="blackbird-entry-id" content="5746dLKTkEZjOQX21HX2KI" /&gt;
+    &lt;meta name="blackbird-locale" content="en-US" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div data-contentful-entry-id="5746dLKTkEZjOQX21HX2KI"&gt;
+      &lt;h1 data-contentful-field-type="Symbol" data-contentful-field-id="title"&gt;The Loire Valley&lt;/h1&gt;
+      &lt;div
+        data-contentful-field-type="Array"
+        data-contentful-field-id="content"
+        data-contentful-link-type="Entry"
+        data-contentful-link-ids="4avSNl953GJYUmIZ8cJg6S,Tp9LF4pw5n3ydWs58YvOc"
+        data-contentful-localized="True"
+      &gt;&lt;/div&gt;
+      &lt;div
+        data-contentful-field-type="Link"
+        data-contentful-field-id="footer"
+        data-contentful-link-type="Entry"
+        data-contentful-link-id="6eZfQFZIjT5p5uHqYqMGQZ"
+        data-contentful-localized="True"
+      &gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div data-contentful-entry-id="6eZfQFZIjT5p5uHqYqMGQZ"&gt;
+      &lt;h1 data-contentful-field-type="Symbol" data-contentful-field-id="title"&gt;
+        Ready to Discover the Magic of the Loire Valley for Yourself?
+      &lt;/h1&gt;
+      &lt;div data-contentful-field-type="RichText" data-contentful-field-id="text"&gt;
+        &lt;p&gt;
+          Embark on an unforgettable journey through France's most enchanting countryside. Wander through majestic
+          châteaux, savor the finest Loire wines, and lose yourself in picturesque villages. Whether you're a history
+          buff, a wine enthusiast, or simply a lover of beautiful landscapes, the Loire Valley offers a travel
+          experience unlike any other.
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Book your Loire Valley adventure today and step into a world where fairytales come to life! &lt;/strong&gt;
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div data-contentful-entry-id="4avSNl953GJYUmIZ8cJg6S"&gt;
+      &lt;h1 data-contentful-field-type="Symbol" data-contentful-field-id="title"&gt;
+        A Day in the Heart of Loire: Châteaux and Vineyards
+      &lt;/h1&gt;
+      &lt;div data-contentful-field-type="RichText" data-contentful-field-id="text"&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Morning: Château de Chambord&lt;/strong&gt; Begin your day with a visit to the legendary Château de
+          Chambord, a masterpiece of French Renaissance architecture. This sprawling castle, with its 400 rooms, iconic
+          double-helix staircase, and forested grounds, was designed for King Francis I as a hunting lodge. Wander the
+          grand halls and rooftop terraces, where you’ll find sweeping views of the Loire landscape. Arrive early to
+          enjoy the castle’s peaceful grandeur before the crowds arrive.
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Midday: Lunch in Blois&lt;/strong&gt; Just a short drive away, the town of Blois offers a taste of
+          quintessential Loire Valley charm. Explore its medieval center, winding alleyways, and the regal Château de
+          Blois, known for its eclectic mix of architectural styles. For lunch, stop by a local bistro where you can
+          savor Loire specialties like goat cheese tartine or rillettes. Pair it with a glass of crisp Sancerre wine,
+          cultivated just a few miles away.
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Afternoon: Amboise and the Legacy of Leonardo da Vinci&lt;/strong&gt; Head to the Château d’Amboise, perched
+          dramatically over the Loire River, once home to kings and visionaries alike. Stroll through royal apartments,
+          visit the Gothic chapel where Leonardo da Vinci is buried, and soak in panoramic views of the river and town
+          below. Just up the hill, the Clos Lucé mansion was Da Vinci’s residence for his final years. Inside, you’ll
+          find intricate models of his inventions, bringing the genius of the Renaissance to life.
+        &lt;/p&gt;
+        &lt;p&gt;You can read more about the Loire valley in this book:&lt;/p&gt;
+        &lt;p&gt;
+          &lt;span&gt;&lt;/span
+          &gt;&lt;a
+            id="embedded-entry-inline_3MvZ2M38zOBdztgQJAzw0B"
+            href="https://app.contentful.com/spaces/12ktqqmw656e/entries/3MvZ2M38zOBdztgQJAzw0B"
+          &gt;&lt;/a
+          &gt;&lt;span&gt;&lt;/span&gt;
+        &lt;/p&gt;
+        &lt;br /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div data-contentful-entry-id="3MvZ2M38zOBdztgQJAzw0B"&gt;
+      &lt;div data-contentful-field-type="RichText" data-contentful-field-id="description"&gt;
+        &lt;p&gt;
+          Embark on a journey through &lt;i&gt;France Unveiled: A Journey Through Culture, Cuisine, and Countryside&lt;/i&gt;, a
+          unique travel guide that weaves together the romantic charm of Paris, the sun-soaked allure of Provence, and
+          the vineyard-laden trails of Bordeaux. This guide goes beyond the usual tourist stops to introduce you to
+          hidden villages, local markets, and timeworn chateaux where history and modern French life blend seamlessly.
+        &lt;/p&gt;
+        &lt;p&gt;
+          Whether sipping coffee in a quiet Marais café, wandering through medieval streets in Alsace, or savoring fresh
+          seafood along the Côte d'Azur, &lt;i&gt;France Unveiled&lt;/i&gt; offers insights, local tips, and immersive experiences
+          for travelers who want to explore like a local. Packed with detailed itineraries, insider recommendations, and
+          stories that bring each region to life, this guide will help you uncover the heart of France—from its iconic
+          sites to its best-kept secrets.
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;i
+            &gt;Perfect for first-time visitors and seasoned Francophiles alike, this guide will make every trip
+            unforgettable&lt;/i
+          &gt;
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img
+        src="https://images.ctfassets.net/12ktqqmw656e/7jS4PhCf07nFGDbM2Xj5fT/513a21df5f6493964373bf152a6fd2bb/tower.jfif"
+        data-contentful-field-type="Link"
+        data-contentful-field-id="file"
+        data-contentful-link-type="Asset"
+        data-contentful-link-id="7jS4PhCf07nFGDbM2Xj5fT"
+        alt="Eiffel tower"
+      /&gt;
+      &lt;h1 data-contentful-field-type="Symbol" data-contentful-field-id="title"&gt;
+        France Unveiled: A Journey Through Culture, Cuisine, and Countryside
+      &lt;/h1&gt;
+    &lt;/div&gt;
+    &lt;div data-contentful-entry-id="Tp9LF4pw5n3ydWs58YvOc"&gt;
+      &lt;h1 data-contentful-field-type="Symbol" data-contentful-field-id="title"&gt;Exploring Loire Valley Wines&lt;/h1&gt;
+      &lt;div data-contentful-field-type="RichText" data-contentful-field-id="text"&gt;
+        &lt;p&gt;
+          The Loire Valley is known for its diverse wine offerings, from crisp whites to delicate reds. To experience
+          the region’s viniculture, stop by a local winery in the Vouvray or Chinon area, where family-run vineyards
+          offer tastings and tours. Here, you can sample Loire’s famous Chenin Blancs, earthy Cabernet Francs, and
+          refreshing Rosés, often accompanied by local cheeses and bread. It’s a truly immersive way to connect with the
+          region’s rich agricultural traditions and taste the terroir of the Loire Valley.
+        &lt;/p&gt;
+        &lt;h3&gt;&lt;strong&gt;Local Tips for Exploring the Loire Valley&lt;/strong&gt;&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;Best Time to Visit:&lt;/strong&gt;&lt;/p&gt;
+            &lt;p&gt;
+              Spring and autumn offer pleasant weather and fewer crowds, while summer brings the region to life with
+              festivals and outdoor concerts.
+            &lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;Getting Around:&lt;/strong&gt;&lt;/p&gt;
+            &lt;p&gt;
+              Renting a bike is a great way to explore the scenic Loire à Vélo cycling routes, which connect many of the
+              region’s major sights.
+            &lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;Hidden Gem:&lt;/strong&gt;&lt;/p&gt;
+            &lt;p&gt;
+              Don’t miss the lesser-known Château de Villandry, celebrated for its Renaissance gardens. Spend a serene
+              afternoon wandering through its maze of perfectly manicured flowerbeds, orchards, and ornamental vegetable
+              plots.
+            &lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;br /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</skeleton>
+    <unit id="u1" name="/html[1]/body[1]/div[1]/h1[1]">
+      <segment id="1" state="translated">
+        <source>The Loire Valley</source>
+        <target>De Loirevallei</target>
+      </segment>
+    </unit>
+    <unit id="u2" name="/html[1]/body[1]/div[2]/h1[1]">
+      <segment id="2" state="translated">
+        <source>Ready to Discover the Magic of the Loire Valley for Yourself?</source>
+        <target>Klaar om zelf de magie van de Loirevallei te ontdekken?</target>
+      </segment>
+    </unit>
+    <unit id="u3" name="/html[1]/body[1]/div[2]/div[1]/p[1]">
+      <segment id="3" state="translated">
+        <source>Embark on an unforgettable journey through France's most enchanting countryside. Wander through majestic
+          châteaux, savor the finest Loire wines, and lose yourself in picturesque villages. Whether you're a history
+          buff, a wine enthusiast, or simply a lover of beautiful landscapes, the Loire Valley offers a travel
+          experience unlike any other.</source>
+        <target>Ga op een onvergetelijke reis door het meest betoverende platteland van Frankrijk. Dwaal door majestueuze
+          kastelen, proef de beste Loirewijnen en verlies jezelf in schilderachtige dorpjes. Of je nu een geschiedenisliefhebber,
+          een wijnliefhebber of gewoon dol bent op mooie landschappen, de Loirevallei biedt een reiservaring van een
+          ongekende orde.</target>
+      </segment>
+    </unit>
+    <unit id="u4" name="/html[1]/body[1]/div[2]/div[1]/p[2]">
+      <segment id="4" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Book your Loire Valley adventure today and step into a world where fairytales come to life!<ec dataRef="d2" startRef="1" /></source>
+        <target>
+          <sc id="1" dataRef="d1" />Boek vandaag nog jouw avontuur in de Loirevallei en betreed een wereld waar sprookjes tot leven komen!<ec dataRef="d2" startRef="1" /></target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u5" name="/html[1]/body[1]/div[3]/h1[1]">
+      <segment id="5" state="translated">
+        <source>A Day in the Heart of Loire: Châteaux and Vineyards</source>
+        <target>Een Dag in het Hart van Loire: Kastelen en Wijngaarden</target>
+      </segment>
+    </unit>
+    <unit id="u6" name="/html[1]/body[1]/div[3]/div[1]/p[1]">
+      <segment id="6" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Morning: Château de Chambord<ec dataRef="d2" startRef="1" />Begin your day with a visit to the legendary Château de
+          Chambord, a masterpiece of French Renaissance architecture. This sprawling castle, with its 400 rooms, iconic
+          double-helix staircase, and forested grounds, was designed for King Francis I as a hunting lodge. Wander the
+          grand halls and rooftop terraces, where you’ll find sweeping views of the Loire landscape. Arrive early to
+          enjoy the castle’s peaceful grandeur before the crowds arrive.</source>
+        <target>
+          <sc id="1" dataRef="d1" />Ochtend: Château de Chambord<ec dataRef="d2" startRef="1" />Begin je dag met een bezoek aan het legendarische Château de
+          Chambord, een meesterwerk van Franse Renaissance-architectuur. Dit uitgestrekte kasteel, met zijn 400 kamers, iconische
+          dubbelspiraaltrap en beboste terreinen, werd ontworpen voor koning Frans I als jachtverblijf. Dwaal door de
+          grote zalen en dakterrassen, waar je een weids uitzicht hebt over het landschap van de Loire. Kom vroeg om te genieten van
+          de rustige grandeur van het kasteel voordat de menigte arriveert.</target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u7" name="/html[1]/body[1]/div[3]/div[1]/p[2]">
+      <segment id="7" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Midday: Lunch in Blois<ec dataRef="d2" startRef="1" />Just a short drive away, the town of Blois offers a taste of
+          quintessential Loire Valley charm. Explore its medieval center, winding alleyways, and the regal Château de
+          Blois, known for its eclectic mix of architectural styles. For lunch, stop by a local bistro where you can
+          savor Loire specialties like goat cheese tartine or rillettes. Pair it with a glass of crisp Sancerre wine,
+          cultivated just a few miles away.</source>
+        <target>
+          <sc id="1" dataRef="d1" />Middag: Lunch in Blois<ec dataRef="d2" startRef="1" />Slechts een korte rit verderop biedt de stad Blois een voorproefje van
+          de charmante Loireregio. Verken het middeleeuwse centrum, kronkelige steegjes en het vorstelijke Château de
+          Blois, bekend om zijn eclectische mix van bouwstijlen. Voor de lunch stop je bij een lokaal bistro waar je 
+          kunt genieten van specialiteiten uit de Loire, zoals geitenkaastartine of rillettes. Combineer dit met een glas frisse Sancerre 
+          wijn, die slechts op enkele kilometers afstand wordt verbouwd.</target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u8" name="/html[1]/body[1]/div[3]/div[1]/p[3]">
+      <segment id="8" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Afternoon: Amboise and the Legacy of Leonardo da Vinci<ec dataRef="d2" startRef="1" />Head to the Château d’Amboise, perched
+          dramatically over the Loire River, once home to kings and visionaries alike. Stroll through royal apartments,
+          visit the Gothic chapel where Leonardo da Vinci is buried, and soak in panoramic views of the river and town
+          below. Just up the hill, the Clos Lucé mansion was Da Vinci’s residence for his final years. Inside, you’ll
+          find intricate models of his inventions, bringing the genius of the Renaissance to life.</source>
+        <target>
+          <sc id="1" dataRef="d1" />Namiddag: Amboise en de nalatenschap van Leonardo da Vinci<ec dataRef="d2" startRef="1" />Bezoek het Château d’Amboise, dat
+          dramatisch over de Loire uitkijkt en ooit het thuis was van koningen en visionairs. Wandel door de koninklijke
+          appartementen, bezoek de gotische kapel waar Leonardo da Vinci is begraven en geniet van panoramische uitzichten 
+          over de rivier en de stad beneden. Iets verderop ligt het herenhuis Clos Lucé, waar Da Vinci zijn laatste jaren doorbracht. 
+          Binnen vind je ingewikkelde modellen van zijn uitvindingen, die de genialiteit van de Renaissance tot leven brengen.</target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u9" name="/html[1]/body[1]/div[3]/div[1]/p[4]">
+      <segment id="9" state="translated">
+        <source>You can read more about the Loire valley in this book:</source>
+        <target>Je kunt meer lezen over de Loirevallei in dit boek:</target>
+      </segment>
+    </unit>
+    <unit id="u10" name="/html[1]/body[1]/div[3]/div[1]/p[5]">
+      <segment id="10" state="translated">
+        <source>
+          <ph id="1" dataRef="d1" />
+          <ph id="2" dataRef="d2" />
+          <ph id="3" dataRef="d3" />
+        </source>
+        <target>
+          <ph id="1" dataRef="d1" />
+          <ph id="2" dataRef="d2" />
+          <ph id="3" dataRef="d3" />
+        </target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;span&gt;&lt;/span
+          &gt;</data>
+        <data id="d2">&lt;a id="embedded-entry-inline_3MvZ2M38zOBdztgQJAzw0B" href="https://app.contentful.com/spaces/12ktqqmw656e/entries/3MvZ2M38zOBdztgQJAzw0B"&gt;&lt;/a&gt;</data>
+        <data id="d3">&lt;span&gt;&lt;/span&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u11" name="/html[1]/body[1]/div[4]/div[1]/p[1]">
+      <segment id="11" state="translated">
+        <source>Embark on a journey through<sc id="1" dataRef="d1" />France Unveiled: A Journey Through Culture, Cuisine, and Countryside<ec dataRef="d2" startRef="1" />, a
+          unique travel guide that weaves together the romantic charm of Paris, the sun-soaked allure of Provence, and
+          the vineyard-laden trails of Bordeaux. This guide goes beyond the usual tourist stops to introduce you to
+          hidden villages, local markets, and timeworn chateaux where history and modern French life blend seamlessly.</source>
+        <target>Ga op reis met<sc id="1" dataRef="d1" />Frankrijk Ontsluierd: Een Reis Door Cultuur, Keuken en Platteland<ec dataRef="d2" startRef="1" />, een uniek reisgids
+          die de romantische charme van Parijs, de zonovergoten aantrekkingskracht van de Provence en de wijnrijke
+          paden van Bordeaux samenbrengt. Deze gids gaat verder dan de gebruikelijke toeristenpleisters en introduceert je
+          aan verborgen dorpjes, lokale markten en oude kastelen waar geschiedenis en het moderne Franse leven naadloos samensmelten.</target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;i&gt;</data>
+        <data id="d2">&lt;/i&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u12" name="/html[1]/body[1]/div[4]/div[1]/p[2]">
+      <segment id="12" state="translated">
+        <source>Whether sipping coffee in a quiet Marais café, wandering through medieval streets in Alsace, or savoring fresh
+          seafood along the Côte d'Azur,<sc id="1" dataRef="d1" />France Unveiled<ec dataRef="d2" startRef="1" />offers insights, local tips, and immersive experiences
+          for travelers who want to explore like a local. Packed with detailed itineraries, insider recommendations, and
+          stories that bring each region to life, this guide will help you uncover the heart of France—from its iconic
+          sites to its best-kept secrets.</source>
+        <target>Of je nu koffie drinkt in een rustig café in de Marais, door middeleeuwse straten in de Elzas wandelt of van verse
+          zeevruchten langs de Côte d'Azur geniet,<sc id="1" dataRef="d1" />Frankrijk Ontsluierd<ec dataRef="d2" startRef="1" />biedt inzichten, lokale tips en meeslepende 
+          ervaringen voor reizigers die als een local willen verkennen. Boordevol gedetailleerde reisroutes, insider-aanbevelingen en
+          verhalen die elke regio tot leven brengen, helpt deze gids je om het hart van Frankrijk te ontdekken—van de iconische
+          sites tot de best bewaarde geheimen.</target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;i&gt;</data>
+        <data id="d2">&lt;/i&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u13" name="/html[1]/body[1]/div[4]/div[1]/p[3]">
+      <segment id="13" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Perfect for first-time visitors and seasoned Francophiles alike, this guide will make every trip
+            unforgettable<ec dataRef="d2" startRef="1" /></source>
+        <target>
+          <sc id="1" dataRef="d1" />Perfect voor zowel nieuwe bezoekers als doorgewinterde Francofielen, deze gids maakt elke trip onvergetelijk<ec dataRef="d2" startRef="1" /></target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;i&gt;</data>
+        <data id="d2">&lt;/i&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u14" name="/html[1]/body[1]/div[4]/img[1]/@alt[1]">
+      <segment id="14" state="translated">
+        <source>Eiffel tower</source>
+        <target>Eiffeltoren</target>
+      </segment>
+    </unit>
+    <unit id="u15" name="/html[1]/body[1]/div[4]/h1[1]">
+      <segment id="15" state="translated">
+        <source>France Unveiled: A Journey Through Culture, Cuisine, and Countryside</source>
+        <target>Frankrijk Ontsluierd: Een Reis Door Cultuur, Keuken en Platteland</target>
+      </segment>
+    </unit>
+    <unit id="u16" name="/html[1]/body[1]/div[5]/h1[1]">
+      <segment id="16" state="translated">
+        <source>Exploring Loire Valley Wines</source>
+        <target>Ontdek de Wijnen van de Loirevallei</target>
+      </segment>
+    </unit>
+    <unit id="u17" name="/html[1]/body[1]/div[5]/div[1]/p[1]">
+      <segment id="17" state="translated">
+        <source>The Loire Valley is known for its diverse wine offerings, from crisp whites to delicate reds. To experience
+          the region’s viniculture, stop by a local winery in the Vouvray or Chinon area, where family-run vineyards
+          offer tastings and tours. Here, you can sample Loire’s famous Chenin Blancs, earthy Cabernet Francs, and
+          refreshing Rosés, often accompanied by local cheeses and bread. It’s a truly immersive way to connect with the
+          region’s rich agricultural traditions and taste the terroir of the Loire Valley.</source>
+        <target>De Loirevallei staat bekend om zijn diverse wijnaanbod, van frisse witte wijnen tot delicate rode wijnen. Om de
+          wijnbouw van de regio te ervaren, bezoek je een lokale wijnmakerij in de Vouvray- of Chinon-gebieden, waar familiebedrijven
+          proeverijen en rondleidingen aanbieden. Hier kun je de beroemde Chenin Blancs van de Loire proeven, aardse Cabernet Francs en
+          verfrissende Rosés, vaak vergezeld van lokale kazen en brood. Het is een echt meeslepende manier om in contact te komen met de
+          rijke landbouwtradities van de regio en de terroir van de Loirevallei te proeven.</target>
+      </segment>
+    </unit>
+    <unit id="u18" name="/html[1]/body[1]/div[5]/div[1]/h3[1]">
+      <segment id="18" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Local Tips for Exploring the Loire Valley<ec dataRef="d2" startRef="1" /></source>
+        <target>
+          <sc id="1" dataRef="d1" />Lokale Tips voor het Verkennen van de Loirevallei<ec dataRef="d2" startRef="1" /></target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u19" name="/html[1]/body[1]/div[5]/div[1]/ul[1]/li[1]/p[1]">
+      <segment id="19" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Best Time to Visit:<ec dataRef="d2" startRef="1" /></source>
+        <target>
+          <sc id="1" dataRef="d1" />Beste Tijd om te Bezoeken:<ec dataRef="d2" startRef="1" /></target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u20" name="/html[1]/body[1]/div[5]/div[1]/ul[1]/li[1]/p[2]">
+      <segment id="20" state="translated">
+        <source>Spring and autumn offer pleasant weather and fewer crowds, while summer brings the region to life with
+              festivals and outdoor concerts.</source>
+        <target>De lente en de herfst bieden aangenaam weer en minder drukte, terwijl de zomer de regio tot leven brengt met
+              festivals en openluchtconcerten.</target>
+      </segment>
+    </unit>
+    <unit id="u21" name="/html[1]/body[1]/div[5]/div[1]/ul[1]/li[2]/p[1]">
+      <segment id="21" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Getting Around:<ec dataRef="d2" startRef="1" /></source>
+        <target>
+          <sc id="1" dataRef="d1" />Vervoer:<ec dataRef="d2" startRef="1" /></target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u22" name="/html[1]/body[1]/div[5]/div[1]/ul[1]/li[2]/p[2]">
+      <segment id="22" state="translated">
+        <source>Renting a bike is a great way to explore the scenic Loire à Vélo cycling routes, which connect many of the
+              region’s major sights.</source>
+        <target>Het huren van een fiets is een geweldige manier om de schilderachtige Loire à Vélo fietsroutes te verkennen,
+              die vele van de belangrijke bezienswaardigheden in de regio verbinden.</target>
+      </segment>
+    </unit>
+    <unit id="u23" name="/html[1]/body[1]/div[5]/div[1]/ul[1]/li[3]/p[1]">
+      <segment id="23" state="translated">
+        <source>
+          <sc id="1" dataRef="d1" />Hidden Gem:<ec dataRef="d2" startRef="1" /></source>
+        <target>
+          <sc id="1" dataRef="d1" />Verborgen Parel:<ec dataRef="d2" startRef="1" /></target>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u24" name="/html[1]/body[1]/div[5]/div[1]/ul[1]/li[3]/p[2]">
+      <segment id="24" state="translated">
+        <source>Don’t miss the lesser-known Château de Villandry, celebrated for its Renaissance gardens. Spend a serene
+              afternoon wandering through its maze of perfectly manicured flowerbeds, orchards, and ornamental vegetable
+              plots.</source>
+        <target>Mis het minder bekende Château de Villandry niet, beroemd om zijn Renaissance-tuinen. Breng een rustige middag
+              door met wandelen door het doolhof van perfect onderhouden bloembedden, boomgaarden en siergroentetuinen.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>

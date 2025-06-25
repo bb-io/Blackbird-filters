@@ -1,7 +1,9 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Tests.CustomAssertions;
+using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Xliff;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Text;
@@ -40,6 +42,22 @@ public class HtmlCoderTests : TestBase
         DisplayHtml(returned);
 
         return (html, content, returned);
+    }
+
+    public string TranslateFile(string fileContent)
+    {
+        // File content can be either HTML or XLIFF (more formats to follow soon)
+        var transformation = Transformation.TryParse(fileContent);
+
+        foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
+        {
+            // Implement API calls here
+            segment.SetTarget(segment.GetSource() + " - Translated!"); 
+
+            // More state manipulations can be performed here
+            segment.State = SegmentState.Translated; 
+        }
+        return HtmlContentCoder.Serialize(transformation.Target());
     }
 
     private string PseudoTranslateXliff(string xliff)

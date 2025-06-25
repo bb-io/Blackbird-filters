@@ -7,9 +7,9 @@ using System.Text;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
-public class Transformation(string sourceLanguage, string? targetLanguage) : Node
+public class Transformation(string? sourceLanguage, string? targetLanguage) : Node
 {
-    public string SourceLanguage { get; set; } = sourceLanguage;
+    public string? SourceLanguage { get; set; } = sourceLanguage;
     public string? TargetLanguage { get; set; } = targetLanguage;
     public string? Original { get; set; }
     public string? OriginalReference { get; set; }
@@ -86,7 +86,7 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
         return codedContent;
     }
 
-    public static Transformation? TryParse(string content, string sourceLanguage = "")
+    public static Transformation? TryParse(string content)
     {
         if (Xliff2Serializer.IsXliff2(content))
         {
@@ -94,7 +94,7 @@ public class Transformation(string sourceLanguage, string? targetLanguage) : Nod
         }
         else if (HtmlContentCoder.IsHtml(content))
         {
-            return HtmlContentCoder.Deserialize(content).CreateTransformation(sourceLanguage);
+            return HtmlContentCoder.Deserialize(content).CreateTransformation();
         }
         else
         {

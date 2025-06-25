@@ -1,0 +1,509 @@
+<xliff version="2.2" srcLang="en" xmlns="urn:oasis:names:tc:xliff:document:2.2">
+  <file id="f1">
+    <skeleton>&lt;html&gt;&lt;head&gt;&lt;title&gt;Reverse Tech's strategic partnership with Remote for contractor management and payroll&lt;/title&gt;&lt;meta name="blackbird-reference-id" content="191205216639"&gt;&lt;meta name="blackbird-content-type" content="blog"&gt;&lt;meta name="slug" content="resources/case-studies/remote-reverse-tech"&gt;&lt;description&gt;Discover how Reverse Tech leverages Remote's contractor management and USA payroll to position itself for sustainable growth in the global health market.&lt;/description&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;h2&gt;Reverse Tech at a glance&lt;/h2&gt;
+&lt;p&gt;Health and wellness startup, Reverse Tech, partnered with Remote to manage its global Contractor workforce and USA payroll, ensuring compliance with international labor laws. By leveraging Remote’s specialized services, Reverse Tech has positioned itself for sustainable growth in the global health market.&lt;/p&gt;
+&lt;div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span&gt;&lt;strong&gt;Remote Products: &lt;/strong&gt;Contractors, EOR, Payroll&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;&lt;strong&gt;Hiring in: &lt;/strong&gt;5 continents&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;&lt;strong&gt;Industry: &lt;/strong&gt;Health &amp;amp; Wellness&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;div&gt;
+&lt;div&gt;&lt;span&gt;Video&lt;/span&gt;&amp;nbsp;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;div&gt;
+&lt;h2 id="4bHg4k0rclVADgF1b9GclR" data-fixed-index="Watch the video" data-section="4bHg4k0rclVADgF1b9GclR" data-hsprotectuppertitle="Video"&gt;Watch the Reverse Tech story&lt;/h2&gt;
+&lt;div class="hs-embed-wrapper" data-service="wistia" data-script-embed="true" style="position: relative; overflow: hidden; width: 100%; height: auto; padding: 0px; min-width: 256px; display: block; margin: auto; max-width: 873px;"&gt;&lt;div class="hs-embed-content-wrapper"&gt;&lt;div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"&gt;&lt;div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"&gt;&lt;iframe src="https://fast.wistia.net/embed/iframe/tndc4i421j?web_component=true&amp;amp;seo=true" title="Reverse Tech's strategic partnership with Remote for contractor management and payroll Video" allow="autoplay; fullscreen" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" width="100%" height="100%"&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;script src="https://fast.wistia.net/player.js" async&gt;&lt;/script&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;div&gt;
+&lt;p&gt;Case study&lt;/p&gt;
+&lt;h2 id="3Vg7ODW4FP4meCLKIITas5" data-fixed-index="Meet Reverse Tech" data-section="3Vg7ODW4FP4meCLKIITas5" data-hsprotectuppertitle="Case study"&gt;Reverse Tech's strategic partnership with Remote for contractor management and payroll&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Reverse Tech is an innovative startup dedicated to revolutionizing the health and wellness industry through digital solutions. With a workforce consisting of over 100 employees and contractors spread across various countries including Ecuador, France, Germany, Mexico, Morocco, Philippines, South Africa, Spain, Sweden, Ukraine, UAE and USA, Reverse Tech aims to impact the lives of 10 million people by 2026, enhancing their health and wellness through cutting-edge technology.&lt;/p&gt;
+&lt;p&gt;We spoke to Marisol Jimenez, Head of People at Reverse Tech, to explore how strategic partnerships can resolve significant business challenges and drive success in a globalized economy.&lt;/p&gt;
+&lt;div&gt;
+&lt;p&gt;The challenge&lt;/p&gt;
+&lt;h2 id="dyKEqeBw5AxFDfphNzdfk" data-fixed-index="Driven by the need to scale quickly and compliantly " data-section="dyKEqeBw5AxFDfphNzdfk" data-hsprotectuppertitle="The challenge"&gt;Driven by the need to scale quickly and compliantly&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Reverse Tech's full migration to Remote for EOR, contractor management and payroll was fundamentally driven by the need to scale their operations globally while ensuring full compliance with international labor laws.&lt;/p&gt;
+&lt;div&gt;
+&lt;blockquote&gt;
+&lt;div&gt;We were using another platform to manage our employees and contractors, but we needed a better solution. With Remote, we are making sure we are in full legal compliance.&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;div&gt;
+&lt;p&gt;The solution&lt;/p&gt;
+&lt;h2 id="1n8XSNRdterQ8cXrFXvzQE" data-fixed-index="Migrating its global workforce to Remote" data-section="1n8XSNRdterQ8cXrFXvzQE" data-hsprotectuppertitle="The solution"&gt;Migrating its global workforce to Remote&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;The support provided by Remote's team was crucial the ensure a smooth transition from the previous EOR and Contractor Management provider. At this time, a full workforce compliance audit was carried out to uncover potential misclassification risks. Reverse Tech valued Remote’s responsiveness and expertise, viewing them as an extension of their own team.&amp;nbsp;&amp;nbsp;&lt;/p&gt;
+&lt;div&gt;
+&lt;blockquote&gt;
+&lt;div&gt;Remote offers full support and guidance for all our jurisdictions, which is amazing; Having access to this knowledge and legal risk information takes a lot of weight off my shoulders. It’s a partnership based on trust.&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Having all employees and contractors on a single platform allowed for better management and coordination. Remote’s in-house expertise in different locales was particularly beneficial, allowing the company to handle employment regulations and requirements in various countries effectively.&lt;/p&gt;
+&lt;p&gt;The smooth transition and integration process ensured that employee satisfaction remained high, with Remote providing the necessary tools and support to help Reverse Tech’s workforce achieve its goal of improving health and wellness globally.&lt;/p&gt;
+&lt;div&gt;
+&lt;p&gt;The benefits&lt;/p&gt;
+&lt;h2 id="7uEogsEJ1zKjJ932TddTcd" data-fixed-index="Clear insights into global payroll activities" data-section="7uEogsEJ1zKjJ932TddTcd" data-hsprotectuppertitle="The benefits"&gt;Clear insights into global payroll activities for employees and contractors&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;In the case of Reverse Tech, the partnership with Remote payroll significantly enhanced the finance manager's ability to efficiently manage and run payroll for employees and contractors across multiple countries.&amp;nbsp;&lt;/p&gt;
+&lt;div&gt;
+&lt;blockquote&gt;
+&lt;div&gt;We have monthly, semi-monthly and hourly in multiple different currencies around the world; With Remote, you can make it happen. Our Finance Manager can view invoices in bulk, check they are correct and make the correct payments easily. Everything runs smoothly.&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;This system streamlined the payroll management process, allowing the finance manager to handle payroll obligations with greater accuracy and less time expenditure.&lt;/p&gt;
+&lt;p&gt;Overall, the collaboration with Remote provided an intuitive and straightforward payroll system that was easy to integrate and use. Remote's continuous improvements to their platform ensured that Reverse Tech could rely on up-to-date and compliant processes, ensuring operational excellence in managing a global workforce.&lt;/p&gt;
+&lt;div&gt;
+&lt;p&gt;The results&lt;/p&gt;
+&lt;h2 id="3IkDbX2S0hKKoa8jDpyYDA" data-fixed-index="Transformed approach to global workforce management" data-section="3IkDbX2S0hKKoa8jDpyYDA" data-hsprotectuppertitle="The results"&gt;Transformed approach to global workforce management&lt;/h2&gt;
+&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Enhanced Compliance:&lt;/strong&gt; Remote’s expertise in local and international labor laws significantly mitigated the risk of legal non-compliance and employee misclassification. This assurance allowed Reverse Tech to focus on its core business objectives without the overhead of legal uncertainties.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Operational Efficiency:&lt;/strong&gt; The simplification of payroll processes for both contractors and employees streamlined operations, reducing the administrative burden and allowing for better resource allocation toward strategic initiatives.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Scalability:&lt;/strong&gt; With Remote’s scalable solutions, Reverse Tech was well-equipped to expand its operations into new markets without the need for extensive groundwork on understanding local employment laws and payroll management.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Employee Satisfaction:&lt;/strong&gt; The efficiency and reliability of the payroll system improved overall employee satisfaction, contributing to higher retention rates and attracting top talent who were assured of compliant and timely remuneration.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div&gt;
+&lt;p&gt;Conclusion&lt;/p&gt;
+&lt;h2 id="xLLekc2zRxHSAV5sQw3In" data-fixed-index="Sustainable global growth" data-section="xLLekc2zRxHSAV5sQw3In" data-hsprotectuppertitle="Conclusion"&gt;Sustainable global growth&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Encouraged by the success of the partnership, Reverse Tech plans to expand its use of Remote’s services by integrating the US payroll system for their legal entity in the United States. This expansion is expected to further enhance their operational capabilities and support their growth trajectory.&lt;/p&gt;
+&lt;div&gt;
+&lt;blockquote&gt;
+&lt;div&gt;Remote operates like an extension of my HR team; We're working together a lot and it's always this happy can-do attitude and everyone is super fast replying to our questions. We’re continuously growing and the fact that we have Remote makes it super easy to do.&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;This partnership has been instrumental in navigating the complexities of global workforce management. By leveraging Remote’s specialized services, Reverse Tech has not only ensured compliance and efficiency but has also positioned itself for sustainable growth in the international market.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ready to start growing your international team? Contact us today to &lt;/em&gt;&lt;a color="seaBlue500" href="https://remote.com/contact-us"&gt;&lt;em&gt;&lt;u&gt;schedule a friendly consultation&lt;/u&gt;&lt;/em&gt;&lt;/a&gt;&lt;em&gt; with one of our global hiring experts.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</skeleton>
+    <unit id="u1" name="/html[1]/head[1]/title[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Reverse Tech's strategic partnership with Remote for contractor management and payroll</source>
+      </segment>
+    </unit>
+    <unit id="u2" name="/html[1]/head[1]/meta[3]/@content[1]" p3:tagHandling="plain" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>resources/case-studies/remote-reverse-tech</source>
+      </segment>
+    </unit>
+    <unit id="u3" name="/html[1]/head[1]/description[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Discover how Reverse Tech leverages Remote's contractor management and USA payroll to position itself for sustainable growth in the global health market.</source>
+      </segment>
+    </unit>
+    <unit id="u4" name="/html[1]/body[1]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u5" name="/html[1]/body[1]/h2[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Reverse Tech at a glance</source>
+      </segment>
+    </unit>
+    <unit id="u6" name="/html[1]/body[1]/p[2]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Health and wellness startup, Reverse Tech, partnered with Remote to manage its global Contractor workforce and USA payroll, ensuring compliance with international labor laws. By leveraging Remote’s specialized services, Reverse Tech has positioned itself for sustainable growth in the global health market.</source>
+      </segment>
+    </unit>
+    <unit id="u7" name="/html[1]/body[1]/div[1]/ul[1]/li[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />
+          <sc id="2" dataRef="d2" />Remote Products:<ec dataRef="d3" />Contractors, EOR, Payroll<ec dataRef="d4" /></source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;span&gt;</data>
+        <data id="d2">&lt;strong&gt;</data>
+        <data id="d3">&lt;/strong&gt;</data>
+        <data id="d4">&lt;/span&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u8" name="/html[1]/body[1]/div[1]/ul[1]/li[2]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />
+          <sc id="2" dataRef="d2" />Hiring in:<ec dataRef="d3" />5 continents<ec dataRef="d4" /></source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;span&gt;</data>
+        <data id="d2">&lt;strong&gt;</data>
+        <data id="d3">&lt;/strong&gt;</data>
+        <data id="d4">&lt;/span&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u9" name="/html[1]/body[1]/div[1]/ul[1]/li[3]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />
+          <sc id="2" dataRef="d2" />Industry:<ec dataRef="d3" />Health &amp;amp; Wellness<ec dataRef="d4" /></source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;span&gt;</data>
+        <data id="d2">&lt;strong&gt;</data>
+        <data id="d3">&lt;/strong&gt;</data>
+        <data id="d4">&lt;/span&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u10" name="/html[1]/body[1]/div[1]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u11" name="/html[1]/body[1]/div[1]/p[2]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u12" name="/html[1]/body[1]/div[1]/div[1]/div[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />Video<ec dataRef="d2" />&amp;nbsp;</source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;span&gt;</data>
+        <data id="d2">&lt;/span&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u13" name="/html[1]/body[1]/div[1]/div[2]/div[1]/h2[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Watch the Reverse Tech story</source>
+      </segment>
+    </unit>
+    <unit id="u14" name="/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/iframe[1]/@title[1]" p3:tagHandling="plain" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Reverse Tech's strategic partnership with Remote for contractor management and payroll Video</source>
+      </segment>
+    </unit>
+    <unit id="u15" name="/html[1]/body[1]/div[1]/div[2]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u16" name="/html[1]/body[1]/div[1]/div[2]/div[2]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Case study</source>
+      </segment>
+    </unit>
+    <unit id="u17" name="/html[1]/body[1]/div[1]/div[2]/div[2]/h2[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Reverse Tech's strategic partnership with Remote for contractor management and payroll</source>
+      </segment>
+    </unit>
+    <unit id="u18" name="/html[1]/body[1]/div[1]/div[2]/p[2]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Reverse Tech is an innovative startup dedicated to revolutionizing the health and wellness industry through digital solutions. With a workforce consisting of over 100 employees and contractors spread across various countries including Ecuador, France, Germany, Mexico, Morocco, Philippines, South Africa, Spain, Sweden, Ukraine, UAE and USA, Reverse Tech aims to impact the lives of 10 million people by 2026, enhancing their health and wellness through cutting-edge technology.</source>
+      </segment>
+    </unit>
+    <unit id="u19" name="/html[1]/body[1]/div[1]/div[2]/p[3]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>We spoke to Marisol Jimenez, Head of People at Reverse Tech, to explore how strategic partnerships can resolve significant business challenges and drive success in a globalized economy.</source>
+      </segment>
+    </unit>
+    <unit id="u20" name="/html[1]/body[1]/div[1]/div[2]/div[3]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>The challenge</source>
+      </segment>
+    </unit>
+    <unit id="u21" name="/html[1]/body[1]/div[1]/div[2]/div[3]/h2[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Driven by the need to scale quickly and compliantly</source>
+      </segment>
+    </unit>
+    <unit id="u22" name="/html[1]/body[1]/div[1]/div[2]/p[4]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Reverse Tech's full migration to Remote for EOR, contractor management and payroll was fundamentally driven by the need to scale their operations globally while ensuring full compliance with international labor laws.</source>
+      </segment>
+    </unit>
+    <unit id="u23" name="/html[1]/body[1]/div[1]/div[2]/div[4]/blockquote[1]/div[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>We were using another platform to manage our employees and contractors, but we needed a better solution. With Remote, we are making sure we are in full legal compliance.</source>
+      </segment>
+    </unit>
+    <unit id="u24" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[1]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>The solution</source>
+      </segment>
+    </unit>
+    <unit id="u25" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[1]/h2[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Migrating its global workforce to Remote</source>
+      </segment>
+    </unit>
+    <unit id="u26" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>The support provided by Remote's team was crucial the ensure a smooth transition from the previous EOR and Contractor Management provider. At this time, a full workforce compliance audit was carried out to uncover potential misclassification risks. Reverse Tech valued Remote’s responsiveness and expertise, viewing them as an extension of their own team.&amp;nbsp;&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u27" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[2]/blockquote[1]/div[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Remote offers full support and guidance for all our jurisdictions, which is amazing; Having access to this knowledge and legal risk information takes a lot of weight off my shoulders. It’s a partnership based on trust.</source>
+      </segment>
+    </unit>
+    <unit id="u28" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[2]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u29" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[2]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Having all employees and contractors on a single platform allowed for better management and coordination. Remote’s in-house expertise in different locales was particularly beneficial, allowing the company to handle employment regulations and requirements in various countries effectively.</source>
+      </segment>
+    </unit>
+    <unit id="u30" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[3]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>The smooth transition and integration process ensured that employee satisfaction remained high, with Remote providing the necessary tools and support to help Reverse Tech’s workforce achieve its goal of improving health and wellness globally.</source>
+      </segment>
+    </unit>
+    <unit id="u31" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[3]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>The benefits</source>
+      </segment>
+    </unit>
+    <unit id="u32" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[3]/h2[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Clear insights into global payroll activities for employees and contractors</source>
+      </segment>
+    </unit>
+    <unit id="u33" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[4]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>In the case of Reverse Tech, the partnership with Remote payroll significantly enhanced the finance manager's ability to efficiently manage and run payroll for employees and contractors across multiple countries.&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u34" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[4]/blockquote[1]/div[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>We have monthly, semi-monthly and hourly in multiple different currencies around the world; With Remote, you can make it happen. Our Finance Manager can view invoices in bulk, check they are correct and make the correct payments easily. Everything runs smoothly.</source>
+      </segment>
+    </unit>
+    <unit id="u35" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[4]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u36" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[5]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>This system streamlined the payroll management process, allowing the finance manager to handle payroll obligations with greater accuracy and less time expenditure.</source>
+      </segment>
+    </unit>
+    <unit id="u37" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[6]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Overall, the collaboration with Remote provided an intuitive and straightforward payroll system that was easy to integrate and use. Remote's continuous improvements to their platform ensured that Reverse Tech could rely on up-to-date and compliant processes, ensuring operational excellence in managing a global workforce.</source>
+      </segment>
+    </unit>
+    <unit id="u38" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[5]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>The results</source>
+      </segment>
+    </unit>
+    <unit id="u39" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[5]/h2[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Transformed approach to global workforce management</source>
+      </segment>
+    </unit>
+    <unit id="u40" name="/html[1]/body[1]/div[1]/div[2]/div[4]/ol[1]/li[1]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />Enhanced Compliance:<ec dataRef="d2" />Remote’s expertise in local and international labor laws significantly mitigated the risk of legal non-compliance and employee misclassification. This assurance allowed Reverse Tech to focus on its core business objectives without the overhead of legal uncertainties.</source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u41" name="/html[1]/body[1]/div[1]/div[2]/div[4]/ol[1]/li[2]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />Operational Efficiency:<ec dataRef="d2" />The simplification of payroll processes for both contractors and employees streamlined operations, reducing the administrative burden and allowing for better resource allocation toward strategic initiatives.</source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u42" name="/html[1]/body[1]/div[1]/div[2]/div[4]/ol[1]/li[3]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />Scalability:<ec dataRef="d2" />With Remote’s scalable solutions, Reverse Tech was well-equipped to expand its operations into new markets without the need for extensive groundwork on understanding local employment laws and payroll management.</source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u43" name="/html[1]/body[1]/div[1]/div[2]/div[4]/ol[1]/li[4]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />Employee Satisfaction:<ec dataRef="d2" />The efficiency and reliability of the payroll system improved overall employee satisfaction, contributing to higher retention rates and attracting top talent who were assured of compliant and timely remuneration.</source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;strong&gt;</data>
+        <data id="d2">&lt;/strong&gt;</data>
+      </originalData>
+    </unit>
+    <unit id="u44" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[6]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Conclusion</source>
+      </segment>
+    </unit>
+    <unit id="u45" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[6]/h2[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Sustainable global growth</source>
+      </segment>
+    </unit>
+    <unit id="u46" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[7]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Encouraged by the success of the partnership, Reverse Tech plans to expand its use of Remote’s services by integrating the US payroll system for their legal entity in the United States. This expansion is expected to further enhance their operational capabilities and support their growth trajectory.</source>
+      </segment>
+    </unit>
+    <unit id="u47" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[7]/blockquote[1]/div[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>Remote operates like an extension of my HR team; We're working together a lot and it's always this happy can-do attitude and everyone is super fast replying to our questions. We’re continuously growing and the fact that we have Remote makes it super easy to do.</source>
+      </segment>
+    </unit>
+    <unit id="u48" name="/html[1]/body[1]/div[1]/div[2]/div[4]/div[7]/p[1]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>&amp;nbsp;</source>
+      </segment>
+    </unit>
+    <unit id="u49" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[8]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>This partnership has been instrumental in navigating the complexities of global workforce management. By leveraging Remote’s specialized services, Reverse Tech has not only ensured compliance and efficiency but has also positioned itself for sustainable growth in the international market.</source>
+      </segment>
+    </unit>
+    <unit id="u50" name="/html[1]/body[1]/div[1]/div[2]/div[4]/p[9]" p3:tagHandling="html" xmlns:p3="http://blackbird.io/">
+      <segment>
+        <source>
+          <sc id="1" dataRef="d1" />Ready to start growing your international team? Contact us today to<ec dataRef="d2" /><sc id="2" dataRef="d3" /><sc id="3" dataRef="d1" /><sc id="4" dataRef="d4" />schedule a friendly consultation<ec dataRef="d5" /><ec dataRef="d2" /><ec dataRef="d6" /><sc id="5" dataRef="d1" />with one of our global hiring experts.<ec dataRef="d2" /></source>
+      </segment>
+      <originalData>
+        <data id="d1">&lt;em&gt;</data>
+        <data id="d2">&lt;/em&gt;</data>
+        <data id="d3">&lt;a color="seaBlue500" href="https://remote.com/contact-us"&gt;</data>
+        <data id="d4">&lt;u&gt;</data>
+        <data id="d5">&lt;/u&gt;</data>
+        <data id="d6">&lt;/a&gt;</data>
+      </originalData>
+    </unit>
+  </file>
+</xliff>
+------
+<html><head><title>Reverse Tech's strategic partnership with Remote for contractor management and payroll</title><meta name="blackbird-reference-id" content="191205216639"><meta name="blackbird-content-type" content="blog"><meta name="slug" content="resources/case-studies/remote-reverse-tech"><description>Discover how Reverse Tech leverages Remote's contractor management and USA payroll to position itself for sustainable growth in the global health market.</description></head><body><p>&nbsp;</p>
+<!--more-->
+<h2>Reverse Tech at a glance</h2>
+<p>Health and wellness startup, Reverse Tech, partnered with Remote to manage its global Contractor workforce and USA payroll, ensuring compliance with international labor laws. By leveraging Remote’s specialized services, Reverse Tech has positioned itself for sustainable growth in the global health market.</p>
+<div>
+<ul>
+<li><span><strong>Remote Products:</strong>Contractors, EOR, Payroll</span></li>
+<li><span><strong>Hiring in:</strong>5 continents</span></li>
+<li><span><strong>Industry:</strong>Health &amp; Wellness</span></li>
+</ul>
+<p>&nbsp;</p>
+<hr>
+<p>&nbsp;</p>
+<div>
+<div><span>Video</span>&nbsp;</div>
+</div>
+<div>
+<div>
+<h2 id="4bHg4k0rclVADgF1b9GclR" data-fixed-index="Watch the video" data-section="4bHg4k0rclVADgF1b9GclR" data-hsprotectuppertitle="Video">Watch the Reverse Tech story</h2>
+<div class="hs-embed-wrapper" data-service="wistia" data-script-embed="true" style="position: relative; overflow: hidden; width: 100%; height: auto; padding: 0px; min-width: 256px; display: block; margin: auto; max-width: 873px;"><div class="hs-embed-content-wrapper"><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><iframe src="https://fast.wistia.net/embed/iframe/tndc4i421j?web_component=true&amp;seo=true" title="Reverse Tech's strategic partnership with Remote for contractor management and payroll Video" allow="autoplay; fullscreen" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" width="100%" height="100%"></iframe></div></div>
+<script src="https://fast.wistia.net/player.js" async></script></div></div>
+</div>
+<p>&nbsp;</p>
+<div>
+<p>Case study</p>
+<h2 id="3Vg7ODW4FP4meCLKIITas5" data-fixed-index="Meet Reverse Tech" data-section="3Vg7ODW4FP4meCLKIITas5" data-hsprotectuppertitle="Case study">Reverse Tech's strategic partnership with Remote for contractor management and payroll</h2>
+</div>
+<p>Reverse Tech is an innovative startup dedicated to revolutionizing the health and wellness industry through digital solutions. With a workforce consisting of over 100 employees and contractors spread across various countries including Ecuador, France, Germany, Mexico, Morocco, Philippines, South Africa, Spain, Sweden, Ukraine, UAE and USA, Reverse Tech aims to impact the lives of 10 million people by 2026, enhancing their health and wellness through cutting-edge technology.</p>
+<p>We spoke to Marisol Jimenez, Head of People at Reverse Tech, to explore how strategic partnerships can resolve significant business challenges and drive success in a globalized economy.</p>
+<div>
+<p>The challenge</p>
+<h2 id="dyKEqeBw5AxFDfphNzdfk" data-fixed-index="Driven by the need to scale quickly and compliantly " data-section="dyKEqeBw5AxFDfphNzdfk" data-hsprotectuppertitle="The challenge">Driven by the need to scale quickly and compliantly</h2>
+</div>
+<p>Reverse Tech's full migration to Remote for EOR, contractor management and payroll was fundamentally driven by the need to scale their operations globally while ensuring full compliance with international labor laws.</p>
+<div>
+<blockquote>
+<div>We were using another platform to manage our employees and contractors, but we needed a better solution. With Remote, we are making sure we are in full legal compliance.</div>
+</blockquote>
+<div>
+<p>The solution</p>
+<h2 id="1n8XSNRdterQ8cXrFXvzQE" data-fixed-index="Migrating its global workforce to Remote" data-section="1n8XSNRdterQ8cXrFXvzQE" data-hsprotectuppertitle="The solution">Migrating its global workforce to Remote</h2>
+</div>
+<p>The support provided by Remote's team was crucial the ensure a smooth transition from the previous EOR and Contractor Management provider. At this time, a full workforce compliance audit was carried out to uncover potential misclassification risks. Reverse Tech valued Remote’s responsiveness and expertise, viewing them as an extension of their own team.&nbsp;&nbsp;</p>
+<div>
+<blockquote>
+<div>Remote offers full support and guidance for all our jurisdictions, which is amazing; Having access to this knowledge and legal risk information takes a lot of weight off my shoulders. It’s a partnership based on trust.</div>
+</blockquote>
+<p>&nbsp;</p>
+</div>
+<p>Having all employees and contractors on a single platform allowed for better management and coordination. Remote’s in-house expertise in different locales was particularly beneficial, allowing the company to handle employment regulations and requirements in various countries effectively.</p>
+<p>The smooth transition and integration process ensured that employee satisfaction remained high, with Remote providing the necessary tools and support to help Reverse Tech’s workforce achieve its goal of improving health and wellness globally.</p>
+<div>
+<p>The benefits</p>
+<h2 id="7uEogsEJ1zKjJ932TddTcd" data-fixed-index="Clear insights into global payroll activities" data-section="7uEogsEJ1zKjJ932TddTcd" data-hsprotectuppertitle="The benefits">Clear insights into global payroll activities for employees and contractors</h2>
+</div>
+<p>In the case of Reverse Tech, the partnership with Remote payroll significantly enhanced the finance manager's ability to efficiently manage and run payroll for employees and contractors across multiple countries.&nbsp;</p>
+<div>
+<blockquote>
+<div>We have monthly, semi-monthly and hourly in multiple different currencies around the world; With Remote, you can make it happen. Our Finance Manager can view invoices in bulk, check they are correct and make the correct payments easily. Everything runs smoothly.</div>
+</blockquote>
+<p>&nbsp;</p>
+</div>
+<p>This system streamlined the payroll management process, allowing the finance manager to handle payroll obligations with greater accuracy and less time expenditure.</p>
+<p>Overall, the collaboration with Remote provided an intuitive and straightforward payroll system that was easy to integrate and use. Remote's continuous improvements to their platform ensured that Reverse Tech could rely on up-to-date and compliant processes, ensuring operational excellence in managing a global workforce.</p>
+<div>
+<p>The results</p>
+<h2 id="3IkDbX2S0hKKoa8jDpyYDA" data-fixed-index="Transformed approach to global workforce management" data-section="3IkDbX2S0hKKoa8jDpyYDA" data-hsprotectuppertitle="The results">Transformed approach to global workforce management</h2>
+</div>
+<ol>
+<li>
+<p><strong>Enhanced Compliance:</strong>Remote’s expertise in local and international labor laws significantly mitigated the risk of legal non-compliance and employee misclassification. This assurance allowed Reverse Tech to focus on its core business objectives without the overhead of legal uncertainties.</p>
+</li>
+<li>
+<p><strong>Operational Efficiency:</strong>The simplification of payroll processes for both contractors and employees streamlined operations, reducing the administrative burden and allowing for better resource allocation toward strategic initiatives.</p>
+</li>
+<li>
+<p><strong>Scalability:</strong>With Remote’s scalable solutions, Reverse Tech was well-equipped to expand its operations into new markets without the need for extensive groundwork on understanding local employment laws and payroll management.</p>
+</li>
+<li>
+<p><strong>Employee Satisfaction:</strong>The efficiency and reliability of the payroll system improved overall employee satisfaction, contributing to higher retention rates and attracting top talent who were assured of compliant and timely remuneration.</p>
+</li>
+</ol>
+<div>
+<p>Conclusion</p>
+<h2 id="xLLekc2zRxHSAV5sQw3In" data-fixed-index="Sustainable global growth" data-section="xLLekc2zRxHSAV5sQw3In" data-hsprotectuppertitle="Conclusion">Sustainable global growth</h2>
+</div>
+<p>Encouraged by the success of the partnership, Reverse Tech plans to expand its use of Remote’s services by integrating the US payroll system for their legal entity in the United States. This expansion is expected to further enhance their operational capabilities and support their growth trajectory.</p>
+<div>
+<blockquote>
+<div>Remote operates like an extension of my HR team; We're working together a lot and it's always this happy can-do attitude and everyone is super fast replying to our questions. We’re continuously growing and the fact that we have Remote makes it super easy to do.</div>
+</blockquote>
+<p>&nbsp;</p>
+</div>
+<p>This partnership has been instrumental in navigating the complexities of global workforce management. By leveraging Remote’s specialized services, Reverse Tech has not only ensured compliance and efficiency but has also positioned itself for sustainable growth in the international market.</p>
+<p><em>Ready to start growing your international team? Contact us today to</em><a color="seaBlue500" href="https://remote.com/contact-us"><em><u>schedule a friendly consultation</u></em></a><em>with one of our global hiring experts.</em></p>
+</div>
+</div>
+</div></body></html>
