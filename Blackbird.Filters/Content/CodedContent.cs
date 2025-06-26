@@ -79,4 +79,15 @@ public class CodedContent
         return transformation;
     }
 
+    public string Serialize()
+    {
+        return HtmlContentCoder.Serialize(this);
+
+        // Todo: implement further after we have more serializers.
+        //var codeTypes = TextUnits.Select(x => x.CodeType);
+        //if (codeTypes.Any(x => x == CodeType.Html))
+        //{
+        //    return HtmlContentCoder.Serialize(this);
+        //}
+    }
 }

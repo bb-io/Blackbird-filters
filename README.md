@@ -6,7 +6,56 @@ Blackbird.Filters is a .NET library for processing and transforming content betw
 
 ![1750852119651](image/readme/1750852119651.png)
 
+## Main Classes
+
 The library is organized around two main components:
+
+### CodedContent
+
+`CodedContent` is the core class for representing content extracted from a file:
+
+- **Original**: The original file content as plain text
+- **TextUnits**: A list of extracted text units
+- **CreateTransformation**: Creates a transformation object from the coded content
+- **Serialize**: Serializes the content using the content coder that matches its content type
+
+### Transformation
+
+`Transformation` represents a transformation of content from one language to another:
+
+- **GetUnits**: Gets all units recursively
+- **GetSegments**: Gets all segments recursively
+- **Source**: Gets the source as coded content
+- **Target**: Gets the target as coded content
+- **TryParse**: Static method to parse content from a string or stream. The string or stream can contain XLIFF or HTML content, both will be deserialized using the appropriate serializer.
+- **Serialize**: Serializes the transformation in the default way: using XLIFF 2.2
+
+## Code example
+```cs
+    public string TranslateFile(string fileContent)
+    {
+        // File content can be either HTML or XLIFF (more formats to follow soon)
+        var transformation = Transformation.TryParse(fileContent);
+
+        foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
+        {
+            // Implement API calls here
+            segment.SetTarget(segment.GetSource() + " - Translated!"); 
+
+            // More state manipulations can be performed here
+            segment.State = SegmentState.Translated; 
+        }
+
+        // To continue and pass it as a transformation
+        return transformation.Serialize();
+
+        // To get the target as the original content format:
+        return transformation.Target().Serialize();
+    }
+```
+
+## Serializers & Content coders:
+
 
 ### HtmlContentCoder
 
@@ -32,49 +81,6 @@ The `Xliff2Serializer` handles XLIFF 2.x format:
 
 The XLIFF serializer is compatible with the entire XLIFF 2.x standard. It supports additional custom XML tags. Not all submodules of XLIFF 2.x are *semantically supported* but their nodes will be persisted.
 
-## Main Classes
-
-### CodedContent
-
-`CodedContent` is the core class for representing content extracted from a file:
-
-- **Original**: The original file content as plain text
-- **TextUnits**: A list of extracted text units
-- **CreateTransformation**: Creates a transformation object from the coded content
-
-### Transformation
-
-`Transformation` represents a transformation of content from one language to another:
-
-- **GetUnits**: Gets all units recursively
-- **GetSegments**: Gets all segments recursively
-- **Source**: Gets the source as coded content
-- **Target**: Gets the target as coded content
-- **TryParse**: Static method to parse content from a string or stream. The string or stream can contain XLIFF or HTML content, both will be deserialized using the appropriate serializer.
-
-## Code example
-```cs
-    public string TranslateFile(string fileContent)
-    {
-        // File content can be either HTML or XLIFF (more formats to follow soon)
-        var transformation = Transformation.TryParse(fileContent);
-
-        foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
-        {
-            // Implement API calls here
-            segment.SetTarget(segment.GetSource() + " - Translated!"); 
-
-            // More state manipulations can be performed here
-            segment.State = SegmentState.Translated; 
-        }
-
-        // To continue and pass it as a transformation
-        return Xliff2Serializer.Serialize(transformation);
-
-        // To get the target as HTML:
-        return HtmlContentCoder.Serialize(transformation.Target());
-    }
-```
 
 ## Publishing to NuGet Manually
 

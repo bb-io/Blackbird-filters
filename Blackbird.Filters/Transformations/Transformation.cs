@@ -2,7 +2,6 @@
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Xliff.Xliff2;
-using Blackbird.Filters.Xliff;
 using System.Text;
 using System.Xml.Linq;
 
@@ -86,7 +85,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         return codedContent;
     }
 
-    public static Transformation? TryParse(string content)
+    public static Transformation TryParse(string content)
     {
         if (Xliff2Serializer.IsXliff2(content))
         {
@@ -98,11 +97,11 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         }
         else
         {
-            return null;
+            throw new Exception("This file format is not supported by this library.");
         }
     }
 
-    public static async Task<Transformation?> TryParse(Stream content)
+    public static async Task<Transformation> TryParse(Stream content)
     {
         byte[] bytes;
         await using (MemoryStream resultFileStream = new())
@@ -111,5 +110,10 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
             bytes = resultFileStream.ToArray();
         }
         return TryParse(Encoding.UTF8.GetString(bytes));
+    }
+
+    public string Serialize()
+    {
+        return Xliff2Serializer.Serialize(this);
     }
 }

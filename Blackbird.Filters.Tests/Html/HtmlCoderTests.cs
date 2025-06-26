@@ -1,11 +1,8 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
-using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Transformations;
-using Blackbird.Filters.Xliff;
-using Blackbird.Filters.Xliff.Xliff2;
 using System.Text;
 
 namespace Blackbird.Filters.Tests.Html;
@@ -18,9 +15,9 @@ public class HtmlCoderTests : TestBase
         var html = File.ReadAllText(file, Encoding.UTF8);
         var content = HtmlContentCoder.Deserialize(html);
         var transformation = content.CreateTransformation("en", "nl");
-        var serialized = Xliff2Serializer.Serialize(transformation);
-        var deserialized = Xliff2Serializer.Deserialize(serialized);
-        var returned = HtmlContentCoder.Serialize(deserialized!.Source());
+        var serialized = transformation.Serialize();
+        var deserialized = Transformation.TryParse(serialized);
+        var returned = deserialized.Source().Serialize();
         DisplayXml(serialized);
         Console.WriteLine("------");
         DisplayHtml(returned);
@@ -33,10 +30,10 @@ public class HtmlCoderTests : TestBase
         var html = File.ReadAllText(file, Encoding.UTF8);
         var content = HtmlContentCoder.Deserialize(html);
         var transformation = content.CreateTransformation("en", "nl");
-        var serialized = Xliff2Serializer.Serialize(transformation);
+        var serialized = transformation.Serialize();
         serialized = PseudoTranslateXliff(serialized);
-        var deserialized = Xliff2Serializer.Deserialize(serialized);
-        var returned = HtmlContentCoder.Serialize(deserialized!.Target());
+        var deserialized = Transformation.TryParse(serialized);
+        var returned = deserialized.Target().Serialize();
         DisplayXml(serialized);
         Console.WriteLine("------");
         DisplayHtml(returned);
@@ -57,18 +54,18 @@ public class HtmlCoderTests : TestBase
             // More state manipulations can be performed here
             segment.State = SegmentState.Translated; 
         }
-        return HtmlContentCoder.Serialize(transformation.Target());
+        return transformation.Serialize();
     }
 
     private string PseudoTranslateXliff(string xliff)
     {
-        var transformation = Xliff2Serializer.Deserialize(xliff);
+        var transformation = Transformation.TryParse(xliff);
         foreach (var segment in transformation.GetSegments())
         {
             segment.SetTarget(segment.GetSource() + "TRANSLATED");
             segment.State = SegmentState.Translated;
         }
-        return Xliff2Serializer.Serialize(transformation);
+        return transformation.Serialize();
     }
 
     [Test]
