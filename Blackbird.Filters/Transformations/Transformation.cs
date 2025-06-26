@@ -85,7 +85,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         return codedContent;
     }
 
-    public static Transformation TryParse(string content)
+    public static Transformation Parse(string content)
     {
         if (Xliff2Serializer.IsXliff2(content))
         {
@@ -109,7 +109,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
             await content.CopyToAsync(resultFileStream);
             bytes = resultFileStream.ToArray();
         }
-        return TryParse(Encoding.UTF8.GetString(bytes));
+        return Parse(Encoding.UTF8.GetString(bytes));
     }
 
     public string Serialize()

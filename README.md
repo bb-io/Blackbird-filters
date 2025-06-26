@@ -27,7 +27,7 @@ The library is organized around two main components:
 - **GetSegments**: Gets all segments recursively
 - **Source**: Gets the source as coded content
 - **Target**: Gets the target as coded content
-- **TryParse**: Static method to parse content from a string or stream. The string or stream can contain XLIFF or HTML content, both will be deserialized using the appropriate serializer.
+- **Parse**: Static method to parse content from a string or stream. The string or stream can contain XLIFF or HTML content, both will be deserialized using the appropriate serializer. If no appropriate deserializer is found it will throw an exception
 - **Serialize**: Serializes the transformation in the default way: using XLIFF 2.2
 
 ## Code example
@@ -35,7 +35,7 @@ The library is organized around two main components:
     public string TranslateFile(string fileContent)
     {
         // File content can be either HTML or XLIFF (more formats to follow soon)
-        var transformation = Transformation.TryParse(fileContent);
+        var transformation = Transformation.Parse(fileContent);
 
         foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
         {
@@ -81,6 +81,10 @@ The `Xliff2Serializer` handles XLIFF 2.x format:
 
 The XLIFF serializer is compatible with the entire XLIFF 2.x standard. It supports additional custom XML tags. Not all submodules of XLIFF 2.x are *semantically supported* but their nodes will be persisted.
 
+## Testing
+Every serializer and content coder has an extensive set of test cases. F.e. the XLIFF 2.x test cases came directly from the XLIFF TC repository.
+
+Finally, you can use the test Heap to test production files. The folder Heap/Files is ignored, and test cases are automatically generated for each file in here (remember to set copy to output directoy for each file). You can use this folder to drop in production files that can contain sensitive information.
 
 ## Publishing to NuGet Manually
 

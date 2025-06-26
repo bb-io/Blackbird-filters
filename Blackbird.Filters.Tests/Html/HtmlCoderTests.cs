@@ -16,7 +16,7 @@ public class HtmlCoderTests : TestBase
         var content = HtmlContentCoder.Deserialize(html);
         var transformation = content.CreateTransformation("en", "nl");
         var serialized = transformation.Serialize();
-        var deserialized = Transformation.TryParse(serialized);
+        var deserialized = Transformation.Parse(serialized);
         var returned = deserialized.Source().Serialize();
         DisplayXml(serialized);
         Console.WriteLine("------");
@@ -32,7 +32,7 @@ public class HtmlCoderTests : TestBase
         var transformation = content.CreateTransformation("en", "nl");
         var serialized = transformation.Serialize();
         serialized = PseudoTranslateXliff(serialized);
-        var deserialized = Transformation.TryParse(serialized);
+        var deserialized = Transformation.Parse(serialized);
         var returned = deserialized.Target().Serialize();
         DisplayXml(serialized);
         Console.WriteLine("------");
@@ -44,7 +44,7 @@ public class HtmlCoderTests : TestBase
     public string TranslateFile(string fileContent)
     {
         // File content can be either HTML or XLIFF (more formats to follow soon)
-        var transformation = Transformation.TryParse(fileContent);
+        var transformation = Transformation.Parse(fileContent);
 
         foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
         {
@@ -59,7 +59,7 @@ public class HtmlCoderTests : TestBase
 
     private string PseudoTranslateXliff(string xliff)
     {
-        var transformation = Transformation.TryParse(xliff);
+        var transformation = Transformation.Parse(xliff);
         foreach (var segment in transformation.GetSegments())
         {
             segment.SetTarget(segment.GetSource() + "TRANSLATED");
