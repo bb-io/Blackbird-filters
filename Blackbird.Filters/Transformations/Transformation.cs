@@ -101,7 +101,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         }
     }
 
-    public static async Task<Transformation> TryParse(Stream content)
+    public static async Task<Transformation> Parse(Stream content)
     {
         byte[] bytes;
         await using (MemoryStream resultFileStream = new())
