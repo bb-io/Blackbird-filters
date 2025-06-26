@@ -1,11 +1,10 @@
-﻿using Blackbird.Filters.Tests.CustomAssertions;
-using Blackbird.Filters.Transformations;
+﻿using Blackbird.Filters.Transformations;
 using System.Text;
 
 namespace Blackbird.Filters.Tests.Heap;
 
 [TestFixture]
-public class FileHeapTest
+public class FileHeapTest : TestBase
 {
     private static readonly string FolderPath = Path.Combine(
         TestContext.CurrentContext.TestDirectory,
@@ -45,7 +44,12 @@ public class FileHeapTest
         var transformation = Transformation.Parse(serialized);
 
         var returned = transformation.Serialize();
-        var original = transformation.Source().Serialize();
-        
+        DisplayXml(returned);
+
+        if (filePath.EndsWith(".html"))
+        {
+            var original = transformation.Source().Serialize();
+            DisplayHtml(original);
+        }
     }
 }
