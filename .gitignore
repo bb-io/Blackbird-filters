@@ -332,3 +332,5 @@ history/
 
 # JetBrains Rider
 *.sln.iml
+/.vs/Blackbird.Filters
+/Blackbird.Filters.Tests/Heap/Files
