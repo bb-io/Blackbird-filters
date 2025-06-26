@@ -27,6 +27,9 @@
     <None Update="Heap\Files\Argo_About Us_en.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Heap\Files\contentful.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Html\Files\contentful.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

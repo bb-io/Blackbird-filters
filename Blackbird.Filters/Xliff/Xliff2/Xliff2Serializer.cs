@@ -476,7 +476,7 @@ public static class Xliff2Serializer
 
                         void SetCommonAnnotationArguments(XElement element, AnnotationStart annotationStart)
                         {
-                            element.Set("id", elementName == "source" ? GetUniqueId(annotationStart.Id) : annotationStart.Id);
+                            element.Set("id", GetUniqueId(annotationStart.Id));
                             element.SetBool("translate", annotationStart.Translate);
                             element.Set("type", annotationStart.Type);
                             element.Set("ref", annotationStart.Ref);
@@ -538,7 +538,7 @@ public static class Xliff2Serializer
                                 if (wellFormedTag.EndTag is null) throw new Exception("Malformed data. Expected endtag for well formed start tag");
                                 var children = GetChildrenOfStartTag(parts, wellFormedTag);
                                 var element = SerializeParts(children, "pc");
-                                element.Set("id", elementName == "source" ? GetUniqueId(wellFormedTag.Id) : wellFormedTag.Id);
+                                element.Set("id", GetUniqueId(wellFormedTag.Id));
                                 AddDataRefToElement(element, wellFormedTag, "dataRefStart");
                                 AddDataRefToElement(element, wellFormedTag.EndTag, "dataRefEnd");
                                 AddSubflowsToElement(element, wellFormedTag, "subFlowsStart");
@@ -554,7 +554,7 @@ public static class Xliff2Serializer
                             else if (part is StartTag startTag)
                             {
                                 var element = new XElement(ns + "sc");
-                                element.Set("id", elementName == "source" ? GetUniqueId(startTag.Id) : startTag.Id);
+                                element.Set("id", GetUniqueId(startTag.Id));
                                 AddDataRefToElement(element, startTag, "dataRef");
                                 AddSubflowsToElement(element, startTag, "subFlows");
                                 element.Set("equiv", startTag.Equivalent);
@@ -578,7 +578,7 @@ public static class Xliff2Serializer
                             else if (part is InlineTag standaloneTag)
                             {
                                 var element = new XElement(ns + "ph");
-                                element.Set("id", elementName == "source" ? GetUniqueId(standaloneTag.Id) : standaloneTag.Id);
+                                element.Set("id", GetUniqueId(standaloneTag.Id));
                                 AddDataRefToElement(element, standaloneTag, "dataRef");
                                 AddSubflowsToElement(element, standaloneTag, "subFlows");
                                 SetCommonInlineArguments(element, standaloneTag);
@@ -766,7 +766,6 @@ public static class Xliff2Serializer
         {
             if (!string.IsNullOrEmpty(incomingId))
             {
-                if (ids.Contains(incomingId)) throw new Exception($"The id {incomingId} is not unique within the scope.");
                 ids.Add(incomingId);
                 return incomingId;
             }

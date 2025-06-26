@@ -43,6 +43,11 @@ public class FileHeapTest : TestBase
 
         var transformation = Transformation.Parse(serialized);
 
+        foreach(var segment in transformation.GetSegments())
+        {
+            segment.SetTarget(segment.GetSource());
+        }
+
         var returned = transformation.Serialize();
         DisplayXml(returned);
 
