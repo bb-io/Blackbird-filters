@@ -1,4 +1,5 @@
 ﻿namespace Blackbird.Filters.Content;
+
 public class TextPart
 {
     /// <summary>

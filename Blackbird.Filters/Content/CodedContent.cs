@@ -6,6 +6,7 @@ using Blackbird.Filters.Transformations.Tags;
 using HtmlAgilityPack;
 
 namespace Blackbird.Filters.Content;
+
 public class CodedContent
 {
     internal CodedContent() { }

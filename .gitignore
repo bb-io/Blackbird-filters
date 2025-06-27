@@ -335,3 +335,4 @@ history/
 /.vs/Blackbird.Filters
 /Blackbird.Filters.Tests/Heap/Files
 /.vs/ProjectEvaluation
+.idea/

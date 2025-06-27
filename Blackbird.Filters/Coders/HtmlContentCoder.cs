@@ -5,6 +5,7 @@ using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Coders;
+
 public static class HtmlContentCoder
 {
     /// <summary>
@@ -100,6 +101,7 @@ public static class HtmlContentCoder
             {
                 units.AddRange(BuildUnits(node));
             }
+            
             return units;
         }
 
