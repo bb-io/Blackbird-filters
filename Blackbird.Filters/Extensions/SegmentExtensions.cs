@@ -18,7 +18,6 @@ public static class SegmentExtensions
 
     public static IEnumerable<(Segment, T)> Process<T>(this IEnumerable<IEnumerable<Segment>> batches, Func<IEnumerable<Segment>, IEnumerable<T>> func)
     {
-        var finalResult = new List<(Segment, T)>();
         foreach (var batch in batches)
         {
             var fnResult = func(batch).ToList();
@@ -27,10 +26,9 @@ public static class SegmentExtensions
             {
                 var segment = batchAsArray[i];
                 var result = fnResult[i];
-                finalResult.Add((segment, result));
+                yield return (segment, result);
             }
         }
-        return finalResult;
     }
 
     public async static Task<IEnumerable<(Segment, T)>> Process<T>(this IEnumerable<IEnumerable<Segment>> batches, Func<IEnumerable<Segment>, Task<IEnumerable<T>>> func)
