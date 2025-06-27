@@ -1,4 +1,5 @@
 ﻿namespace Blackbird.Filters.Enums;
+
 public enum LanguageTarget
 {
     Source,

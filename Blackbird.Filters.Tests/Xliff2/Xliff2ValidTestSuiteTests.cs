@@ -1,11 +1,6 @@
-﻿using Blackbird.Filters.Coders;
-using Blackbird.Filters.Tests.CustomAssertions;
+﻿using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Xliff.Xliff2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Blackbird.Filters.Tests.Xliff2;
 

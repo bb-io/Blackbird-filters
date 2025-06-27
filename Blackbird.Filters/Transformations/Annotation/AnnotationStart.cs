@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations.Annotation;
+
 public class AnnotationStart(bool wellFormed = false) : TextPart
 {
     public string? Id { get; set; }

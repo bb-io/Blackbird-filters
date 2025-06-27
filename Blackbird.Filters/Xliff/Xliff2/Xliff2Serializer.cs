@@ -3,13 +3,13 @@ using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
-using System.Data;
 using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Xliff.Xliff2;
+
 public static class Xliff2Serializer
 {
     private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
@@ -386,7 +386,7 @@ public static class Xliff2Serializer
 
     public static string Serialize(Transformation xliffTransformation)
     {
-        var xmlnsAttribute = xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns");;
+        var xmlnsAttribute = xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns");
         XNamespace ns = xmlnsAttribute?.Value ?? $"urn:oasis:names:tc:xliff:document:2.2";
 
         XElement? SerializeNotes(List<Note> notes)
@@ -405,6 +405,7 @@ public static class Xliff2Serializer
                 noteRoot.Add(note.Other);
                 root.Add(noteRoot);
             }
+            
             return root;
         }
 

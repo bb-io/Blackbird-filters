@@ -9,11 +9,12 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace Blackbird.Filters.Transformations;
-public class Segment()
+
+public class Segment
 {
+    public string? Id { get; internal set; }
     public List<TextPart> Source { get; set; } = [];
     public List<TextPart> Target { get; set; } = [];
-    public string? Id { get; internal set; }
     public bool? CanResegment { get; set; }
     public SegmentState? State { get; set; }
     public string? SubState { get; set; }
@@ -24,7 +25,6 @@ public class Segment()
     public List<XAttribute> SourceAttributes { get; set; } = [];
     public List<XAttribute> TargetAttributes { get; set; } = [];
     public CodeType? CodeType { get; set; }
-
     public bool IsIgnorbale => Ignorable.HasValue && Ignorable.Value;
     public bool IsInitial => State.HasValue ? State.Value == SegmentState.Initial : true;
 

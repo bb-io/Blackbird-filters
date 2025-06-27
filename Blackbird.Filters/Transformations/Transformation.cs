@@ -1,11 +1,13 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Xliff.Xliff12;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Text;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
+
 public class Transformation(string? sourceLanguage, string? targetLanguage) : Node
 {
     public string? SourceLanguage { get; set; } = sourceLanguage;
@@ -94,6 +96,10 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         else if (HtmlContentCoder.IsHtml(content))
         {
             return HtmlContentCoder.Deserialize(content).CreateTransformation();
+        }
+        if(Xliff12Serializer.IsXliff12(content))
+        {
+            return Xliff12Serializer.Deserialize(content);
         }
         else
         {
