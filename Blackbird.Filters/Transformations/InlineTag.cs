@@ -3,6 +3,7 @@ using Blackbird.Filters.Enums;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
+
 public class InlineTag : TextPart
 {
     public string? Id { get; set; }

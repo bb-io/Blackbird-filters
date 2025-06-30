@@ -6,7 +6,6 @@ using Blackbird.Filters.Transformations.Tags;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace Blackbird.Filters.Transformations;
 

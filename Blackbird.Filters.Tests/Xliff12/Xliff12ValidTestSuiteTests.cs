@@ -25,7 +25,7 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         Assert.That(content.Children.Count, Is.EqualTo(1));
 
         // Additional assertions to verify structure
-        var file = content.Children[0] as Blackbird.Filters.Transformations.Transformation;
+        var file = content.Children[0] as Transformations.Transformation;
         Assert.That(file, Is.Not.Null);
         Assert.That(file!.Id, Is.EqualTo("f1"));
         
@@ -73,5 +73,35 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         
         Assert.That(segments[1].Source[0].Value, Is.EqualTo("Second sentence."));
         Assert.That(segments[1].Target[0].Value, Is.EqualTo("Deuxième phrase."));
+    }
+    
+    [Test]
+    public void MultipleFiles()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff12/Files/multipleFiles.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff12Serializer.Deserialize(xliff);
+        var returned = Xliff12Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        // Assert
+        XmlAssert.AreEqual(xliff, returned);
+    }
+    
+    [Test]
+    public void Complex()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff12/Files/complex.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff12Serializer.Deserialize(xliff);
+        var returned = Xliff12Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        // Assert
+        XmlAssert.AreEqual(xliff, returned);
     }
 }

@@ -3,9 +3,7 @@ using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
-using System.Globalization;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 using Blackbird.Filters.Xliff.Xliff2;
 
@@ -23,8 +21,10 @@ public static class Xliff12Serializer
 
         SerializeTransformation(transformation, root);
 
-        var doc = new XDocument(root);
-        return doc.ToString();
+        var doc = new XDocument(root);    
+        var xmlString = doc.ToString();
+    
+        return CompactSourceElements(xmlString);
     }
 
     private static void SerializeTransformation(Transformation transformation, XElement root)
@@ -35,7 +35,6 @@ public static class Xliff12Serializer
             file.Id = fileId(file.Id);
             var fileElement = new XElement(XliffNs + "file",
                 new XAttribute("id", file.Id),
-                new XAttribute("datatype", "plaintext"), // TODO: consider adding support for datatype
                 new XAttribute("source-language", file.SourceLanguage ?? "en"));
 
             if (file.TargetLanguage != null)
@@ -58,6 +57,18 @@ public static class Xliff12Serializer
                     if (note.Priority.HasValue)
                         noteElement.SetAttributeValue("priority", note.Priority.Value);
                     header.Add(noteElement);
+                }
+            }
+
+            foreach (var otherElements in file.Other)
+            {
+                if (otherElements is XElement otherElement)
+                {
+                    header.Add(otherElement);
+                }
+                else if (otherElements is XAttribute attribute)
+                {
+                    fileElement.SetAttributeValue(attribute.Name, attribute.Value);
                 }
             }
 
@@ -173,27 +184,15 @@ public static class Xliff12Serializer
             if (unit.Segments.Count == 1)
             {
                 var segment = unit.Segments[0];
-                transUnit.Add(SerializeTextParts(segment.Source, "source"));
+                transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes));
                 
                 if (segment.Target.Any())
-                    transUnit.Add(SerializeTextParts(segment.Target, "target"));
+                    transUnit.Add(SerializeTextParts(segment.Target, "target", segment.TargetAttributes));
                     
                 // Add state if present
-                if (segment.State.HasValue)
+                if (segment.State is SegmentState.Final)
                 {
-                    string stateStr = segment.State.Value switch
-                    {
-                        SegmentState.Initial => "new",
-                        SegmentState.Translated => "translated",
-                        SegmentState.Reviewed => "reviewed",
-                        SegmentState.Final => "final",
-                        _ => "new"
-                    };
-
-                    if (segment.State == SegmentState.Final)
-                    {
-                        transUnit.SetAttributeValue("approved", "yes");
-                    }
+                    transUnit.SetAttributeValue("approved", "yes");
                 }
             }
             // Multiple segments - use seg-source and mrk elements
@@ -225,6 +224,14 @@ public static class Xliff12Serializer
                 if (unit.Segments.Any(s => s.Target.Any()))
                 {
                     var target = new XElement(XliffNs + "target");
+                    if (unit.Segments.FirstOrDefault()?.TargetAttributes?.Any() == true)
+                    {
+                        foreach (var attr in unit.Segments.First().TargetAttributes)
+                        {
+                            target.SetAttributeValue(attr.Name, attr.Value);
+                        }
+                    }
+                    
                     segIndex = 1;
                     foreach (var segment in unit.Segments)
                     {
@@ -237,6 +244,7 @@ public static class Xliff12Serializer
                         }
                         segIndex++;
                     }
+                    
                     transUnit.Add(target);
                 }
             }
@@ -274,12 +282,30 @@ public static class Xliff12Serializer
         }
     }
     
-    private static XElement SerializeTextParts(List<TextPart> parts, string elementName)
+    private static XElement SerializeTextParts(List<TextPart> parts, string elementName, IEnumerable<XAttribute>? attributes = null)
     {
         var element = new XElement(XliffNs + elementName);
         
+        // Add any attributes if provided
+        if (attributes != null)
+        {
+            foreach (var attr in attributes)
+            {
+                element.SetAttributeValue(attr.Name, attr.Value);
+            }
+        }
+        
+        // Keep track of parts already processed inside other elements
+        var processedParts = new HashSet<TextPart>();
+        
         foreach (var part in parts)
         {
+            if (processedParts.Contains(part))
+            {
+                // Skip parts that have already been processed
+                continue;
+            }
+
             if (part is InlineTag tag)
             {
                 if (part is StartTag startTag && startTag.WellFormed && startTag.EndTag != null)
@@ -288,6 +314,12 @@ public static class Xliff12Serializer
                     var gElement = new XElement(XliffNs + "g");
                     if (!string.IsNullOrEmpty(startTag.Id))
                         gElement.SetAttributeValue("id", startTag.Id);
+                    
+                    // Add all attributes from Other collection
+                    foreach (var attr in startTag.Other.OfType<XAttribute>())
+                    {
+                        gElement.SetAttributeValue(attr.Name, attr.Value);
+                    }
                         
                     // Find content between these tags
                     int startIndex = parts.IndexOf(startTag);
@@ -297,12 +329,18 @@ public static class Xliff12Serializer
                     {
                         for (int i = startIndex + 1; i < endIndex; i++)
                         {
-                            if (parts[i] is TextPart textPart)
+                            if (parts[i] is TextPart textPart && !processedParts.Contains(textPart))
+                            {
                                 gElement.Add(textPart.Value);
+                                processedParts.Add(textPart); // Mark as processed
+                            }
                         }
                     }
                     
                     element.Add(gElement);
+                    // Mark both start and end tag as processed
+                    processedParts.Add(startTag);
+                    processedParts.Add(startTag.EndTag);
                 }
                 else if (part is StartTag st)
                 {
@@ -311,37 +349,60 @@ public static class Xliff12Serializer
                     if (!string.IsNullOrEmpty(st.Id))
                         bptElement.SetAttributeValue("id", st.Id);
                     
+                    // Add all attributes from Other collection
+                    foreach (var attr in st.Other.OfType<XAttribute>())
+                    {
+                        bptElement.SetAttributeValue(attr.Name, attr.Value);
+                    }
+                    
                     if (!string.IsNullOrEmpty(st.Value))
                         bptElement.Add(st.Value);
                         
                     element.Add(bptElement);
+                    processedParts.Add(st); // Mark as processed
                 }
-                else if (part is EndTag et)
+                else if (part is EndTag et && !processedParts.Contains(et))
                 {
-                    // Create an ept element for unpaired end tag
-                    var eptElement = new XElement(XliffNs + "ept");
-                    if (!string.IsNullOrEmpty(et.Id))
-                        eptElement.SetAttributeValue("id", et.Id);
+                    // Don't process end tags that are part of a well-formed pair
+                    // they were already handled when processing the start tag
+                    if (et.StartTag == null || !et.StartTag.WellFormed)
+                    {
+                        // Create an ept element for unpaired end tag
+                        var eptElement = new XElement(XliffNs + "ept");
+                        if (!string.IsNullOrEmpty(et.Id))
+                            eptElement.SetAttributeValue("id", et.Id);
                         
-                    if (et.StartTag != null && !string.IsNullOrEmpty(et.StartTag.Id))
-                        eptElement.SetAttributeValue("rid", et.StartTag.Id);
-                        
-                    if (!string.IsNullOrEmpty(et.Value))
-                        eptElement.Add(et.Value);
-                        
-                    element.Add(eptElement);
+                        // Add all attributes from Other collection
+                        foreach (var attr in tag.Other.OfType<XAttribute>())
+                        {
+                            eptElement.SetAttributeValue(attr.Name, attr.Value);
+                        }
+                            
+                        if (!string.IsNullOrEmpty(et.Value))
+                            eptElement.Add(et.Value);
+                            
+                        element.Add(eptElement);
+                        processedParts.Add(et); // Mark as processed
+                    }
                 }
-                else
+                else if (!processedParts.Contains(tag))
                 {
                     // Create a ph element for standalone tags
                     var phElement = new XElement(XliffNs + "ph");
                     if (!string.IsNullOrEmpty(tag.Id))
                         phElement.SetAttributeValue("id", tag.Id);
+                    
+                    // Add all attributes from Other collection
+                    foreach (var attr in tag.Other.OfType<XAttribute>())
+                    {
+                        phElement.SetAttributeValue(attr.Name, attr.Value);
+                    }
                         
                     if (!string.IsNullOrEmpty(tag.Value))
                         phElement.Add(tag.Value);
                         
                     element.Add(phElement);
+                    processedParts.Add(tag); // Mark as processed
                 }
             }
             else if (part is AnnotationStart anno)
@@ -365,17 +426,23 @@ public static class Xliff12Serializer
                     {
                         for (int i = startIndex + 1; i < endIndex; i++)
                         {
-                            if (parts[i] is TextPart textPart)
+                            if (parts[i] is TextPart textPart && !processedParts.Contains(textPart))
+                            {
                                 mrkElement.Add(textPart.Value);
+                                processedParts.Add(textPart); // Mark as processed
+                            }
                         }
                     }
                     
                     element.Add(mrkElement);
+                    // Mark both annotation start and end as processed
+                    processedParts.Add(anno);
+                    processedParts.Add(anno.EndAnnotationReference);
                 }
             }
-            else if (!(part is AnnotationEnd))  // Skip standalone end annotations
+            else if (!(part is AnnotationEnd) && !processedParts.Contains(part))  // Skip parts already processed and standalone end annotations
             {
-                // Simple text
+                // Simple text that hasn't been processed as part of another element
                 element.Add(part.Value);
             }
         }
@@ -407,6 +474,16 @@ public static class Xliff12Serializer
                 ExternalReference = fileElement.Attribute("original")?.Value
             };
             
+            // Process other attributes
+            foreach (var attribute in fileElement.Attributes())
+            {
+                if (attribute.Name.LocalName != "id" && attribute.Name.LocalName != "source-language" &&
+                    attribute.Name.LocalName != "target-language" && attribute.Name.LocalName != "original")
+                {
+                    fileTransformation.Other.Add(attribute);
+                }
+            }
+            
             // Process header
             var header = fileElement.Element(XliffNs + "header");
             if (header != null)
@@ -436,6 +513,12 @@ public static class Xliff12Serializer
                         Id = note.Attribute("id")?.Value,
                         Priority = int.TryParse(note.Attribute("priority")?.Value, out var priority) ? priority : null
                     });
+                }
+                
+                // Process other elements
+                foreach (var note in header.Elements().Where(x => x.Name.LocalName != "note" && x.Name.LocalName != "skl"))
+                {
+                    fileTransformation.Other.Add(note);
                 }
             }
             
@@ -535,7 +618,10 @@ public static class Xliff12Serializer
                     {
                         Source = source != null ? ExtractTextParts(source) : new List<TextPart>(),
                         Target = target != null ? ExtractTextParts(target) : new List<TextPart>(),
-                        CodeType = codeType
+                        CodeType = codeType,
+                        // Capture source and target attributes
+                        SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
+                        TargetAttributes = target?.Attributes().ToList() ?? new List<XAttribute>()
                     };
                     
                     // Set state if present
@@ -585,6 +671,15 @@ public static class Xliff12Serializer
                     var endTag = new EndTag { StartTag = startTag };
                     startTag.EndTag = endTag;
                     
+                    // Store all other attributes except id
+                    foreach (var attr in childElement.Attributes())
+                    {
+                        if (attr.Name.LocalName != "id")
+                        {
+                            startTag.Other.Add(attr);
+                        }
+                    }
+                    
                     parts.Add(startTag);
                     parts.AddRange(ExtractTextParts(childElement));
                     parts.Add(endTag);
@@ -596,6 +691,16 @@ public static class Xliff12Serializer
                         Id = childElement.Attribute("id")?.Value ?? idGenerator(null),
                         Value = childElement.Value
                     };
+                    
+                    // Store all other attributes except id
+                    foreach (var attr in childElement.Attributes())
+                    {
+                        if (attr.Name.LocalName != "id")
+                        {
+                            startTag.Other.Add(attr);
+                        }
+                    }
+                    
                     parts.Add(startTag);
                 }
                 else if (childElement.Name == XliffNs + "ept")
@@ -605,6 +710,14 @@ public static class Xliff12Serializer
                         Id = childElement.Attribute("id")?.Value,
                         Value = childElement.Value
                     };
+                    
+                    foreach (var attr in childElement.Attributes())
+                    {
+                        if (attr.Name.LocalName != "id")
+                        {
+                            endTag.Other.Add(attr);
+                        }
+                    }
                     
                     // Try to link with matching start tag
                     var ridValue = childElement.Attribute("rid")?.Value;
@@ -626,11 +739,22 @@ public static class Xliff12Serializer
                 else if (childElement.Name == XliffNs + "ph")
                 {
                     // Placeholder tag
-                    parts.Add(new InlineTag 
+                    var inlineTag = new InlineTag 
                     { 
                         Id = childElement.Attribute("id")?.Value ?? idGenerator(null),
                         Value = childElement.Value
-                    });
+                    };
+                    
+                    // Store all other attributes except id
+                    foreach (var attr in childElement.Attributes())
+                    {
+                        if (attr.Name.LocalName != "id")
+                        {
+                            inlineTag.Other.Add(attr);
+                        }
+                    }
+                    
+                    parts.Add(inlineTag);
                 }
                 else if (childElement.Name == XliffNs + "mrk")
                 {
@@ -673,7 +797,7 @@ public static class Xliff12Serializer
             var doc = XDocument.Parse(content);
             return doc.Root;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             string _byteOrderMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
 
@@ -739,5 +863,56 @@ public static class Xliff12Serializer
             return stringCandidate;
         }
         return GetUniqueId;
+    }
+    
+    private static string CompactSourceElements(string xmlString)
+    {
+        var lines = xmlString.Split('\n');
+        var result = new List<string>();
+        bool inSourceElement = false;
+        var sourceContent = new StringBuilder();
+        string sourceIndent = "";
+
+        foreach (var line in lines)
+        {
+            var trimmedLine = line.Trim();
+    
+            if (trimmedLine.StartsWith("<source"))
+            {
+                inSourceElement = true;
+                sourceContent.Clear();
+                sourceContent.Append(trimmedLine);
+            
+                // Capture the original indentation
+                sourceIndent = line.Substring(0, line.IndexOf('<'));
+        
+                // Check if it's a self-closing or single-line source element
+                if (trimmedLine.EndsWith("</source>") || trimmedLine.EndsWith("/>"))
+                {
+                    result.Add(line); // Keep the original indentation
+                    inSourceElement = false;
+                }
+            }
+            else if (inSourceElement)
+            {
+                if (trimmedLine.EndsWith("</source>"))
+                {
+                    sourceContent.Append(trimmedLine);
+                    // Use the captured indentation
+                    result.Add(sourceIndent + sourceContent.ToString());
+                    inSourceElement = false;
+                }
+                else
+                {
+                    sourceContent.Append(trimmedLine);
+                }
+            }
+            else
+            {
+                result.Add(line);
+            }
+        }
+
+        return string.Join("\n", result);
     }
 }

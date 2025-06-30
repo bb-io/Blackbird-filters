@@ -1,0 +1,81 @@
+﻿<xliff version="1.2"
+       xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file id="f1"
+          original="test-1.html"
+          source-language="en"
+          target-language="fr"
+          datatype="html">
+        <header>
+            <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
+            <note>Basic set of trans-unit segments (IDs 0–3)</note>
+        </header>
+        <body>
+            <trans-unit id="0">
+                <source>Source 0</source>
+                <target>Target 0</target>
+            </trans-unit>
+            <trans-unit id="1">
+                <source>Source 1</source>
+                <target>Target 1</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Source 2</source>
+                <target>Target 2</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Source 3</source>
+                <target>Target 3</target>
+            </trans-unit>
+        </body>
+    </file>
+    <file id="f2"
+          original="test-2.html"
+          source-language="en"
+          target-language="fr"
+          datatype="html">
+        <header>
+            <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
+            <prop-group>
+                <prop prop-type="category">Regrouped</prop>
+            </prop-group>
+            <note>Grouped trans-units (IDs 4–9)</note>
+        </header>
+        <body>
+            <group id="grp-test-2">
+                <note>This group contains six trans-units for extended testing.</note>
+
+                <trans-unit id="4">
+                    <source>Source 4</source>
+                    <target>Target 4</target>
+                    <note>Check round-trip integrity for unit 4</note>
+                </trans-unit>
+
+                <trans-unit id="5">
+                    <source>Source 5</source>
+                    <target>Target 5</target>
+                </trans-unit>
+
+                <trans-unit id="6">
+                    <source>Source 6</source>
+                    <target>Target 6</target>
+                </trans-unit>
+
+                <trans-unit id="7">
+                    <source>Source 7</source>
+                    <target>Target 7</target>
+                </trans-unit>
+
+                <trans-unit id="8">
+                    <source>Source 8</source>
+                    <target>Target 8</target>
+                </trans-unit>
+
+                <trans-unit id="9">
+                    <source>Source 9</source>
+                    <target>Target 9</target>
+                </trans-unit>
+
+            </group>
+        </body>
+    </file>
+</xliff>

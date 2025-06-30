@@ -177,6 +177,15 @@
     <None Update="Xliff12\Files\Html\hypertext.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Xliff12\Files\Html\multipleFiles.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Xliff12\Files\multipleFiles.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Xliff12\Files\complex.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
