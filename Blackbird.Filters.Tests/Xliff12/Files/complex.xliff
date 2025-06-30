@@ -14,7 +14,7 @@
 
             <trans-unit id="0">
                 <source xml:space="preserve"><g ctype="bold" id="65">Click here to search for information:</g><bpt ctype="link" id="b66" rid="r66">&lt;w:hyperlink r:id="rId7" w:history="1"&gt;</bpt><g ctype="bold underlined x-mc-char-color x-mc-char-kern" id="67">https://duckduckgo.com</g><ept id="e66" rid="r66" xml:ctype="link">&lt;/w:hyperlink&gt;</ept></source>
-                <target state="translated" xml:space="preserve">Cliquez ici pour rechercher des informations:<bpt ctype="link" id="b66" rid="r66">&lt;w:hyperlink r:id="rId7" w:history="1"&gt;</bpt>https://duckduckgo.com/?kad=fr_FR<ept id="e66" rid="r66" xml:ctype="link">&lt;/w:hyperlink&gt;</ept></target>
+                <target state="translated" xml:space="preserve" xml:lang="fr">Cliquez ici pour rechercher des informations:<bpt ctype="link" id="b66" rid="r66">&lt;w:hyperlink r:id="rId7" w:history="1"&gt;</bpt>https://duckduckgo.com/?kad=fr_FR<ept id="e66" rid="r66" xml:ctype="link">&lt;/w:hyperlink&gt;</ept></target>
             </trans-unit>
 
             <trans-unit id="1">

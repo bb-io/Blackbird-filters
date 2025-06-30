@@ -193,6 +193,17 @@ public static class Xliff12Serializer
                 if (segment.State is SegmentState.Final)
                 {
                     transUnit.SetAttributeValue("approved", "yes");
+                    transUnit.SetAttributeValue("translate", "no");
+                }
+                
+                if(segment.State is SegmentState.Translated)
+                {
+                    transUnit.SetAttributeValue("translate", "no");
+                }
+                
+                if(!string.IsNullOrEmpty(segment.SubState))
+                {
+                    transUnit.SetAttributeValue("phase-name", segment.SubState);
                 }
             }
             // Multiple segments - use seg-source and mrk elements
@@ -629,6 +640,9 @@ public static class Xliff12Serializer
                         segment.State = SegmentState.Final;
                     else if (target != null)
                         segment.State = SegmentState.Translated;
+
+                    if (element.Attribute("phase-name") != null)
+                        segment.SubState = element.Attribute("phase-name")?.Value;
                     
                     unit.Segments.Add(segment);
                 }

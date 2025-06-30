@@ -3,6 +3,7 @@ using Blackbird.Filters.Xliff.Xliff12;
 using System.Text;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Tests.Html;
+using Blackbird.Filters.Xliff.Xliff2;
 
 namespace Blackbird.Filters.Tests.Xliff12;
 
@@ -32,6 +33,7 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         var units = file.GetUnits().ToList();
         Assert.That(units.Count, Is.EqualTo(1));
         Assert.That(units[0].Name, Is.EqualTo("greeting"));
+        Assert.That(units[0].Segments[0].IsInitial, Is.False);
         
         var segments = units[0].Segments;
         Assert.That(segments.Count, Is.EqualTo(1));
@@ -74,12 +76,81 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         Assert.That(segments[1].Source[0].Value, Is.EqualTo("Second sentence."));
         Assert.That(segments[1].Target[0].Value, Is.EqualTo("Deuxième phrase."));
     }
+
+    [Test]
+    public void InitialSegments()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff12/Files/emptyTarget.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff12Serializer.Deserialize(xliff);
+        var returned = Xliff12Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        // Assert
+        XmlAssert.AreEqual(xliff, returned);
+        
+        // Additional assertions to verify structure
+        var file = content.Children[0] as Transformations.Transformation;
+        Assert.That(file, Is.Not.Null);
+        Assert.That(file!.Id, Is.EqualTo("f1"));
+        
+        var units = file.GetUnits().ToList();
+        Assert.True(units.All(x => x.Segments.All(y => y.IsInitial)));
+    }
+    
+    [Test]
+    public void TranslatedSegments()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff12/Files/translate.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff12Serializer.Deserialize(xliff);
+        var returned = Xliff12Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        // Assert
+        XmlAssert.AreEqual(xliff, returned);
+        
+        // Additional assertions to verify structure
+        var file = content.Children[0] as Transformations.Transformation;
+        Assert.That(file, Is.Not.Null);
+        Assert.That(file!.Id, Is.EqualTo("f1"));
+        
+        var units = file.GetUnits().ToList();
+        Assert.True(units.All(x => x.Segments.All(y => y.State == SegmentState.Translated)));
+    }
+    
+    [Test]
+    public void ApprovedSegments()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff12/Files/approved.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff12Serializer.Deserialize(xliff);
+        var returned = Xliff12Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        // Assert
+        XmlAssert.AreEqual(xliff, returned);
+        
+        // Additional assertions to verify structure
+        var file = content.Children[0] as Transformations.Transformation;
+        Assert.That(file, Is.Not.Null);
+        Assert.That(file!.Id, Is.EqualTo("f1"));
+        
+        var units = file.GetUnits().ToList();
+        Assert.True(units.All(x => x.Segments.All(y => y.State == SegmentState.Final)));
+    }
     
     [Test]
     public void MultipleFiles()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/multipleFiles.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff12/Files/multifile.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff12Serializer.Deserialize(xliff);
@@ -103,5 +174,17 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
+    }
+    
+    [Test]
+    public void ContentfulTo12()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff2/Files/contentful.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff2Serializer.Deserialize(xliff);
+        var returned = Xliff12Serializer.Serialize(content);
+        DisplayXml(returned);
     }
 }

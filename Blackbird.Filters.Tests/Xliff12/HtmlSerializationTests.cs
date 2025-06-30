@@ -28,4 +28,15 @@ public class HtmlSerializationTests : HtmlTestBase
         HtmlAssert.AreEqual(html, returned);
         Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
     }
+    
+    [Test]
+    public void SerializeContentfulHtmlWithHypertextToXliff12()
+    {
+        // Arrange & Act
+        var (html, content, returned) = ProcessSource("Html/Files/contentful.html", XliffVersion.Xliff1);
+
+        // Assert
+        HtmlAssert.AreEqual(html, returned);
+        Assert.That(content.TextUnits.Count(), Is.EqualTo(23));
+    }
 }

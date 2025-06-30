@@ -180,10 +180,19 @@
     <None Update="Xliff12\Files\Html\multipleFiles.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\multipleFiles.xliff">
+    <None Update="Xliff12\Files\multifile.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Xliff12\Files\complex.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Xliff12\Files\translate.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Xliff12\Files\approved.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Xliff12\Files\emptyTarget.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
