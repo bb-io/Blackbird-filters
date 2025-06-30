@@ -380,6 +380,7 @@ public static class Xliff2Serializer
             transformation = new Transformation(sourceLanguage, targetLanguage);
             transformation.Children.AddRange(files); 
         }
+        
         transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["srcLang", "trgLang"]));
         return transformation;
     }

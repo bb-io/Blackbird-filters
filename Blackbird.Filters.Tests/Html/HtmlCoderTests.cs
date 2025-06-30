@@ -8,66 +8,8 @@ using System.Text;
 namespace Blackbird.Filters.Tests.Html;
 
 [TestFixture]
-public class HtmlCoderTests : TestBase
+public class HtmlCoderTests : HtmlTestBase
 {
-    private (string, CodedContent, string) ProcessSource(string file)
-    {
-        var html = File.ReadAllText(file, Encoding.UTF8);
-        var content = HtmlContentCoder.Deserialize(html);
-        var transformation = content.CreateTransformation("en", "nl");
-        var serialized = transformation.Serialize();
-        var deserialized = Transformation.Parse(serialized);
-        var returned = deserialized.Source().Serialize();
-        DisplayXml(serialized);
-        Console.WriteLine("------");
-        DisplayHtml(returned);
-
-        return (html, content, returned);
-    }
-
-    private (string, CodedContent, string) ProcessTarget(string file)
-    {
-        var html = File.ReadAllText(file, Encoding.UTF8);
-        var content = HtmlContentCoder.Deserialize(html);
-        var transformation = content.CreateTransformation("en", "nl");
-        var serialized = transformation.Serialize();
-        serialized = PseudoTranslateXliff(serialized);
-        var deserialized = Transformation.Parse(serialized);
-        var returned = deserialized.Target().Serialize();
-        DisplayXml(serialized);
-        Console.WriteLine("------");
-        DisplayHtml(returned);
-
-        return (html, content, returned);
-    }
-
-    public string TranslateFile(string fileContent)
-    {
-        // File content can be either HTML or XLIFF (more formats to follow soon)
-        var transformation = Transformation.Parse(fileContent);
-
-        foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
-        {
-            // Implement API calls here
-            segment.SetTarget(segment.GetSource() + " - Translated!"); 
-
-            // More state manipulations can be performed here
-            segment.State = SegmentState.Translated; 
-        }
-        return transformation.Serialize();
-    }
-
-    private string PseudoTranslateXliff(string xliff)
-    {
-        var transformation = Transformation.Parse(xliff);
-        foreach (var segment in transformation.GetSegments())
-        {
-            segment.SetTarget(segment.GetSource() + "TRANSLATED");
-            segment.State = SegmentState.Translated;
-        }
-        return transformation.Serialize();
-    }
-
     [Test]
     public void Is_html()
     {

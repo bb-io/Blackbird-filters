@@ -30,19 +30,22 @@ public static class Xliff12Serializer
     private static void SerializeTransformation(Transformation transformation, XElement root)
     {
         var fileId = UniqueIdGenerator("f");
-
         XElement SerializeFile(Transformation file)
         {
             file.Id = fileId(file.Id);
             var fileElement = new XElement(XliffNs + "file",
                 new XAttribute("id", file.Id),
-                new XAttribute("original", file.ExternalReference ?? string.Empty),
-                new XAttribute("source-language", file.SourceLanguage ?? "en"),
-                new XAttribute("datatype", "plaintext")); // Default datatype
+                new XAttribute("datatype", "plaintext"), // TODO: consider adding support for datatype
+                new XAttribute("source-language", file.SourceLanguage ?? "en"));
 
             if (file.TargetLanguage != null)
             {
                 fileElement.SetAttributeValue("target-language", file.TargetLanguage);
+            }
+            
+            if (!string.IsNullOrEmpty(file.ExternalReference))
+            {
+                fileElement.SetAttributeValue("original", file.ExternalReference);
             }
 
             // Add header
@@ -71,8 +74,7 @@ public static class Xliff12Serializer
                 }
                 else if (!string.IsNullOrEmpty(file.Original))
                 {
-                    var internalFile = new XElement(XliffNs + "internal-file", 
-                        new XCData(file.Original));
+                    var internalFile = new XElement(XliffNs + "internal-file", file.Original, transformation.SkeletonOther);
                     skeleton.Add(internalFile);
                 }
 
@@ -88,7 +90,14 @@ public static class Xliff12Serializer
 
             return fileElement;
         }
-
+        
+        try
+        {
+            root.Add(transformation.XliffOther);
+        }
+        catch (InvalidOperationException e) when (e.Message.Contains("Duplicate attribute."))
+        { }
+        
         if (!transformation.Children.OfType<Transformation>().Any())
         {
             root.Add(SerializeFile(transformation));
@@ -408,13 +417,14 @@ public static class Xliff12Serializer
                     var internalFile = skeleton.Element(XliffNs + "internal-file");
                     if (internalFile != null)
                     {
-                        fileTransformation.Original = internalFile.Value;
+                        transformation.Original = internalFile.Value;
+                        transformation.SkeletonOther = internalFile.Elements().ToList();
                     }
                     
                     var externalFile = skeleton.Element(XliffNs + "external-file");
                     if (externalFile != null)
                     {
-                        fileTransformation.OriginalReference = externalFile.Attribute("href")?.Value;
+                        transformation.OriginalReference = externalFile.Attribute("href")?.Value;
                     }
                 }
                 
@@ -439,6 +449,7 @@ public static class Xliff12Serializer
             transformation.Children.Add(fileTransformation);
         }
         
+        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["source-language", "target-language", "version"]));
         return transformation;
     }
     

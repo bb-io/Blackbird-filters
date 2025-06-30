@@ -1,11 +1,13 @@
 using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Xliff.Xliff12;
 using System.Text;
+using Blackbird.Filters.Enums;
+using Blackbird.Filters.Tests.Html;
 
 namespace Blackbird.Filters.Tests.Xliff12;
 
 [TestFixture]
-public class Xliff12ValidTestSuiteTests : TestBase
+public class Xliff12ValidTestSuiteTests : HtmlTestBase
 {
     [Test]
     public void Basic()

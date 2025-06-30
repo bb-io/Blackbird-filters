@@ -69,6 +69,11 @@ public static class HtmlContentCoder
         if (string.IsNullOrWhiteSpace(content))
             return false;
 
+        // Check if it's an XML file (like XLIFF)
+        if (Regex.IsMatch(content.TrimStart(), @"^\s*<\?xml") || 
+            Regex.IsMatch(content, @"<xliff\b[^>]*>", RegexOptions.IgnoreCase))
+            return false;
+
         var htmlTagPattern = @"<\s*(html|body|head|title|div|span|p|a|!DOCTYPE)";
         if (!Regex.IsMatch(content, htmlTagPattern, RegexOptions.IgnoreCase))
             return false;
