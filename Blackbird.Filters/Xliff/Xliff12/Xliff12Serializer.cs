@@ -126,7 +126,6 @@ public static class Xliff12Serializer
     {
         var groupId = UniqueIdGenerator("g");
         var unitId = UniqueIdGenerator("u");
-        var segmentId = UniqueIdGenerator("s");
         
         void SerializeGroup(Group group, XElement parentElement)
         {
@@ -184,21 +183,15 @@ public static class Xliff12Serializer
             if (unit.Segments.Count == 1)
             {
                 var segment = unit.Segments[0];
-                transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes));
-                
+                transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes, segment.SourceWhiteSpaceHandling));
+    
                 if (segment.Target.Any())
-                    transUnit.Add(SerializeTextParts(segment.Target, "target", segment.TargetAttributes));
-                    
+                    transUnit.Add(SerializeTextParts(segment.Target, "target", segment.TargetAttributes, segment.TargetWhiteSpaceHandling));
+
                 // Add state if present
                 if (segment.State is SegmentState.Final)
                 {
                     transUnit.SetAttributeValue("approved", "yes");
-                    transUnit.SetAttributeValue("translate", "no");
-                }
-                
-                if(segment.State is SegmentState.Translated)
-                {
-                    transUnit.SetAttributeValue("translate", "no");
                 }
                 
                 if(!string.IsNullOrEmpty(segment.SubState))
@@ -223,7 +216,7 @@ public static class Xliff12Serializer
                 int segIndex = 1;
                 foreach (var segment in unit.Segments)
                 {
-                    var mrkElement = SerializeTextParts(segment.Source, "mrk");
+                    var mrkElement = SerializeTextParts(segment.Source, "mrk", null, segment.SourceWhiteSpaceHandling);
                     mrkElement.SetAttributeValue("mtype", "seg");
                     mrkElement.SetAttributeValue("mid", segIndex.ToString());
                     segSource.Add(mrkElement);
@@ -248,7 +241,7 @@ public static class Xliff12Serializer
                     {
                         if (segment.Target.Any())
                         {
-                            var mrkElement = SerializeTextParts(segment.Target, "mrk");
+                            var mrkElement = SerializeTextParts(segment.Target, "mrk", null, segment.TargetWhiteSpaceHandling);
                             mrkElement.SetAttributeValue("mtype", "seg");
                             mrkElement.SetAttributeValue("mid", segIndex.ToString());
                             target.Add(mrkElement);
@@ -260,6 +253,7 @@ public static class Xliff12Serializer
                 }
             }
             
+            transUnit.SetCodeType(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.CodeType);
             // Add notes if any
             foreach (var note in unit.Notes)
             {
@@ -293,9 +287,15 @@ public static class Xliff12Serializer
         }
     }
     
-    private static XElement SerializeTextParts(List<TextPart> parts, string elementName, IEnumerable<XAttribute>? attributes = null)
+    private static XElement SerializeTextParts(List<TextPart> parts, string elementName, IEnumerable<XAttribute>? attributes = null, WhiteSpaceHandling whiteSpaceHandling = WhiteSpaceHandling.Default)
     {
         var element = new XElement(XliffNs + elementName);
+        
+        // Add whitespace handling attribute if needed
+        if (whiteSpaceHandling == WhiteSpaceHandling.Preserve)
+        {
+            element.SetAttributeValue(XNamespace.Xml + "space", "preserve");
+        }
         
         // Add any attributes if provided
         if (attributes != null)
@@ -632,7 +632,9 @@ public static class Xliff12Serializer
                         CodeType = codeType,
                         // Capture source and target attributes
                         SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
-                        TargetAttributes = target?.Attributes().ToList() ?? new List<XAttribute>()
+                        TargetAttributes = target?.Attributes().ToList() ?? new List<XAttribute>(),
+                        SourceWhiteSpaceHandling = source?.Attribute(XNamespace.Xml + "space")?.Value == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default,
+                        TargetWhiteSpaceHandling = target?.Attribute(XNamespace.Xml + "space")?.Value == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default
                     };
                     
                     // Set state if present
