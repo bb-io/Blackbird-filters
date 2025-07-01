@@ -5,6 +5,7 @@ using Blackbird.Filters.Enums;
 using Blackbird.Filters.Tests.Html;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Xml.Linq;
+using Blackbird.Filters.Transformations;
 
 namespace Blackbird.Filters.Tests.Xliff12;
 
@@ -27,7 +28,7 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
-        Assert.That(content.Children.Count, Is.EqualTo(0));
+        Assert.That(content.Children.Count(x => x is Transformation), Is.EqualTo(0));
 
         // Additional assertions to verify structure
         Assert.That(content, Is.Not.Null);
@@ -95,11 +96,10 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         XmlAssert.AreEqual(xliff, returned);
         
         // Additional assertions to verify structure
-        var file = content.Children[0] as Transformations.Transformation;
-        Assert.That(file, Is.Not.Null);
-        Assert.That(file!.Id, Is.EqualTo("f1"));
+        Assert.That(content, Is.Not.Null);
+        Assert.That(content!.Id, Is.EqualTo("f1"));
         
-        var units = file.GetUnits().ToList();
+        var units = content.GetUnits().ToList();
         Assert.True(units.All(x => x.Segments.All(y => y.IsInitial)));
     }
     
@@ -118,11 +118,10 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         XmlAssert.AreEqual(xliff, returned);
         
         // Additional assertions to verify structure
-        var file = content.Children[0] as Transformations.Transformation;
-        Assert.That(file, Is.Not.Null);
-        Assert.That(file!.Id, Is.EqualTo("f1"));
+        Assert.That(content, Is.Not.Null);
+        Assert.That(content!.Id, Is.EqualTo("f1"));
         
-        var units = file.GetUnits().ToList();
+        var units = content.GetUnits().ToList();
         Assert.True(units.All(x => x.Segments.All(y => y.Ignorable.HasValue && y.Ignorable.Value)));
     }
     
@@ -140,12 +139,10 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         // Assert
         XmlAssert.AreEqual(xliff, returned);
         
-        // Additional assertions to verify structure
-        var file = content.Children[0] as Transformations.Transformation;
-        Assert.That(file, Is.Not.Null);
-        Assert.That(file!.Id, Is.EqualTo("f1"));
+        Assert.That(content, Is.Not.Null);
+        Assert.That(content!.Id, Is.EqualTo("f1"));
         
-        var units = file.GetUnits().ToList();
+        var units = content.GetUnits().ToList();
         Assert.True(units.All(x => x.Segments.All(y => y.State == SegmentState.Final)));
     }
     
@@ -162,7 +159,7 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
-        Assert.That(content.Children.Count, Is.EqualTo(2)); // works good
+        Assert.That(content.Children.Count, Is.EqualTo(2));
     }
     
     [Test]
@@ -207,10 +204,9 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         XmlAssert.AreEqual(xliff, returned);
         
         // Additional assertions to verify state handling
-        var file = content.Children[0] as Transformations.Transformation;
-        Assert.That(file, Is.Not.Null);
+        Assert.That(content, Is.Not.Null);
         
-        var segments = file!.GetSegments().ToList();
+        var segments = content!.GetSegments().ToList();
         Assert.That(segments.Count, Is.EqualTo(1));
         
         var segment = segments[0];
@@ -243,10 +239,9 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         XmlAssert.AreEqual(xliff, returned);
         
         // Additional assertions to verify state handling with segmentation
-        var file = content.Children[0] as Transformations.Transformation;
-        Assert.That(file, Is.Not.Null);
+        Assert.That(content, Is.Not.Null);
         
-        var segments = file!.GetSegments().ToList();
+        var segments = content!.GetSegments().ToList();
         Assert.That(segments.Count, Is.EqualTo(2));
         
         // Check if both segments have the correct state
@@ -284,10 +279,9 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         XmlAssert.AreEqual(xliff, returned);
         
         // Additional assertions to verify state handling with segmentation
-        var file = content.Children[0] as Transformations.Transformation;
-        Assert.That(file, Is.Not.Null);
+        Assert.That(content, Is.Not.Null);
         
-        var segments = file!.GetSegments().ToList();
+        var segments = content!.GetSegments().ToList();
         Assert.That(segments.Count, Is.EqualTo(2));
         
         // Check if both segments have the correct state
