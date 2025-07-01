@@ -23,13 +23,13 @@ public abstract class HtmlTestBase : TestBase
         return (html, content, returned);
     }
 
-    protected (string, CodedContent, string) ProcessTarget(string file)
+    protected (string, CodedContent, string) ProcessTarget(string file, XliffVersion xliffVersion = XliffVersion.Xliff2)
     {
         var html = File.ReadAllText(file, Encoding.UTF8);
         var content = HtmlContentCoder.Deserialize(html);
         var transformation = content.CreateTransformation("en", "nl");
-        var serialized = transformation.Serialize();
-        serialized = PseudoTranslateXliff(serialized);
+        var serialized = transformation.Serialize(xliffVersion);
+        serialized = PseudoTranslateXliff(serialized, xliffVersion);
         var deserialized = Transformation.Parse(serialized);
         var returned = deserialized.Target().Serialize();
         DisplayXml(serialized);
@@ -55,7 +55,7 @@ public abstract class HtmlTestBase : TestBase
         return transformation.Serialize();
     }
 
-    protected string PseudoTranslateXliff(string xliff)
+    protected string PseudoTranslateXliff(string xliff, XliffVersion xliffVersion = XliffVersion.Xliff2)
     {
         var transformation = Transformation.Parse(xliff);
         foreach (var segment in transformation.GetSegments())
@@ -63,6 +63,7 @@ public abstract class HtmlTestBase : TestBase
             segment.SetTarget(segment.GetSource() + "TRANSLATED");
             segment.State = SegmentState.Translated;
         }
-        return transformation.Serialize();
+        
+        return transformation.Serialize(xliffVersion);
     }
 }

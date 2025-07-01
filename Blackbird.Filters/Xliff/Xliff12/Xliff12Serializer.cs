@@ -73,19 +73,19 @@ public static class Xliff12Serializer
             }
 
             // Add skeleton if present
-            if (!string.IsNullOrEmpty(file.Original) || !string.IsNullOrEmpty(file.OriginalReference))
+            if (!string.IsNullOrEmpty(transformation.Original) || !string.IsNullOrEmpty(transformation.OriginalReference))
             {
                 var skeleton = new XElement(XliffNs + "skl");
                 
-                if (!string.IsNullOrEmpty(file.OriginalReference))
+                if (!string.IsNullOrEmpty(transformation.OriginalReference))
                 {
                     var externalFile = new XElement(XliffNs + "external-file",
-                        new XAttribute("href", file.OriginalReference));
+                        new XAttribute("href", transformation.OriginalReference));
                     skeleton.Add(externalFile);
                 }
-                else if (!string.IsNullOrEmpty(file.Original))
+                else if (!string.IsNullOrEmpty(transformation.Original))
                 {
-                    var internalFile = new XElement(XliffNs + "internal-file", file.Original, transformation.SkeletonOther);
+                    var internalFile = new XElement(XliffNs + "internal-file", transformation.Original, transformation.SkeletonOther);
                     skeleton.Add(internalFile);
                 }
 
