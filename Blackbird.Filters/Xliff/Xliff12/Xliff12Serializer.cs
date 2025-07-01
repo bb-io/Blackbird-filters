@@ -180,7 +180,17 @@ public static class Xliff12Serializer
                 transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes, segment.SourceWhiteSpaceHandling));
     
                 if (segment.Target.Any())
-                    transUnit.Add(SerializeTextParts(segment.Target, "target", segment.TargetAttributes, segment.TargetWhiteSpaceHandling));
+                {
+                    var targetElement = SerializeTextParts(segment.Target, "target", segment.TargetAttributes, segment.TargetWhiteSpaceHandling);
+                    
+                    // Add canResegment custom attribute if specified
+                    if (segment.CanResegment.HasValue)
+                    {
+                        targetElement.SetAttributeValue(BlackbirdNs + "canResegment", segment.CanResegment.Value.ToString().ToLower());
+                    }
+                    
+                    transUnit.Add(targetElement);
+                }
 
                 // Add state if present
                 if (segment.State is SegmentState.Final)
@@ -231,8 +241,8 @@ public static class Xliff12Serializer
                     {
                         foreach (var attr in unit.Segments.First().TargetAttributes)
                         {
-                            // Don't add our custom state attribute to the target element
-                            if (attr.Name != BlackbirdNs + "customState")
+                            // Don't add our custom attributes to the target element
+                            if (attr.Name != BlackbirdNs + "customState" && attr.Name != BlackbirdNs + "canResegment")
                             {
                                 target.SetAttributeValue(attr.Name, attr.Value);
                             }
@@ -255,6 +265,12 @@ public static class Xliff12Serializer
                                 {
                                     transUnit.SetAttributeValue("approved", "yes");
                                 }
+                            }
+
+                            // Add canResegment custom attribute if specified
+                            if (segment.CanResegment.HasValue)
+                            {
+                                mrkElement.SetAttributeValue(BlackbirdNs + "canResegment", segment.CanResegment.Value.ToString().ToLower());
                             }
 
                             target.Add(mrkElement);
@@ -317,7 +333,7 @@ public static class Xliff12Serializer
             {
                 // Don't add BlackbirdNs + "customState" to standard XLIFF 1.2 elements
                 // This will be handled separately as the state attribute
-                if (attr.Name != BlackbirdNs + "customState")
+                if (attr.Name != BlackbirdNs + "customState" && attr.Name != BlackbirdNs + "canResegment")
                 {
                     element.SetAttributeValue(attr.Name, attr.Value);
                 }
@@ -645,6 +661,13 @@ public static class Xliff12Serializer
                             {
                                 segment.Target = ExtractTextParts(matchingTargetMrk);
                                 
+                                // Get canResegment attribute from mrk element
+                                var canResegmentAttr = matchingTargetMrk.Attribute(BlackbirdNs + "canResegment")?.Value;
+                                if (!string.IsNullOrEmpty(canResegmentAttr))
+                                {
+                                    segment.CanResegment = bool.Parse(canResegmentAttr);
+                                }
+                                
                                 // Handle state attribute on mrk element
                                 var stateAttr = matchingTargetMrk.Attribute("state")?.Value;
                                 if (!string.IsNullOrEmpty(stateAttr))
@@ -691,6 +714,13 @@ public static class Xliff12Serializer
                         SourceWhiteSpaceHandling = source?.Attribute(XNamespace.Xml + "space")?.Value == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default,
                         TargetWhiteSpaceHandling = target?.Attribute(XNamespace.Xml + "space")?.Value == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default
                     };
+                    
+                    // Set canResegment if present as custom attribute
+                    var canResegmentAttr = target?.Attribute(BlackbirdNs + "canResegment")?.Value;
+                    if (!string.IsNullOrEmpty(canResegmentAttr))
+                    {
+                        segment.CanResegment = bool.Parse(canResegmentAttr);
+                    }
                     
                     // Set state if present
                     if (element.Attribute("approved")?.Value == "yes")
