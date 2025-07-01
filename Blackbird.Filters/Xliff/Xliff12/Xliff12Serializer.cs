@@ -136,9 +136,6 @@ public static class Xliff12Serializer
             if (group.Name != null)
                 groupElement.SetAttributeValue("resname", group.Name);
                 
-            if (group.Translate.HasValue && !group.Translate.Value)
-                groupElement.SetAttributeValue("translate", group.Translate.Value ? "yes" : "no");
-                
             // Add notes if any
             foreach (var note in group.Notes)
             {
@@ -175,9 +172,6 @@ public static class Xliff12Serializer
             
             if (unit.Name != null)
                 transUnit.SetAttributeValue("resname", unit.Name);
-                
-            if (unit.Translate.HasValue && !unit.Translate.Value)
-                transUnit.SetAttributeValue("translate", unit.Translate.Value ? "yes" : "no");
             
             // Handle simple case first - one segment
             if (unit.Segments.Count == 1)
@@ -197,6 +191,11 @@ public static class Xliff12Serializer
                 if(!string.IsNullOrEmpty(segment.SubState))
                 {
                     transUnit.SetAttributeValue("phase-name", segment.SubState);
+                }
+
+                if (segment.Ignorable.HasValue)
+                {
+                    transUnit.SetAttributeValue("translate", segment.Ignorable.Value ? "no" : "yes");
                 }
             }
             // Multiple segments - use seg-source and mrk elements
@@ -232,7 +231,11 @@ public static class Xliff12Serializer
                     {
                         foreach (var attr in unit.Segments.First().TargetAttributes)
                         {
-                            target.SetAttributeValue(attr.Name, attr.Value);
+                            // Don't add our custom state attribute to the target element
+                            if (attr.Name != BlackbirdNs + "customState")
+                            {
+                                target.SetAttributeValue(attr.Name, attr.Value);
+                            }
                         }
                     }
                     
@@ -241,9 +244,19 @@ public static class Xliff12Serializer
                     {
                         if (segment.Target.Any())
                         {
-                            var mrkElement = SerializeTextParts(segment.Target, "mrk", null, segment.TargetWhiteSpaceHandling);
+                            var mrkElement = SerializeTextParts(segment.Target, "mrk", segment.TargetAttributes, segment.TargetWhiteSpaceHandling);
                             mrkElement.SetAttributeValue("mtype", "seg");
                             mrkElement.SetAttributeValue("mid", segIndex.ToString());
+                            
+                            // Set approved at trans-unit level if all segments are final
+                            if (segment.State is SegmentState.Final)
+                            {
+                                if (unit.Segments.All(s => s.State is SegmentState.Final))
+                                {
+                                    transUnit.SetAttributeValue("approved", "yes");
+                                }
+                            }
+
                             target.Add(mrkElement);
                         }
                         segIndex++;
@@ -302,7 +315,19 @@ public static class Xliff12Serializer
         {
             foreach (var attr in attributes)
             {
-                element.SetAttributeValue(attr.Name, attr.Value);
+                // Don't add BlackbirdNs + "customState" to standard XLIFF 1.2 elements
+                // This will be handled separately as the state attribute
+                if (attr.Name != BlackbirdNs + "customState")
+                {
+                    element.SetAttributeValue(attr.Name, attr.Value);
+                }
+            }
+            
+            // Handle state attribute for target and mrk elements with correct XLIFF 1.2 format
+            var customStateAttr = attributes.FirstOrDefault(a => a.Name == BlackbirdNs + "customState");
+            if (customStateAttr != null && (elementName == "target" || elementName == "mrk"))
+            {
+                element.SetAttributeValue("state", customStateAttr.Value);
             }
         }
         
@@ -556,8 +581,7 @@ public static class Xliff12Serializer
                 var group = new Group
                 {
                     Id = element.Attribute("id")?.Value,
-                    Name = element.Attribute("resname")?.Value,
-                    Translate = element.Attribute("translate") == null || element.Attribute("translate")?.Value == "yes"
+                    Name = element.Attribute("resname")?.Value
                 };
                 
                 // Process notes
@@ -583,8 +607,7 @@ public static class Xliff12Serializer
                 var unit = new Unit
                 {
                     Id = element.Attribute("id")?.Value,
-                    Name = element.Attribute("resname")?.Value,
-                    Translate = element.Attribute("translate") == null || element.Attribute("translate")?.Value == "yes"
+                    Name = element.Attribute("resname")?.Value
                 };
                 
                 var source = element.Element(XliffNs + "source");
@@ -605,6 +628,11 @@ public static class Xliff12Serializer
                             CodeType = codeType
                         };
                         
+                        if(element.Attribute("translate")?.Value == "no")
+                        {
+                            segment.Ignorable = true;
+                        }
+                        
                         // Find matching target segment if any
                         if (target != null)
                         {
@@ -616,6 +644,33 @@ public static class Xliff12Serializer
                             if (matchingTargetMrk != null)
                             {
                                 segment.Target = ExtractTextParts(matchingTargetMrk);
+                                
+                                // Handle state attribute on mrk element
+                                var stateAttr = matchingTargetMrk.Attribute("state")?.Value;
+                                if (!string.IsNullOrEmpty(stateAttr))
+                                {
+                                    // Store the original XLIFF 1.2 state
+                                    segment.TargetAttributes.Add(new XAttribute(BlackbirdNs + "customState", stateAttr));
+                                    
+                                    // Convert to our state system
+                                    var target12State = stateAttr.ToTarget12State();
+                                    if (target12State.HasValue)
+                                    {
+                                        segment.State = target12State.Value.ToSegmentState();
+                                    }
+                                    else
+                                    {
+                                        segment.State = SegmentState.Translated;
+                                    }
+                                }
+                                else if (element.Attribute("approved")?.Value == "yes")
+                                {
+                                    segment.State = SegmentState.Final;
+                                }
+                                else
+                                {
+                                    segment.State = SegmentState.Translated;
+                                }
                             }
                         }
                         
@@ -639,12 +694,41 @@ public static class Xliff12Serializer
                     
                     // Set state if present
                     if (element.Attribute("approved")?.Value == "yes")
+                    {
                         segment.State = SegmentState.Final;
+                    }
                     else if (target != null)
-                        segment.State = SegmentState.Translated;
+                    {
+                        // Get the state attribute from the target element
+                        var stateAttr = target.Attribute("state")?.Value;
+                        if (!string.IsNullOrEmpty(stateAttr))
+                        {
+                            // Store the original XLIFF 1.2 state value as a custom attribute
+                            segment.TargetAttributes.Add(new XAttribute(BlackbirdNs + "customState", stateAttr));
+                            
+                            // Convert to our state system
+                            var target12State = stateAttr.ToTarget12State();
+                            if (target12State.HasValue)
+                            {
+                                segment.State = target12State.Value.ToSegmentState();
+                            }
+                            else
+                            {
+                                segment.State = SegmentState.Translated;
+                            }
+                        }
+                        else
+                        {
+                            segment.State = SegmentState.Translated;
+                        }
+                    }
 
                     if (element.Attribute("phase-name") != null)
                         segment.SubState = element.Attribute("phase-name")?.Value;
+                    
+                    if (element.Attribute("translate")?.Value == "no")
+                        segment.Ignorable = true;
+                    
                     
                     unit.Segments.Add(segment);
                 }
