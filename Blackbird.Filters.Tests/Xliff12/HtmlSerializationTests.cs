@@ -1,6 +1,6 @@
 using Blackbird.Filters.Tests.CustomAssertions;
-using Blackbird.Filters.Enums;
 using Blackbird.Filters.Tests.Html;
+using Blackbird.Filters.Tests.Models;
 
 namespace Blackbird.Filters.Tests.Xliff12;
 

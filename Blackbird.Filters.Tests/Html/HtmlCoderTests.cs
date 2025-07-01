@@ -1,9 +1,6 @@
 ﻿using Blackbird.Filters.Coders;
-using Blackbird.Filters.Content;
-using Blackbird.Filters.Enums;
 using Blackbird.Filters.Tests.CustomAssertions;
-using Blackbird.Filters.Transformations;
-using System.Text;
+using Blackbird.Filters.Tests.Models;
 
 namespace Blackbird.Filters.Tests.Html;
 

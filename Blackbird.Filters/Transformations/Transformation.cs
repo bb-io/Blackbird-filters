@@ -118,15 +118,8 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         return Parse(Encoding.UTF8.GetString(bytes));
     }
 
-    public string Serialize(XliffVersion version = XliffVersion.Xliff2)
+    public string Serialize()
     {
-        if (version == XliffVersion.Xliff1)
-        {
-            return Xliff12Serializer.Serialize(this);
-        }
-        else
-        {
-            return Xliff2Serializer.Serialize(this);
-        }
+        return Xliff2Serializer.Serialize(this);
     }
 }

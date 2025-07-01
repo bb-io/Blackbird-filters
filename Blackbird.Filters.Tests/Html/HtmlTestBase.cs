@@ -2,7 +2,10 @@
 using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Tests.Models;
 using Blackbird.Filters.Transformations;
+using Blackbird.Filters.Xliff.Xliff12;
+using Blackbird.Filters.Xliff.Xliff2;
 
 namespace Blackbird.Filters.Tests.Html;
 
@@ -13,7 +16,7 @@ public abstract class HtmlTestBase : TestBase
         var html = File.ReadAllText(file, Encoding.UTF8);
         var content = HtmlContentCoder.Deserialize(html);
         var transformation = content.CreateTransformation("en", "nl");
-        var serialized = transformation.Serialize(xliffVersion);
+        var serialized = SerializeBasedOnXliffVersion(transformation, xliffVersion);
         var deserialized = Transformation.Parse(serialized);
         var returned = deserialized.Source().Serialize();
         DisplayXml(serialized);
@@ -28,7 +31,7 @@ public abstract class HtmlTestBase : TestBase
         var html = File.ReadAllText(file, Encoding.UTF8);
         var content = HtmlContentCoder.Deserialize(html);
         var transformation = content.CreateTransformation("en", "nl");
-        var serialized = transformation.Serialize(xliffVersion);
+        var serialized = SerializeBasedOnXliffVersion(transformation, xliffVersion);
         serialized = PseudoTranslateXliff(serialized, xliffVersion);
         var deserialized = Transformation.Parse(serialized);
         var returned = deserialized.Target().Serialize();
@@ -64,6 +67,16 @@ public abstract class HtmlTestBase : TestBase
             segment.State = SegmentState.Translated;
         }
         
-        return transformation.Serialize(xliffVersion);
+        return SerializeBasedOnXliffVersion(transformation, xliffVersion);
+    }
+
+    private string SerializeBasedOnXliffVersion(Transformation transformation, XliffVersion xliffVersion)
+    {
+        if (xliffVersion == XliffVersion.Xliff1)
+        {
+            return Xliff12Serializer.Serialize(transformation);
+        }
+
+        return Xliff2Serializer.Serialize(transformation);
     }
 }

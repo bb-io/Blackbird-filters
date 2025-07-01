@@ -460,30 +460,22 @@ public static class Xliff12Serializer
             throw new Exception("No root node found in XLIFF content.");
         }
         
-        var sourceLanguage = xliffNode.Elements(XliffNs + "file").FirstOrDefault()?.Attribute("source-language")?.Value;
-        var targetLanguage = xliffNode.Elements(XliffNs + "file").FirstOrDefault()?.Attribute("target-language")?.Value;
+        var sourceLanguage = xliffNode.Elements(XliffNs + "file").FirstOrDefault()?.Get("source-language");
+        var targetLanguage = xliffNode.Elements(XliffNs + "file").FirstOrDefault()?.Get("target-language");
         
         var transformation = new Transformation(sourceLanguage, targetLanguage);
         
         foreach (var fileElement in xliffNode.Elements(XliffNs + "file"))
         {
             var fileTransformation = new Transformation(
-                fileElement.Attribute("source-language")?.Value ?? sourceLanguage,
-                fileElement.Attribute("target-language")?.Value ?? targetLanguage)
+                fileElement.Get("source-language") ?? sourceLanguage,
+                fileElement.Get("target-language") ?? targetLanguage)
             {
-                Id = fileElement.Attribute("id")?.Value,
-                ExternalReference = fileElement.Attribute("original")?.Value
+                Id = fileElement.Get("id"),
+                ExternalReference = fileElement.Get("original")
             };
             
-            foreach (var attribute in fileElement.Attributes())
-            {
-                if (attribute.Name.LocalName != "id" && attribute.Name.LocalName != "source-language" &&
-                    attribute.Name.LocalName != "target-language" && attribute.Name.LocalName != "original")
-                {
-                    fileTransformation.Other.Add(attribute);
-                }
-            }
-            
+            fileTransformation.Other.AddRange(fileElement.Attributes().GetRemaining(["id", "source-language", "target-language", "original"]));
             var header = fileElement.Element(XliffNs + "header");
             if (header != null)
             {
@@ -500,7 +492,7 @@ public static class Xliff12Serializer
                     var externalFile = skeleton.Element(XliffNs + "external-file");
                     if (externalFile != null)
                     {
-                        transformation.OriginalReference = externalFile.Attribute("href")?.Value;
+                        transformation.OriginalReference = externalFile.Get("href");
                     }
                 }
                 
@@ -508,8 +500,8 @@ public static class Xliff12Serializer
                 {
                     fileTransformation.Notes.Add(new Note(note.Value)
                     {
-                        Id = note.Attribute("id")?.Value,
-                        Priority = int.TryParse(note.Attribute("priority")?.Value, out var priority) ? priority : null
+                        Id = note.Get("id"),
+                        Priority = int.TryParse(note.Get("priority"), out var priority) ? priority : null
                     });
                 }
                 
@@ -540,15 +532,15 @@ public static class Xliff12Serializer
             {
                 var group = new Group
                 {
-                    Id = element.Attribute("id")?.Value,
-                    Name = element.Attribute("resname")?.Value
+                    Id = element.Get("id"),
+                    Name = element.Get("resname")
                 };
                 
                 foreach (var note in element.Elements(XliffNs + "note"))
                 {
                     group.Notes.Add(new Note(note.Value)
                     {
-                        Id = note.Attribute("id")?.Value
+                        Id = note.Get("id")
                     });
                 }
                 
@@ -563,8 +555,8 @@ public static class Xliff12Serializer
             {
                 var unit = new Unit
                 {
-                    Id = element.Attribute("id")?.Value,
-                    Name = element.Attribute("resname")?.Value
+                    Id = element.Get("id"),
+                    Name = element.Get("resname")
                 };
                 
                 var source = element.Element(XliffNs + "source");
@@ -574,37 +566,37 @@ public static class Xliff12Serializer
                 
                 if (segSource != null)
                 {
-                    foreach (var mrkElement in segSource.Elements(XliffNs + "mrk").Where(m => m.Attribute("mtype")?.Value == "seg"))
+                    foreach (var mrkElement in segSource.Elements(XliffNs + "mrk").Where(m => m.Get("mtype") == "seg"))
                     {
                         var segment = new Segment
                         {
-                            Id = mrkElement.Attribute("mid")?.Value,
+                            Id = mrkElement.Get("mid"),
                             Source = ExtractTextParts(mrkElement),
                             CodeType = codeType
                         };
                         
-                        if(element.Attribute("translate")?.Value == "no")
+                        if(element.Get("translate") == "no")
                         {
                             segment.Ignorable = true;
                         }
                         
                         if (target != null)
                         {
-                            var midValue = mrkElement.Attribute("mid")?.Value;
+                            var midValue = mrkElement.Get("mid");
                             var matchingTargetMrk = target.Elements(XliffNs + "mrk")
-                                .FirstOrDefault(m => m.Attribute("mtype")?.Value == "seg" && 
-                                                    m.Attribute("mid")?.Value == midValue);
+                                .FirstOrDefault(m => m.Get("mtype") == "seg" && 
+                                                    m.Get("mid") == midValue);
                             
                             if (matchingTargetMrk != null)
                             {
                                 segment.Target = ExtractTextParts(matchingTargetMrk);
-                                var canResegmentAttr = matchingTargetMrk.Attribute(BlackbirdNs + "canResegment")?.Value;
+                                var canResegmentAttr = matchingTargetMrk.Get(BlackbirdNs + "canResegment");
                                 if (!string.IsNullOrEmpty(canResegmentAttr))
                                 {
                                     segment.CanResegment = bool.Parse(canResegmentAttr);
                                 }
                                 
-                                var stateAttr = matchingTargetMrk.Attribute("state")?.Value;
+                                var stateAttr = matchingTargetMrk.Get("state");
                                 if (!string.IsNullOrEmpty(stateAttr))
                                 {
                                     segment.TargetAttributes.Add(new XAttribute(BlackbirdNs + "customState", stateAttr));
@@ -613,18 +605,10 @@ public static class Xliff12Serializer
                                     {
                                         segment.State = target12State.Value.ToSegmentState();
                                     }
-                                    else
-                                    {
-                                        segment.State = SegmentState.Translated;
-                                    }
                                 }
-                                else if (element.Attribute("approved")?.Value == "yes")
+                                else if (element.Get("approved") == "yes")
                                 {
                                     segment.State = SegmentState.Final;
-                                }
-                                else
-                                {
-                                    segment.State = SegmentState.Translated;
                                 }
                             }
                         }
@@ -641,23 +625,23 @@ public static class Xliff12Serializer
                         CodeType = codeType,
                         SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
                         TargetAttributes = target?.Attributes().ToList() ?? new List<XAttribute>(),
-                        SourceWhiteSpaceHandling = source?.Attribute(XNamespace.Xml + "space")?.Value == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default,
-                        TargetWhiteSpaceHandling = target?.Attribute(XNamespace.Xml + "space")?.Value == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default
+                        SourceWhiteSpaceHandling = source?.Get(XNamespace.Xml + "space") == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default,
+                        TargetWhiteSpaceHandling = target?.Get(XNamespace.Xml + "space") == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default
                     };
                     
-                    var canResegmentAttr = target?.Attribute(BlackbirdNs + "canResegment")?.Value;
+                    var canResegmentAttr = target?.Get(BlackbirdNs + "canResegment");
                     if (!string.IsNullOrEmpty(canResegmentAttr))
                     {
                         segment.CanResegment = bool.Parse(canResegmentAttr);
                     }
                     
-                    if (element.Attribute("approved")?.Value == "yes")
+                    if (element.Get("approved") == "yes")
                     {
                         segment.State = SegmentState.Final;
                     }
                     else if (target != null)
                     {
-                        var stateAttr = target.Attribute("state")?.Value;
+                        var stateAttr = target.Get("state");
                         if (!string.IsNullOrEmpty(stateAttr))
                         {
                             segment.TargetAttributes.Add(new XAttribute(BlackbirdNs + "customState", stateAttr));
@@ -677,10 +661,10 @@ public static class Xliff12Serializer
                         }
                     }
 
-                    if (element.Attribute("phase-name") != null)
-                        segment.SubState = element.Attribute("phase-name")?.Value;
+                    if (element.Get("phase-name") != null)
+                        segment.SubState = element.Get("phase-name");
                     
-                    if (element.Attribute("translate")?.Value == "no")
+                    if (element.Get("translate") == "no")
                         segment.Ignorable = true;
                     
                     
@@ -691,7 +675,7 @@ public static class Xliff12Serializer
                 {
                     unit.Notes.Add(new Note(note.Value)
                     {
-                        Id = note.Attribute("id")?.Value
+                        Id = note.Get("id")
                     });
                 }
                 
@@ -718,17 +702,10 @@ public static class Xliff12Serializer
             {
                 if (childElement.Name == XliffNs + "g")
                 {
-                    var startTag = new StartTag(true) { Id = childElement.Attribute("id")?.Value ?? idGenerator(null) };
+                    var startTag = new StartTag(true) { Id = childElement.Get("id") ?? idGenerator(null) };
                     var endTag = new EndTag { StartTag = startTag };
                     startTag.EndTag = endTag;
-                    
-                    foreach (var attr in childElement.Attributes())
-                    {
-                        if (attr.Name.LocalName != "id")
-                        {
-                            startTag.Other.Add(attr);
-                        }
-                    }
+                    startTag.Other.AddRange(childElement.Attributes().GetRemaining(["id"]));
                     
                     parts.Add(startTag);
                     parts.AddRange(ExtractTextParts(childElement));
@@ -737,7 +714,7 @@ public static class Xliff12Serializer
                 else if (childElement.Name == XliffNs + "bpt")
                 {
                     var startTag = new StartTag { 
-                        Id = childElement.Attribute("id")?.Value ?? idGenerator(null),
+                        Id = childElement.Get("id") ?? idGenerator(null),
                         Value = childElement.Value
                     };
                     
@@ -754,7 +731,7 @@ public static class Xliff12Serializer
                 else if (childElement.Name == XliffNs + "ept")
                 {
                     var endTag = new EndTag { 
-                        Id = childElement.Attribute("id")?.Value,
+                        Id = childElement.Get("id"),
                         Value = childElement.Value
                     };
                     
@@ -766,7 +743,7 @@ public static class Xliff12Serializer
                         }
                     }
                     
-                    var ridValue = childElement.Attribute("rid")?.Value;
+                    var ridValue = childElement.Get("rid");
                     if (!string.IsNullOrEmpty(ridValue))
                     {
                         var matchingStartTag = parts
@@ -786,7 +763,7 @@ public static class Xliff12Serializer
                 {
                     var inlineTag = new InlineTag 
                     { 
-                        Id = childElement.Attribute("id")?.Value ?? idGenerator(null),
+                        Id = childElement.Get("id") ?? idGenerator(null),
                         Value = childElement.Value
                     };
                     
@@ -802,12 +779,12 @@ public static class Xliff12Serializer
                 }
                 else if (childElement.Name == XliffNs + "mrk")
                 {
-                    var mtype = childElement.Attribute("mtype")?.Value;
+                    var mtype = childElement.Get("mtype");
                     if (mtype != "seg") // Skip segmentation marks
                     {
                         var annotation = new AnnotationStart(true)
                         {
-                            Id = childElement.Attribute("mid")?.Value ?? idGenerator(null),
+                            Id = childElement.Get("mid") ?? idGenerator(null),
                             Type = mtype
                         };
                         
@@ -867,7 +844,7 @@ public static class Xliff12Serializer
                 return false;
             }
 
-            var version = xliffNode.Attribute("version")?.Value;
+            var version = xliffNode.Get("version");
             if (string.IsNullOrEmpty(version))
             {
                 return false;
