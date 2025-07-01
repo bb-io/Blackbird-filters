@@ -27,14 +27,13 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
-        Assert.That(content.Children.Count, Is.EqualTo(1));
+        Assert.That(content.Children.Count, Is.EqualTo(0));
 
         // Additional assertions to verify structure
-        var file = content.Children[0] as Transformations.Transformation;
-        Assert.That(file, Is.Not.Null);
-        Assert.That(file!.Id, Is.EqualTo("f1"));
+        Assert.That(content, Is.Not.Null);
+        Assert.That(content!.Id, Is.EqualTo("f1"));
         
-        var units = file.GetUnits().ToList();
+        var units = content.GetUnits().ToList();
         Assert.That(units.Count, Is.EqualTo(1));
         Assert.That(units[0].Name, Is.EqualTo("greeting"));
         Assert.That(units[0].Segments[0].IsInitial, Is.False);
@@ -47,8 +46,8 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         Assert.That(segment.Target[0].Value, Is.EqualTo("Bonjour le monde"));
         
         // Verify notes were preserved
-        Assert.That(file.Notes.Count, Is.EqualTo(1));
-        Assert.That(file.Notes[0].Text, Is.EqualTo("Sample XLIFF 1.2 file"));
+        Assert.That(content.Notes.Count, Is.EqualTo(1));
+        Assert.That(content.Notes[0].Text, Is.EqualTo("Sample XLIFF 1.2 file"));
         Assert.That(units[0].Notes.Count, Is.EqualTo(1));
         Assert.That(units[0].Notes[0].Text, Is.EqualTo("Simple greeting"));
     }
@@ -163,6 +162,7 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
+        Assert.That(content.Children.Count, Is.EqualTo(2)); // works good
     }
     
     [Test]
