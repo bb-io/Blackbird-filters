@@ -59,4 +59,21 @@ internal static class Target12StateHelper
                 return SegmentState.Translated; // All other states are translated but needs review or adaptation
         }
     }
+    
+    public static Target12State? ToTarget12State(this SegmentState segmentState)
+    {
+        switch (segmentState)
+        {
+            case SegmentState.Initial:
+                return Target12State.New;
+            case SegmentState.Translated:
+                return Target12State.Translated;
+            case SegmentState.Reviewed:
+                return Target12State.SignedOff;
+            case SegmentState.Final:
+                return Target12State.Final;
+            default:
+                return null;
+        }
+    }
 }

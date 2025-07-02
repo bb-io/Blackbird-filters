@@ -3,5 +3,5 @@
 public enum WhiteSpaceHandling
 {
     Default,
-    Preserve,
+    Preserve
 }

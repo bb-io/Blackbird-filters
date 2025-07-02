@@ -27,22 +27,25 @@ public static class Xliff12Serializer
         return CompactSourceElements(xmlString);
     }
 
-    // Helper method to convert elements to the correct namespace
     private static XElement? CloneWithNamespace(XObject? xobj)
     {
         if (xobj == null) return null;
 
         if (xobj is XElement element)
         {
+            if (element.Name.Namespace == "urn:oasis:names:tc:xliff:metadata:2.0")
+            {
+                return element;
+            }
+            
             var newElement = new XElement(
                 element.Name.LocalName.StartsWith("xliff:") ? element.Name : 
                 XliffNs + element.Name.LocalName);
 
-            // Copy attributes but ensure they use the correct namespace if needed
             foreach (var attr in element.Attributes())
             {
                 if (attr.IsNamespaceDeclaration)
-                    continue; // Skip namespace declarations
+                    continue;
                 
                 if (attr.Name.Namespace == XNamespace.None || attr.Name.Namespace == XNamespace.Xmlns)
                     newElement.SetAttributeValue(attr.Name, attr.Value);
@@ -94,8 +97,19 @@ public static class Xliff12Serializer
                 foreach (var note in file.Notes)
                 {
                     var noteElement = new XElement(XliffNs + "note", note.Text);
-                    if (note.Priority.HasValue)
-                        noteElement.SetAttributeValue("priority", note.Priority.Value);
+                    noteElement.Set("id", note.Id);
+                    noteElement.SetInt("priority", note.Priority);
+                    noteElement.Set(BlackbirdNs + "category", note.Category);
+                    noteElement.Set(BlackbirdNs + "reference", note.Reference);
+                    noteElement.SetLanguageTarget(BlackbirdNs + "languageTarget", note.LanguageTarget);
+                    foreach (var attr in note.Other)
+                    {
+                        if (!attr.IsNamespaceDeclaration)
+                        {
+                            noteElement.Set(attr.Name, attr.Value);
+                        }
+                    }
+                    
                     header.Add(noteElement);
                 }
             }
@@ -104,7 +118,6 @@ public static class Xliff12Serializer
             {
                 if (otherElements is XElement otherElement)
                 {
-                    // Clone the element with correct namespace instead of adding directly
                     var clonedElement = CloneWithNamespace(otherElement);
                     if (clonedElement != null)
                         header.Add(clonedElement);
@@ -197,15 +210,32 @@ public static class Xliff12Serializer
         {
             group.Id = groupId(group.Id);
             var groupElement = new XElement(XliffNs + "group", new XAttribute("id", group.Id));
-
-            if (group.Name != null)
-                groupElement.SetAttributeValue("resname", group.Name);
+            groupElement.Set("resname", group.Name);
+            groupElement.SetBool(BlackbirdNs + "canResegment", group.CanResegment);
+            groupElement.SetBool(BlackbirdNs + "translate", group.Translate);
+            groupElement.SetDirection(BlackbirdNs + "srcDir", group.SourceDirection);
+            groupElement.SetDirection(BlackbirdNs + "trgDir", group.TargetDirection);
+            foreach (var attr in group.Other.OfType<XAttribute>().GetRemaining(["resname", "canResegment", "translate", "srcDir", "trgDir"]).Where(attr => !attr.IsNamespaceDeclaration))
+            {
+                groupElement.SetAttributeValue(attr.Name, attr.Value);
+            }
 
             foreach (var note in group.Notes)
             {
                 var noteElement = new XElement(XliffNs + "note", note.Text);
-                if (!string.IsNullOrEmpty(note.Id))
-                    noteElement.SetAttributeValue("id", note.Id);
+                noteElement.Set("id", note.Id);
+                noteElement.SetInt("priority", note.Priority);
+                noteElement.Set(BlackbirdNs + "category", note.Category);
+                noteElement.Set(BlackbirdNs + "reference", note.Reference);
+                noteElement.SetLanguageTarget(BlackbirdNs + "languageTarget", note.LanguageTarget);
+                foreach (var attr in note.Other)
+                {
+                    if (!attr.IsNamespaceDeclaration)
+                    {
+                        noteElement.SetAttributeValue(attr.Name, attr.Value);
+                    }
+                }
+                
                 groupElement.Add(noteElement);
             }
 
@@ -226,25 +256,30 @@ public static class Xliff12Serializer
                 return;
 
             unit.Id = unitId(unit.Id);
+            
             var transUnit = new XElement(XliffNs + "trans-unit",
                 new XAttribute("id", unit.Id));
-
-            if (unit.Name != null)
-                transUnit.SetAttributeValue("resname", unit.Name);
+            
+            transUnit.Set("resname", unit.Name);
+            transUnit.SetBool(BlackbirdNs + "canResegment", unit.CanResegment);
+            transUnit.SetBool(BlackbirdNs + "translate", unit.Translate);
+            transUnit.SetDirection(BlackbirdNs + "srcDir", unit.SourceDirection);
+            transUnit.SetDirection(BlackbirdNs + "trgDir", unit.TargetDirection);
+            foreach (var attr in unit.Other.OfType<XAttribute>().GetRemaining(["resname", "canResegment", "translate", "srcDir", "trgDir"]).Where(attr => !attr.IsNamespaceDeclaration))
+            {
+                transUnit.SetAttributeValue(attr.Name, attr.Value);
+            }
 
             if (unit.Segments.Count == 1)
             {
                 var segment = unit.Segments[0];
                 transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes, segment.SourceWhiteSpaceHandling));
+                transUnit.Set(BlackbirdNs + "segmentId", segment.Id);
 
                 if (segment.Target.Any())
                 {
                     var targetElement = SerializeTextParts(segment.Target, "target", segment.TargetAttributes, segment.TargetWhiteSpaceHandling);
-                    if (segment.CanResegment.HasValue)
-                    {
-                        targetElement.SetAttributeValue(BlackbirdNs + "canResegment", segment.CanResegment.Value.ToString().ToLower());
-                    }
-
+                    targetElement.SetBool(BlackbirdNs + "canResegment", segment.CanResegment);
                     transUnit.Add(targetElement);
                 }
 
@@ -273,39 +308,50 @@ public static class Xliff12Serializer
 
                 transUnit.Add(new XElement(XliffNs + "source", sourceContent.ToString()));
                 var segSource = new XElement(XliffNs + "seg-source");
-                int segIndex = 1;
-                foreach (var segment in unit.Segments)
+                foreach (var segment in unit.Segments.Where(x => !string.IsNullOrEmpty(x.Id)))
                 {
                     var mrkElement = SerializeTextParts(segment.Source, "mrk", null, segment.SourceWhiteSpaceHandling);
                     mrkElement.SetAttributeValue("mtype", "seg");
-                    mrkElement.SetAttributeValue("mid", segIndex.ToString());
+                    mrkElement.SetAttributeValue("mid", segment.Id);
                     segSource.Add(mrkElement);
-                    segIndex++;
+                    
+                    if(segment.SourceAttributes.Count > 0)
+                    {
+                        foreach (var attr in segment.SourceAttributes.GetRemaining(["space"]))
+                        {
+                            segSource.Set(attr.Name, attr.Value);
+                        }
+                    }
                 }
 
                 transUnit.Add(segSource);
                 if (unit.Segments.Any(s => s.Target.Any()))
                 {
                     var target = new XElement(XliffNs + "target");
-                    if (unit.Segments.FirstOrDefault()?.TargetAttributes?.Any() == true)
+                    foreach (var segment in unit.Segments.Where(x => !string.IsNullOrEmpty(x.Id)))
                     {
-                        foreach (var attr in unit.Segments.First().TargetAttributes)
+                        foreach (var attr in segment.TargetAttributes)
                         {
-                            if (attr.Name != BlackbirdNs + "customState" && attr.Name != BlackbirdNs + "canResegment")
-                            {
-                                target.SetAttributeValue(attr.Name, attr.Value);
-                            }
+                            target.Set(attr.Name, attr.Value);
                         }
-                    }
-
-                    segIndex = 1;
-                    foreach (var segment in unit.Segments)
-                    {
+                        
                         if (segment.Target.Any())
                         {
                             var mrkElement = SerializeTextParts(segment.Target, "mrk", segment.TargetAttributes, segment.TargetWhiteSpaceHandling);
                             mrkElement.SetAttributeValue("mtype", "seg");
-                            mrkElement.SetAttributeValue("mid", segIndex.ToString());
+                            mrkElement.SetAttributeValue("mid", segment.Id);
+                            mrkElement.SetBool(BlackbirdNs + "canResegment", segment.CanResegment);
+                            if (segment.State.HasValue)
+                            {
+                                var state12 = segment.State.Value.ToTarget12State()?.Serialize();
+                                if (state12 != null)
+                                {
+                                    mrkElement.Set("state", segment.State.Value.ToTarget12State()?.Serialize());
+                                }
+                            }
+                            mrkElement.Set("phase-name", segment.SubState);
+                            mrkElement.SetBool(BlackbirdNs + "ignorable", segment.Ignorable);
+                            mrkElement.SetInt(BlackbirdNs + "order", segment.Order);
 
                             if (segment.State is SegmentState.Final)
                             {
@@ -314,15 +360,8 @@ public static class Xliff12Serializer
                                     transUnit.SetAttributeValue("approved", "yes");
                                 }
                             }
-
-                            if (segment.CanResegment.HasValue)
-                            {
-                                mrkElement.SetAttributeValue(BlackbirdNs + "canResegment", segment.CanResegment.Value.ToString().ToLower());
-                            }
-
                             target.Add(mrkElement);
                         }
-                        segIndex++;
                     }
 
                     transUnit.Add(target);
@@ -361,7 +400,7 @@ public static class Xliff12Serializer
         }
     }
 
-    private static XElement SerializeTextParts(List<TextPart> parts, string elementName, IEnumerable<XAttribute>? attributes = null, WhiteSpaceHandling whiteSpaceHandling = WhiteSpaceHandling.Default)
+    private static XElement SerializeTextParts(List<TextPart> parts, string elementName, IEnumerable<XAttribute>? attributes = null, WhiteSpaceHandling? whiteSpaceHandling = null)
     {
         var element = new XElement(XliffNs + elementName);
         if (whiteSpaceHandling == WhiteSpaceHandling.Preserve)
@@ -592,7 +631,11 @@ public static class Xliff12Serializer
                 fileTransformation.Notes.Add(new Note(note.Value)
                 {
                     Id = note.Get("id"),
-                    Priority = int.TryParse(note.Get("priority"), out var priority) ? priority : null
+                    Priority = note.GetInt("priority"),
+                    Category = note.Get(BlackbirdNs + "category"),
+                    Reference = note.Get(BlackbirdNs + "reference"),
+                    LanguageTarget = note.GetLanguageTarget(BlackbirdNs + "languageTarget"),
+                    Other = note.Attributes().GetRemaining(["id", "priority"]).Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList()
                 });
             }
 
@@ -619,15 +662,28 @@ public static class Xliff12Serializer
             {
                 var group = new Group
                 {
+                    //id="g1" canResegment="yes" translate="yes" srcDir="ltr" trgDir="ltr" name="group1" type="z:typeg" my:attr="value4"
                     Id = element.Get("id"),
-                    Name = element.Get("resname")
+                    Name = element.Get("resname"),
+                    CanResegment = element.GetBool(BlackbirdNs + "canResegment"),
+                    Translate = element.GetBool(BlackbirdNs + "translate"),
+                    SourceDirection = element.GetDirection(BlackbirdNs + "srcDir"),
+                    TargetDirection = element.GetDirection(BlackbirdNs + "trgDir"),
+                    Type = element.Get(BlackbirdNs + "type")
                 };
-
+                
+                var other = element.Attributes().Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList();
+                group.Other.AddRange(other.GetRemaining(["id", "resname", "canResegment", "translate", "srcDir", "trgDir"]));
                 foreach (var note in element.Elements(XliffNs + "note"))
                 {
                     group.Notes.Add(new Note(note.Value)
                     {
-                        Id = note.Get("id")
+                        Id = note.Get("id"),
+                        Priority = note.GetInt("priority"),
+                        Category = note.Get(BlackbirdNs + "category"),
+                        Reference = note.Get(BlackbirdNs + "reference"),
+                        LanguageTarget = note.GetLanguageTarget(BlackbirdNs + "languageTarget"),
+                        Other = note.Attributes().GetRemaining(["id", "priority", "category", "reference"]).Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList()
                     });
                 }
 
@@ -643,8 +699,15 @@ public static class Xliff12Serializer
                 var unit = new Unit
                 {
                     Id = element.Get("id"),
-                    Name = element.Get("resname")
+                    Name = element.Get("resname"),
+                    CanResegment = element.GetBool(BlackbirdNs + "canResegment"),
+                    Translate = element.GetBool(BlackbirdNs + "translate"),
+                    SourceDirection = element.GetDirection(BlackbirdNs + "srcDir"),
+                    TargetDirection = element.GetDirection(BlackbirdNs + "trgDir")
                 };
+                
+                var other = element.Attributes().Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList();
+                unit.Other.AddRange(other.GetRemaining(["id", "resname", "canResegment", "translate", "srcDir", "trgDir"]));
 
                 var source = element.Element(XliffNs + "source");
                 var target = element.Element(XliffNs + "target");
@@ -677,16 +740,15 @@ public static class Xliff12Serializer
                             if (matchingTargetMrk != null)
                             {
                                 segment.Target = ExtractTextParts(matchingTargetMrk);
-                                var canResegmentAttr = matchingTargetMrk.Get(BlackbirdNs + "canResegment");
-                                if (!string.IsNullOrEmpty(canResegmentAttr))
-                                {
-                                    segment.CanResegment = bool.Parse(canResegmentAttr);
-                                }
+                                segment.CanResegment = matchingTargetMrk.GetBool(BlackbirdNs + "canResegment");
+                                segment.Order = matchingTargetMrk.GetInt(BlackbirdNs + "order");
+                                segment.SubState = matchingTargetMrk.Get("phase-name");
+                                segment.Ignorable = matchingTargetMrk.GetBool(BlackbirdNs + "ignorable");
+                                segment.TargetAttributes = matchingTargetMrk.Attributes().GetRemaining(["mtype", "mid", "phase-name", "canResegment", "ignorable", "order", "state"]).Where(x => x.Name.Namespace != BlackbirdNs).ToList();
 
                                 var stateAttr = matchingTargetMrk.Get("state");
                                 if (!string.IsNullOrEmpty(stateAttr))
                                 {
-                                    segment.TargetAttributes.Add(new XAttribute(BlackbirdNs + "customState", stateAttr));
                                     var target12State = stateAttr.ToTarget12State();
                                     if (target12State.HasValue)
                                     {
@@ -699,7 +761,6 @@ public static class Xliff12Serializer
                                 }
                             }
                         }
-                        
                         unit.Segments.Add(segment);
                     }
                 }
@@ -707,15 +768,26 @@ public static class Xliff12Serializer
                 {
                     var segment = new Segment
                     {
+                        Id = element.Get(BlackbirdNs + "segmentId"),
                         Source = source != null ? ExtractTextParts(source) : new List<TextPart>(),
                         Target = target != null ? ExtractTextParts(target) : new List<TextPart>(),
                         CodeType = codeType,
                         SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
-                        TargetAttributes = target?.Attributes().ToList() ?? new List<XAttribute>(),
-                        SourceWhiteSpaceHandling = source?.Get(XNamespace.Xml + "space") == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default,
-                        TargetWhiteSpaceHandling = target?.Get(XNamespace.Xml + "space") == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default
+                        TargetAttributes = target?.Attributes().ToList() ?? new List<XAttribute>()
                     };
 
+                    var sourceWhiteSpaceHandling = source?.Get(XNamespace.Xml + "space");
+                    if (!string.IsNullOrEmpty(sourceWhiteSpaceHandling))
+                    {
+                        segment.SourceWhiteSpaceHandling = sourceWhiteSpaceHandling == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default;
+                    }
+                    
+                    var targetWhiteSpaceHandling = target?.Get(XNamespace.Xml + "space");
+                    if (!string.IsNullOrEmpty(targetWhiteSpaceHandling))
+                    {
+                        segment.TargetWhiteSpaceHandling = targetWhiteSpaceHandling == "preserve" ? WhiteSpaceHandling.Preserve : WhiteSpaceHandling.Default;
+                    }
+                    
                     var canResegmentAttr = target?.Get(BlackbirdNs + "canResegment");
                     if (!string.IsNullOrEmpty(canResegmentAttr))
                     {

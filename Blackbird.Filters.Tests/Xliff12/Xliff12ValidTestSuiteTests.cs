@@ -246,15 +246,6 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         // Check if both segments have the correct state
         Assert.That(segments.All(s => s.State == SegmentState.Final), Is.True);
         
-        // Check if the original state is preserved as a custom attribute for both segments
-        foreach (var segment in segments)
-        {
-            var customStateAttr = segment.TargetAttributes
-                .FirstOrDefault(a => a.Name == BlackbirdNs + "customState");
-            Assert.That(customStateAttr, Is.Not.Null);
-            Assert.That(customStateAttr?.Value, Is.EqualTo("final"));
-        }
-        
         // Verify the states are properly written back in serialization
         var doc = XDocument.Parse(returned);
         var stateCount = doc.Descendants(XName.Get("mrk", XliffNs.NamespaceName))
@@ -285,12 +276,5 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         
         // Check if both segments have the correct state
         Assert.That(segments.All(s => s.State == SegmentState.Final || s.State == SegmentState.Translated), Is.True);
-        
-        foreach (var segment in segments)
-        {
-            var customStateAttr = segment.TargetAttributes
-                .FirstOrDefault(a => a.Name == BlackbirdNs + "customState");
-            Assert.That(customStateAttr, Is.Not.Null);
-        }
     }
 }
