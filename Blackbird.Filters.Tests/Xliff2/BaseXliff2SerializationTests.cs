@@ -122,8 +122,7 @@ public class BaseXliff2SerializationTests : TestBase
         // Assert
         XmlAssert.AreEqual(xliff, returned);
     }
-
-
+    
     [Test]
     public void Multifile()
     {

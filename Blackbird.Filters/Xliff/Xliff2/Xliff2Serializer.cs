@@ -387,9 +387,14 @@ public static class Xliff2Serializer
 
     public static string Serialize(Transformation xliffTransformation)
     {
-        var xmlnsAttribute = xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns");
-        XNamespace ns = xmlnsAttribute?.Value ?? $"urn:oasis:names:tc:xliff:document:2.2";
-
+        XNamespace ns =
+            xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns")?.Value ??
+            "urn:oasis:names:tc:xliff:document:2.0";
+        if(ns.ToString().StartsWith("urn:oasis:names:tc:xliff:document:1."))
+        {
+            ns = "urn:oasis:names:tc:xliff:document:2.0";
+        }
+        
         XElement? SerializeNotes(List<Note> notes)
         {
             if (notes.Count == 0) return null;
@@ -699,8 +704,23 @@ public static class Xliff2Serializer
         var root = new XElement(ns + "xliff");
         root.Set("srcLang", xliffTransformation.SourceLanguage);
         root.Set("trgLang", xliffTransformation.TargetLanguage);
-        if (xmlnsAttribute is null) root.Set("version", "2.2");
-        root.Add(xliffTransformation.XliffOther);
+        var version = xliffTransformation.XliffOther.OfType<XAttribute>()
+            .FirstOrDefault(x => x.Name.LocalName == "version")?.Value ?? "2.0";
+        root.Set("version", version);
+        
+        foreach (var attr in xliffTransformation.XliffOther.OfType<XAttribute>())
+        {
+            if (attr.Name.LocalName != "xmlns" && attr.Name.LocalName != "version")
+            {
+                root.Add(attr);
+            }
+        }
+
+        // Add all non-attribute XliffOther elements
+        foreach (var element in xliffTransformation.XliffOther.OfType<XElement>())
+        {
+            root.Add(element);
+        }
 
         if (!xliffTransformation.Children.OfType<Transformation>().Any())
         {
@@ -817,7 +837,7 @@ public static class Xliff2Serializer
             }
 
             var version = xliffNode.Get("version", Optionality.Required)!;
-            return float.Parse(version, CultureInfo.InvariantCulture) > 2;
+            return float.Parse(version, CultureInfo.InvariantCulture) >= 2;
         }
         catch (Exception ex)
         {

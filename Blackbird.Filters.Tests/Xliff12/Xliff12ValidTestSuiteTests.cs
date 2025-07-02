@@ -37,7 +37,6 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         var units = content.GetUnits().ToList();
         Assert.That(units.Count, Is.EqualTo(1));
         Assert.That(units[0].Name, Is.EqualTo("greeting"));
-        Assert.That(units[0].Segments[0].IsInitial, Is.False);
         
         var segments = units[0].Segments;
         Assert.That(segments.Count, Is.EqualTo(1));

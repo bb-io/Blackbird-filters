@@ -27,6 +27,50 @@ public static class Xliff12Serializer
         return CompactSourceElements(xmlString);
     }
 
+    // Helper method to convert elements to the correct namespace
+    private static XElement? CloneWithNamespace(XObject? xobj)
+    {
+        if (xobj == null) return null;
+
+        if (xobj is XElement element)
+        {
+            var newElement = new XElement(
+                element.Name.LocalName.StartsWith("xliff:") ? element.Name : 
+                XliffNs + element.Name.LocalName);
+
+            // Copy attributes but ensure they use the correct namespace if needed
+            foreach (var attr in element.Attributes())
+            {
+                if (attr.IsNamespaceDeclaration)
+                    continue; // Skip namespace declarations
+                
+                if (attr.Name.Namespace == XNamespace.None || attr.Name.Namespace == XNamespace.Xmlns)
+                    newElement.SetAttributeValue(attr.Name, attr.Value);
+                else
+                    newElement.SetAttributeValue(XliffNs + attr.Name.LocalName, attr.Value);
+            }
+
+            // Process child nodes recursively
+            foreach (var node in element.Nodes())
+            {
+                if (node is XElement childElement)
+                {
+                    var clonedChild = CloneWithNamespace(childElement);
+                    if (clonedChild != null)
+                        newElement.Add(clonedChild);
+                }
+                else if (node is XText textNode)
+                {
+                    newElement.Add(new XText(textNode.Value));
+                }
+            }
+
+            return newElement;
+        }
+
+        return null;
+    }
+
     private static void SerializeTransformation(Transformation transformation, XElement root)
     {
         var fileId = UniqueIdGenerator("f");
@@ -36,16 +80,13 @@ public static class Xliff12Serializer
             var fileElement = new XElement(XliffNs + "file",
                 new XAttribute("id", file.Id),
                 new XAttribute("source-language", file.SourceLanguage ?? "en"));
-
-            if (file.TargetLanguage != null)
-            {
-                fileElement.SetAttributeValue("target-language", file.TargetLanguage);
-            }
-
-            if (!string.IsNullOrEmpty(file.ExternalReference))
-            {
-                fileElement.SetAttributeValue("original", file.ExternalReference);
-            }
+            
+            fileElement.Set("target-language", file.TargetLanguage);
+            fileElement.Set("original", file.ExternalReference);
+            fileElement.SetBool(BlackbirdNs + "canResegment", file.CanResegment);
+            fileElement.SetBool(BlackbirdNs + "translate", file.Translate);
+            fileElement.SetDirection(BlackbirdNs + "srcDir", file.SourceDirection);
+            fileElement.SetDirection(BlackbirdNs + "trgDir", file.TargetDirection);
 
             var header = new XElement(XliffNs + "header");
             if (file.Notes.Count > 0)
@@ -63,11 +104,16 @@ public static class Xliff12Serializer
             {
                 if (otherElements is XElement otherElement)
                 {
-                    header.Add(otherElement);
+                    // Clone the element with correct namespace instead of adding directly
+                    var clonedElement = CloneWithNamespace(otherElement);
+                    if (clonedElement != null)
+                        header.Add(clonedElement);
                 }
                 else if (otherElements is XAttribute attribute)
                 {
-                    fileElement.SetAttributeValue(attribute.Name, attribute.Value);
+                    // Don't add namespace attributes to avoid conflicts
+                    if (!attribute.IsNamespaceDeclaration)
+                        fileElement.SetAttributeValue(attribute.Name, attribute.Value);
                 }
             }
 
@@ -83,7 +129,17 @@ public static class Xliff12Serializer
                 }
                 else if (!string.IsNullOrEmpty(transformation.Original))
                 {
-                    var internalFile = new XElement(XliffNs + "internal-file", transformation.Original, transformation.SkeletonOther);
+                    var internalFile = new XElement(XliffNs + "internal-file");
+                    internalFile.Add(new XText(transformation.Original));
+                    
+                    // Handle SkeletonOther elements with namespace correction
+                    foreach (var elem in transformation.SkeletonOther)
+                    {
+                        var clonedSkelElement = CloneWithNamespace(elem);
+                        if (clonedSkelElement != null)
+                            internalFile.Add(clonedSkelElement);
+                    }
+                    
                     skeleton.Add(internalFile);
                 }
 
@@ -101,7 +157,20 @@ public static class Xliff12Serializer
 
         try
         {
-            root.Add(transformation.XliffOther);
+            foreach (var otherObj in transformation.XliffOther)
+            {
+                if (otherObj is XAttribute attr)
+                {
+                    if (!attr.Value.Contains("urn:oasis:names:tc:xliff:document") && attr.Name.LocalName != "version")
+                        root.SetAttributeValue(attr.Name, attr.Value);
+                }
+                else if (otherObj is XElement elem)
+                {
+                    var cloned = CloneWithNamespace(elem);
+                    if (cloned != null)
+                        root.Add(cloned);
+                }
+            }
         }
         catch (InvalidOperationException e) when (e.Message.Contains("Duplicate attribute."))
         { }
@@ -468,14 +537,14 @@ public static class Xliff12Serializer
         if (fileElements.Count == 1)
         {
             var fileElement = fileElements[0];
-            var fileTransformation = DeserializeTransformation(fileElement, sourceLanguage ?? "en", targetLanguage ?? "en");
+            var fileTransformation = DeserializeTransformation(fileElement, sourceLanguage, targetLanguage);
             transformation = fileTransformation;
         }
         else
         {
             foreach (var fileElement in fileElements)
             {
-                var fileTransformation = DeserializeTransformation(fileElement, sourceLanguage ?? "en", targetLanguage ?? "en");
+                var fileTransformation = DeserializeTransformation(fileElement, sourceLanguage, targetLanguage);
                 transformation.Children.Add(fileTransformation);
             }
         }
@@ -484,15 +553,20 @@ public static class Xliff12Serializer
         return transformation;
     }
 
-    private static Transformation DeserializeTransformation(XElement fileElement, string sourceLanguage, string targetLanguage)
+    private static Transformation DeserializeTransformation(XElement fileElement, string? sourceLanguage, string? targetLanguage)
     {
         var fileTransformation = new Transformation(fileElement.Get("source-language") ?? sourceLanguage, fileElement.Get("target-language") ?? targetLanguage)
         {
             Id = fileElement.Get("id"),
-            ExternalReference = fileElement.Get("original")
+            ExternalReference = fileElement.Get("original"),
+            CanResegment = fileElement.GetBool(BlackbirdNs + "canResegment"),
+            Translate = fileElement.GetBool(BlackbirdNs + "translate"),
+            SourceDirection = fileElement.GetDirection(BlackbirdNs + "srcDir"),
+            TargetDirection = fileElement.GetDirection(BlackbirdNs + "trgDir")
         };
-
-        fileTransformation.Other.AddRange(fileElement.Attributes().GetRemaining(["id", "source-language", "target-language", "original"]));
+        
+        var other = fileElement.Attributes().Where(a => a.Name.Namespace != BlackbirdNs && a.Value != BlackbirdNs.NamespaceName).ToList();
+        fileTransformation.Other.AddRange(other.GetRemaining(["id", "source-language", "target-language", "original"]));
         var header = fileElement.Element(XliffNs + "header");
         if (header != null)
         {
@@ -625,7 +699,7 @@ public static class Xliff12Serializer
                                 }
                             }
                         }
-
+                        
                         unit.Segments.Add(segment);
                     }
                 }
@@ -663,14 +737,6 @@ public static class Xliff12Serializer
                             {
                                 segment.State = target12State.Value.ToSegmentState();
                             }
-                            else
-                            {
-                                segment.State = SegmentState.Translated;
-                            }
-                        }
-                        else
-                        {
-                            segment.State = SegmentState.Translated;
                         }
                     }
 
