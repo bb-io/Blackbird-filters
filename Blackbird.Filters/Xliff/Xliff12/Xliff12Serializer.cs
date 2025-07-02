@@ -33,7 +33,7 @@ public static class Xliff12Serializer
 
         if (xobj is XElement element)
         {
-            if (element.Name.Namespace == "urn:oasis:names:tc:xliff:metadata:2.0")
+            if (element.Name.Namespace == "urn:oasis:names:tc:xliff:metadata:2.0" || element.Name.Namespace == "urn:oasis:names:tc:xliff:validation:2.0")
             {
                 return element;
             }
@@ -273,12 +273,12 @@ public static class Xliff12Serializer
             if (unit.Segments.Count == 1)
             {
                 var segment = unit.Segments[0];
-                transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes, segment.SourceWhiteSpaceHandling));
+                transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes));
                 transUnit.Set(BlackbirdNs + "segmentId", segment.Id);
 
                 if (segment.Target.Any())
                 {
-                    var targetElement = SerializeTextParts(segment.Target, "target", segment.TargetAttributes, segment.TargetWhiteSpaceHandling);
+                    var targetElement = SerializeTextParts(segment.Target, "target", segment.TargetAttributes);
                     targetElement.SetBool(BlackbirdNs + "canResegment", segment.CanResegment);
                     transUnit.Add(targetElement);
                 }
@@ -310,7 +310,7 @@ public static class Xliff12Serializer
                 var segSource = new XElement(XliffNs + "seg-source");
                 foreach (var segment in unit.Segments.Where(x => !string.IsNullOrEmpty(x.Id)))
                 {
-                    var mrkElement = SerializeTextParts(segment.Source, "mrk", null, segment.SourceWhiteSpaceHandling);
+                    var mrkElement = SerializeTextParts(segment.Source, "mrk", null);
                     mrkElement.SetAttributeValue("mtype", "seg");
                     mrkElement.SetAttributeValue("mid", segment.Id);
                     segSource.Add(mrkElement);
@@ -337,7 +337,7 @@ public static class Xliff12Serializer
                         
                         if (segment.Target.Any())
                         {
-                            var mrkElement = SerializeTextParts(segment.Target, "mrk", segment.TargetAttributes, segment.TargetWhiteSpaceHandling);
+                            var mrkElement = SerializeTextParts(segment.Target, "mrk", segment.TargetAttributes);
                             mrkElement.SetAttributeValue("mtype", "seg");
                             mrkElement.SetAttributeValue("mid", segment.Id);
                             mrkElement.SetBool(BlackbirdNs + "canResegment", segment.CanResegment);
@@ -374,7 +374,8 @@ public static class Xliff12Serializer
                 var noteElement = new XElement(XliffNs + "note", note.Text);
                 transUnit.Add(noteElement);
             }
-
+            
+            transUnit.Add(unit.Other.OfType<XElement>());
             parentElement.Add(transUnit);
         }
 
@@ -400,14 +401,9 @@ public static class Xliff12Serializer
         }
     }
 
-    private static XElement SerializeTextParts(List<TextPart> parts, string elementName, IEnumerable<XAttribute>? attributes = null, WhiteSpaceHandling? whiteSpaceHandling = null)
+    private static XElement SerializeTextParts(List<TextPart> parts, string elementName, IEnumerable<XAttribute>? attributes = null)
     {
         var element = new XElement(XliffNs + elementName);
-        if (whiteSpaceHandling == WhiteSpaceHandling.Preserve)
-        {
-            element.SetAttributeValue(XNamespace.Xml + "space", "preserve");
-        }
-
         if (attributes != null)
         {
             foreach (var attr in attributes)
@@ -708,6 +704,7 @@ public static class Xliff12Serializer
                 
                 var other = element.Attributes().Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList();
                 unit.Other.AddRange(other.GetRemaining(["id", "resname", "canResegment", "translate", "srcDir", "trgDir"]));
+                unit.Other.AddRange(element.Elements().GetRemaining(["source", "target", "seg-source", "mrk", "note"]).Where(e => e.Name.Namespace != BlackbirdNs && e.Name.Namespace != XliffNs).ToList());
 
                 var source = element.Element(XliffNs + "source");
                 var target = element.Element(XliffNs + "target");
