@@ -6,22 +6,27 @@ using Blackbird.Filters.Transformations.Tags;
 namespace Blackbird.Filters.Content;
 public class CodedContent
 {
-    internal CodedContent() { }
+    internal CodedContent(string fileName, string mediaType, string fileContent) 
+    {
+        OriginalName = fileName;
+        OriginalMediaType = mediaType;
+        Original = fileContent;
+    }
 
     /// <summary>
     /// The original file name.
     /// </summary>
-    public string? OriginalName { get; set; }
+    public string OriginalName { get; set; }
 
     /// <summary>
     /// The original media type name.
     /// </summary>
-    public string? OriginalMediaType { get; internal set; }
+    public string OriginalMediaType { get; internal set; }
 
     /// <summary>
     /// The original file in plain text.
     /// </summary>
-    public string Original { get; internal set; } = string.Empty;
+    public string Original { get; internal set; }
 
     /// <summary>
     /// Extracted units of content from the original file.

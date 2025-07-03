@@ -3,6 +3,7 @@ using Blackbird.Filters.Constants;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Xliff.Xliff2;
+using System.Net.Mime;
 using System.Text;
 using System.Xml.Linq;
 
@@ -41,12 +42,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     /// <summary>
     /// Appropriate file name if this was saved as a serialized file.
     /// </summary>
-    public string XliffFileName => (OriginalReference ?? string.Empty) + ".xlf";
-
-    /// <summary>
-    /// Appropriate media type if this was saved as a serialized file.
-    /// </summary>
-    public static string XliffMediaType => MediaTypes.Xliff;
+    public string XliffFileName => (OriginalReference ?? "transformation") + ".xlf";
 
     public IEnumerable<Unit> GetUnits()
     {
@@ -87,7 +83,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public CodedContent Source()
     {
         if (Original is null) throw new Exception("Cannot convert to content, no original data found");
-        var codedContent = new CodedContent() { Original = Original, OriginalName = OriginalReference, OriginalMediaType = OriginalMediaType };
+        var codedContent = new CodedContent(OriginalReference ?? "transformation", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         foreach (var unit in GetUnits().Where(x => x.Name is not null))
         {
             var textUnit = new TextUnit(unit.Name!, OriginalMediaType)
@@ -102,7 +98,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public CodedContent Target()
     {
         if (Original is null) throw new Exception("Cannot convert to content, no original data found");
-        var codedContent = new CodedContent() { Original = Original, OriginalName = OriginalReference, OriginalMediaType = OriginalMediaType };
+        var codedContent = new CodedContent(OriginalReference ?? "transformation", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         foreach(var unit in GetUnits().Where(x => x.Name is not null))
         {
             var textUnit = new TextUnit(unit.Name!, OriginalMediaType)
@@ -114,7 +110,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         return codedContent;
     }
 
-    public static Transformation Parse(string content, string? fileName = null)
+    public static Transformation Parse(string content, string fileName)
     {
         if (Xliff2Serializer.IsXliff2(content))
         {
@@ -130,7 +126,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         }
     }
 
-    public static async Task<Transformation> Parse(Stream content)
+    public static async Task<Transformation> Parse(Stream content, string fileName)
     {
         byte[] bytes;
         await using (MemoryStream resultFileStream = new())
@@ -138,7 +134,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
             await content.CopyToAsync(resultFileStream);
             bytes = resultFileStream.ToArray();
         }
-        return Parse(Encoding.UTF8.GetString(bytes));
+        return Parse(Encoding.UTF8.GetString(bytes), fileName);
     }
 
     public string Serialize()

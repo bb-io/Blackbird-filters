@@ -41,7 +41,7 @@ public class FileHeapTest : TestBase
 
         var serialized = File.ReadAllText(filePath, Encoding.UTF8);
 
-        var transformation = Transformation.Parse(serialized);
+        var transformation = Transformation.Parse(serialized, Path.GetFileName(filePath));
 
         foreach(var segment in transformation.GetSegments())
         {

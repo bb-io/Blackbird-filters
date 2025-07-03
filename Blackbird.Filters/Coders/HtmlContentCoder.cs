@@ -13,17 +13,14 @@ public static class HtmlContentCoder
     /// </summary>
     /// <param name="content">The HTML string</param>
     /// <returns></returns>
-    public static CodedContent Deserialize(string content, string? fileName = null)
+    public static CodedContent Deserialize(string content, string fileName)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(content);
 
-        var codedContent = new CodedContent()
+        var codedContent = new CodedContent(fileName, MediaTypeNames.Text.Html, content)
         {
-            Original = content,
             TextUnits = ExtractTextUnits(doc.DocumentNode),
-            OriginalMediaType = MediaTypeNames.Text.Html,
-            OriginalName = fileName,
         };
 
         return codedContent;

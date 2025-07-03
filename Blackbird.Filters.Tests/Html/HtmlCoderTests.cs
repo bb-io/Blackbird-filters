@@ -13,11 +13,11 @@ public class HtmlCoderTests : TestBase
     private (string, CodedContent, string) ProcessSource(string file)
     {
         var html = File.ReadAllText(file, Encoding.UTF8);
-        var content = HtmlContentCoder.Deserialize(html, file.Split('/').Last());
+        var content = HtmlContentCoder.Deserialize(html, Path.GetFileName(file));
         var transformation = content.CreateTransformation("en", "nl");
         Display(transformation);
         var serialized = transformation.Serialize();
-        var deserialized = Transformation.Parse(serialized);
+        var deserialized = Transformation.Parse(serialized, Path.GetFileName(file));
         var returned = deserialized.Source().Serialize();
         DisplayXml(serialized);
         Console.WriteLine("------");
@@ -29,12 +29,13 @@ public class HtmlCoderTests : TestBase
     private (string, CodedContent, string) ProcessTarget(string file)
     {
         var html = File.ReadAllText(file, Encoding.UTF8);
-        var content = HtmlContentCoder.Deserialize(html, file.Split('/').Last());
+        var content = HtmlContentCoder.Deserialize(html, Path.GetFileName(file));
         var transformation = content.CreateTransformation("en", "nl");
         var serialized = transformation.Serialize();
         serialized = PseudoTranslateXliff(serialized);
-        var deserialized = Transformation.Parse(serialized);
-        var returned = deserialized.Target().Serialize();
+        var deserialized = Transformation.Parse(serialized, Path.GetFileName(file));
+        var target = deserialized.Target();
+        var returned = target.Serialize();
         DisplayXml(serialized);
         Console.WriteLine("------");
         DisplayHtml(returned);
@@ -45,7 +46,7 @@ public class HtmlCoderTests : TestBase
     public string TranslateFile(string fileContent)
     {
         // File content can be either HTML or XLIFF (more formats to follow soon)
-        var transformation = Transformation.Parse(fileContent);
+        var transformation = Transformation.Parse(fileContent, "transformation.xlf");
 
         foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
         {
@@ -60,7 +61,7 @@ public class HtmlCoderTests : TestBase
 
     private string PseudoTranslateXliff(string xliff)
     {
-        var transformation = Transformation.Parse(xliff);
+        var transformation = Transformation.Parse(xliff, "transformation.xlf");
         foreach (var segment in transformation.GetSegments())
         {
             segment.SetTarget(segment.GetSource() + "TRANSLATED");
