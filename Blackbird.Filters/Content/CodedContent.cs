@@ -1,14 +1,22 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content.Tags;
-using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Tags;
-using HtmlAgilityPack;
 
 namespace Blackbird.Filters.Content;
 public class CodedContent
 {
     internal CodedContent() { }
+
+    /// <summary>
+    /// The original file name.
+    /// </summary>
+    public string? OriginalName { get; set; }
+
+    /// <summary>
+    /// The original media type name.
+    /// </summary>
+    public string? OriginalMediaType { get; internal set; }
 
     /// <summary>
     /// The original file in plain text.
@@ -22,7 +30,13 @@ public class CodedContent
 
     public Transformation CreateTransformation(string? sourceLanguage = null, string? targetLanguage = null)
     {
-        var transformation = new Transformation(sourceLanguage, targetLanguage) { Original = Original };
+        var transformation = new Transformation(sourceLanguage, targetLanguage) 
+        { 
+            Original = Original, 
+            OriginalReference = OriginalName, 
+            OriginalMediaType = OriginalMediaType 
+        };
+
         var unitReferences = new Dictionary<InlineTag, List<TextUnit>>();
         var unitsDictionary = new Dictionary<TextUnit, Unit>();
 
@@ -67,7 +81,7 @@ public class CodedContent
                
             }
 
-            unit.Segments = [new Segment() { Source = parts, CodeType = textUnit.CodeType }];
+            unit.Segments = [new Segment(OriginalMediaType) { Source = parts }];
             transformation.Children.Add(unit);
         }
 

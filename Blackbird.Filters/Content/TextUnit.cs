@@ -2,11 +2,12 @@
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using HtmlAgilityPack;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Content;
 
-public class TextUnit(string reference, CodeType codeType)
+public class TextUnit(string reference, string? originalMediaType)
 {
     /// <summary>
     /// The reference to the location of this text unit in the original file depending on the original format.
@@ -18,10 +19,7 @@ public class TextUnit(string reference, CodeType codeType)
     /// </summary>
     public List<TextPart> Parts { get; set; } = [];
 
-    /// <summary>
-    /// The type of coding of inline codes. Usually this depends on the file type.
-    /// </summary>
-    public CodeType CodeType { get; set; } = codeType;
+    public string? OriginalMediaType { get; set; } = originalMediaType;
 
     /// <summary>
     /// Get the plain text without any tags.
@@ -30,7 +28,7 @@ public class TextUnit(string reference, CodeType codeType)
     public string GetPlainText()
     {
         // In HTML white spaces are not semantic.
-        if (CodeType == CodeType.Html)
+        if (OriginalMediaType == MediaTypeNames.Text.Html)
         {
             var partsWithTagsAsSpaces = string.Join(string.Empty, Parts.Select(x => x is InlineCode || x is InlineTag ? " " : x.Value));
             return Regex.Replace(partsWithTagsAsSpaces, @"\s+", " ").Trim();
@@ -45,7 +43,7 @@ public class TextUnit(string reference, CodeType codeType)
     /// <returns>The text including tags</returns>
     public string GetCodedText()
     {
-        if (CodeType == CodeType.Html)
+        if (OriginalMediaType == MediaTypeNames.Text.Html)
         {
             var codedText = string.Join(string.Empty, Parts.Select(x => x.Value));
             return Regex.Replace(codedText, @"\s+", " ").Trim();
@@ -60,14 +58,14 @@ public class TextUnit(string reference, CodeType codeType)
     /// <param name="content">The text (can include tags)</param>
     public void SetCodedText(string content)
     {
-        if (CodeType == CodeType.Html)
+        if (OriginalMediaType == MediaTypeNames.Text.Html)
         {
             try
             {
                 var doc = new HtmlDocument();
                 doc.LoadHtml(content);
                 Parts = HtmlContentCoder.BuildTextParts(doc.DocumentNode.ChildNodes);
-            } catch(Exception e)
+            } catch (Exception)
             {
                 Parts = [new() { Value = content }];
             }

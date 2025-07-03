@@ -13,8 +13,9 @@ public class HtmlCoderTests : TestBase
     private (string, CodedContent, string) ProcessSource(string file)
     {
         var html = File.ReadAllText(file, Encoding.UTF8);
-        var content = HtmlContentCoder.Deserialize(html);
+        var content = HtmlContentCoder.Deserialize(html, file.Split('/').Last());
         var transformation = content.CreateTransformation("en", "nl");
+        Display(transformation);
         var serialized = transformation.Serialize();
         var deserialized = Transformation.Parse(serialized);
         var returned = deserialized.Source().Serialize();
@@ -28,7 +29,7 @@ public class HtmlCoderTests : TestBase
     private (string, CodedContent, string) ProcessTarget(string file)
     {
         var html = File.ReadAllText(file, Encoding.UTF8);
-        var content = HtmlContentCoder.Deserialize(html);
+        var content = HtmlContentCoder.Deserialize(html, file.Split('/').Last());
         var transformation = content.CreateTransformation("en", "nl");
         var serialized = transformation.Serialize();
         serialized = PseudoTranslateXliff(serialized);

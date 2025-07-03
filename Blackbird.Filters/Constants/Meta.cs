@@ -1,0 +1,14 @@
+﻿namespace Blackbird.Filters.Constants;
+public static class Meta
+{
+    public static class Categories
+    {
+        public const string Blackbird = "blackbird";
+    }
+
+    public static class Types
+    {
+        public const string OriginalMediaType = "original-media-type";
+    }
+    
+}

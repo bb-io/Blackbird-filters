@@ -2,6 +2,7 @@
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
 using HtmlAgilityPack;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Coders;
@@ -12,7 +13,7 @@ public static class HtmlContentCoder
     /// </summary>
     /// <param name="content">The HTML string</param>
     /// <returns></returns>
-    public static CodedContent Deserialize(string content)
+    public static CodedContent Deserialize(string content, string? fileName = null)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(content);
@@ -21,6 +22,8 @@ public static class HtmlContentCoder
         {
             Original = content,
             TextUnits = ExtractTextUnits(doc.DocumentNode),
+            OriginalMediaType = MediaTypeNames.Text.Html,
+            OriginalName = fileName,
         };
 
         return codedContent;
@@ -121,7 +124,7 @@ public static class HtmlContentCoder
 
     internal static List<TextUnit> BuildUnits(HtmlNode node)
     {
-        var unit = new TextUnit(node.XPath, CodeType.Html);
+        var unit = new TextUnit(node.XPath, MediaTypeNames.Text.Html);
 
         if (node.NodeType == HtmlNodeType.Text)
         {
@@ -177,7 +180,7 @@ public static class HtmlContentCoder
         return parts;
     }
 
-    private static TextUnit BuildUnit(HtmlAttribute attribute) => new(attribute.XPath, CodeType.PlainText) { Parts = [new TextPart { Value = attribute.Value }] };
+    private static TextUnit BuildUnit(HtmlAttribute attribute) => new(attribute.XPath, MediaTypeNames.Text.Plain) { Parts = [new TextPart { Value = attribute.Value }] };
 
     private static (string StartTag, string Content, string EndTag) ParseHtmlParts(string html)
     {

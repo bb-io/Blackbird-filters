@@ -164,18 +164,4 @@ public static class Xliff2XmlExtensions
     {
         return elements.Where(a => !usedElements.Contains(a.Name)).ToList();
     }
-
-    public static CodeType? GetCodeType(this XElement element, XName name, Optionality optional = Optionality.Optional)
-    {
-        var value = element.Get(name, optional);
-        return value?.ToCodeType();
-    }
-
-    public static void SetCodeType(this XElement element, XName name, CodeType? value)
-    {
-        if (value.HasValue)
-        {
-            element.SetAttributeValue(name, value.Value.Serialize());
-        }
-    }
 }

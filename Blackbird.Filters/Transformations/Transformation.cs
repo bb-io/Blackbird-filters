@@ -1,4 +1,5 @@
 ﻿using Blackbird.Filters.Coders;
+using Blackbird.Filters.Constants;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Xliff.Xliff2;
@@ -12,10 +13,40 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public string? TargetLanguage { get; set; } = targetLanguage;
     public string? Original { get; set; }
     public string? OriginalReference { get; set; }
+    public string? OriginalMediaType
+    {
+        get
+        {
+            return MetaData.FirstOrDefault(x => x.Category.Contains(Meta.Categories.Blackbird) && x.Type == Meta.Types.OriginalMediaType)?.Value;
+        }
+        internal set
+        {
+            var existingMeta = MetaData.FirstOrDefault(x => x.Category.Contains(Meta.Categories.Blackbird) && x.Type == Meta.Types.OriginalMediaType);
+            if (value is null && existingMeta is not null)
+            {
+                MetaData.Remove(existingMeta);
+            }
+
+            if (value is not null)
+            {
+                MetaData.Add(new Metadata(Meta.Types.OriginalMediaType, value) { Category = [Meta.Categories.Blackbird] });
+            }            
+        }
+    }
     public IEnumerable<XElement> SkeletonOther { get; set; } = [];
     public string? ExternalReference { get; set; }
     public List<Node> Children { get; set; } = [];
     public List<XObject> XliffOther { get; set; } = [];
+
+    /// <summary>
+    /// Appropriate file name if this was saved as a serialized file.
+    /// </summary>
+    public string XliffFileName => (OriginalReference ?? string.Empty) + ".xlf";
+
+    /// <summary>
+    /// Appropriate media type if this was saved as a serialized file.
+    /// </summary>
+    public static string XliffMediaType => MediaTypes.Xliff;
 
     public IEnumerable<Unit> GetUnits()
     {
@@ -56,11 +87,10 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public CodedContent Source()
     {
         if (Original is null) throw new Exception("Cannot convert to content, no original data found");
-        var codedContent = new CodedContent() { Original = Original };
+        var codedContent = new CodedContent() { Original = Original, OriginalName = OriginalReference, OriginalMediaType = OriginalMediaType };
         foreach (var unit in GetUnits().Where(x => x.Name is not null))
         {
-            var codeType = unit.Segments.FirstOrDefault()?.CodeType ?? CodeType.PlainText;
-            var textUnit = new TextUnit(unit.Name!, codeType)
+            var textUnit = new TextUnit(unit.Name!, OriginalMediaType)
             {
                 Parts = unit.Segments.SelectMany(x => x.Source).ToList()
             };
@@ -72,11 +102,10 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public CodedContent Target()
     {
         if (Original is null) throw new Exception("Cannot convert to content, no original data found");
-        var codedContent = new CodedContent() { Original = Original };
+        var codedContent = new CodedContent() { Original = Original, OriginalName = OriginalReference, OriginalMediaType = OriginalMediaType };
         foreach(var unit in GetUnits().Where(x => x.Name is not null))
         {
-            var codeType = unit.Segments.FirstOrDefault()?.CodeType ?? CodeType.PlainText;
-            var textUnit = new TextUnit(unit.Name!, codeType)
+            var textUnit = new TextUnit(unit.Name!, OriginalMediaType)
             {
                 Parts = unit.Segments.SelectMany(x => x.Target).ToList()
             };
@@ -85,7 +114,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         return codedContent;
     }
 
-    public static Transformation Parse(string content)
+    public static Transformation Parse(string content, string? fileName = null)
     {
         if (Xliff2Serializer.IsXliff2(content))
         {
@@ -93,7 +122,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         }
         else if (HtmlContentCoder.IsHtml(content))
         {
-            return HtmlContentCoder.Deserialize(content).CreateTransformation();
+            return HtmlContentCoder.Deserialize(content, fileName).CreateTransformation();
         }
         else
         {

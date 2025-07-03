@@ -23,6 +23,16 @@ public class Xliff2ValidTestSuiteTests : TestBase
     }
 
     [Test]
+    public void with_metadata()
+    {
+        var xliff = File.ReadAllText("Xliff2/XLIFF valid/withMetaData.xlf", Encoding.UTF8);
+        var content = Xliff2Serializer.Deserialize(xliff);
+        var returned = Xliff2Serializer.Serialize(content);
+        DisplayXml(returned);
+        XmlAssert.AreEqual(xliff, returned);
+    }
+
+    [Test]
     public void almost_empty()
     {
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/almostEmpty.xlf", Encoding.UTF8);

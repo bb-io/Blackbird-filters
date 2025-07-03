@@ -129,6 +129,9 @@
     <None Update="Xliff2\XLIFF valid\withCDataSections.xlf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Xliff2\XLIFF valid\withMetaData.xlf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Xliff2\XLIFF valid\withCommentAnnotations.xlf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
