@@ -39,10 +39,11 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public List<Node> Children { get; set; } = [];
     public List<XObject> XliffOther { get; set; } = [];
 
+    private string? _xliffFileName;
     /// <summary>
     /// Appropriate file name if this was saved as a serialized file.
     /// </summary>
-    public string XliffFileName => (OriginalReference ?? "transformation") + ".xlf";
+    public string XliffFileName { get => _xliffFileName ?? ((OriginalReference ?? "transformation") + ".xlf"); set => _xliffFileName = value; }
 
     public IEnumerable<Unit> GetUnits()
     {
@@ -114,7 +115,9 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     {
         if (Xliff2Serializer.IsXliff2(content))
         {
-            return Xliff2Serializer.Deserialize(content);
+            var transformation = Xliff2Serializer.Deserialize(content);
+            transformation.XliffFileName = fileName;
+            return transformation;
         }
         else if (HtmlContentCoder.IsHtml(content))
         {

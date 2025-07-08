@@ -30,6 +30,9 @@
     <None Update="Heap\Files\contentful.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Heap\Files\contentful.html.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Html\Files\contentful.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

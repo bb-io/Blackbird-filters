@@ -48,6 +48,8 @@ public class FileHeapTest : TestBase
             segment.SetTarget(segment.GetSource());
         }
 
+        Console.WriteLine(transformation.XliffFileName);
+
         var returned = transformation.Serialize();
         DisplayXml(returned);
 
