@@ -123,6 +123,10 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         {
             return HtmlContentCoder.Deserialize(content, fileName).CreateTransformation();
         }
+        else if(PlaintextContentCoder.IsPlaintext(content))
+        {
+            return PlaintextContentCoder.Deserialize(content, fileName).CreateTransformation();
+        }
         else
         {
             throw new Exception("This file format is not supported by this library.");

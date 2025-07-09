@@ -10,66 +10,6 @@ namespace Blackbird.Filters.Tests.Html;
 [TestFixture]
 public class HtmlCoderTests : TestBase
 {
-    private (string, CodedContent, string) ProcessSource(string file)
-    {
-        var html = File.ReadAllText(file, Encoding.UTF8);
-        var content = HtmlContentCoder.Deserialize(html, Path.GetFileName(file));
-        var transformation = content.CreateTransformation("en", "nl");
-        Display(transformation);
-        var serialized = transformation.Serialize();
-        var deserialized = Transformation.Parse(serialized, Path.GetFileName(file));
-        var returned = deserialized.Source().Serialize();
-        DisplayXml(serialized);
-        Console.WriteLine("------");
-        DisplayHtml(returned);
-
-        return (html, content, returned);
-    }
-
-    private (string, CodedContent, string) ProcessTarget(string file)
-    {
-        var html = File.ReadAllText(file, Encoding.UTF8);
-        var content = HtmlContentCoder.Deserialize(html, Path.GetFileName(file));
-        var transformation = content.CreateTransformation("en", "nl");
-        var serialized = transformation.Serialize();
-        serialized = PseudoTranslateXliff(serialized);
-        var deserialized = Transformation.Parse(serialized, Path.GetFileName(file));
-        var target = deserialized.Target();
-        var returned = target.Serialize();
-        DisplayXml(serialized);
-        Console.WriteLine("------");
-        DisplayHtml(returned);
-
-        return (html, content, returned);
-    }
-
-    public string TranslateFile(string fileContent)
-    {
-        // File content can be either HTML or XLIFF (more formats to follow soon)
-        var transformation = Transformation.Parse(fileContent, "transformation.xlf");
-
-        foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
-        {
-            // Implement API calls here
-            segment.SetTarget(segment.GetSource() + " - Translated!"); 
-
-            // More state manipulations can be performed here
-            segment.State = SegmentState.Translated; 
-        }
-        return transformation.Serialize();
-    }
-
-    private string PseudoTranslateXliff(string xliff)
-    {
-        var transformation = Transformation.Parse(xliff, "transformation.xlf");
-        foreach (var segment in transformation.GetSegments())
-        {
-            segment.SetTarget(segment.GetSource() + "TRANSLATED");
-            segment.State = SegmentState.Translated;
-        }
-        return transformation.Serialize();
-    }
-
     [Test]
     public void Is_html()
     {
@@ -92,121 +32,134 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void Empty()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/empty.html");
+        var result = Process("Html/Files/empty.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(0));
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(0));
     }
 
     [Test]
     public void Simple()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/simple.html");
+        var result = Process("Html/Files/simple.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
     }
 
     [Test]
     public void With_br()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/with_br.html");
+        var result = Process("Html/Files/with_br.html");
         
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(1));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(1));
     }
 
     [Test]
     public void Inline_tags()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/inline_tags.html");
+        var result = Process("Html/Files/inline_tags.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(2));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(2));
     }
 
     [Test]
     public void Floating_text()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/floating_text.html");
+        var result = Process("Html/Files/floating_text.html");
       
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
     }
 
     [Test]
     public void Img_alt_text()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/img_alt_text.html");
+        var result = Process("Html/Files/img_alt_text.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
-        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
     }
 
     [Test]
     public void Button_subflows()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/subflows.html");
+        var result = Process("Html/Files/subflows.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
-        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Click here to start!", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Click here to start!", StringComparison.InvariantCultureIgnoreCase)));
     }
 
     [Test]
     public void Img_title_attr()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/img_title_attr.html");
+        var result = Process("Html/Files/img_title_attr.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
-        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("I'm a tooltip", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("I'm a tooltip", StringComparison.InvariantCultureIgnoreCase)));
     }
 
     [Test]
     public void Comments()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/comments.html");
+        var result = Process("Html/Files/comments.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(1));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(1));
     }
 
     [Test]
     public void Script()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/script.html");
+        var result = Process("Html/Files/script.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
-        Assert.IsFalse(content.TextUnits.Any(x => x.GetCodedText().Contains("function", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsFalse(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("function", StringComparison.InvariantCultureIgnoreCase)));
     }
 
     [Test]
     public void Meta_content()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/meta_content.html");
+        var result = Process("Html/Files/meta_content.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
-        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Free Web tutorials", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Free Web tutorials", StringComparison.InvariantCultureIgnoreCase)));
     }
 
     [Test]
     public void Full_example()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/contentful.html");
+        var result = Process("Html/Files/contentful.html");
 
-        HtmlAssert.AreEqual(html, returned);
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
     }
 
     [Test]
     public void Full_translated()
     {
-        var (html, content, returned) = ProcessTarget("Html/Files/contentful.html");
+        var result = Process("Html/Files/contentful.html");
 
-        HtmlAssert.AreNotEqual(html, returned);
+        HtmlAssert.AreNotEqual(result.Original, result.TargetString);
+    }
+
+    [Test]
+    public void To_plaintext()
+    {
+        var original = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
+        var coded = HtmlContentCoder.Deserialize(original, "contentful.html");
+
+        var plaintext = coded.GetPlaintext();
+        Assert.IsNotEmpty(plaintext);
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.WriteLine(plaintext);
     }
 
 }

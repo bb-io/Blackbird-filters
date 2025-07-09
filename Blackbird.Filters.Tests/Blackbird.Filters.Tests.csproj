@@ -69,6 +69,15 @@
     <None Update="Html\Files\simple.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Plaintext\Files\linebreak.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plaintext\Files\paragraphs.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plaintext\Files\simple.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Xliff2\Files\annotations.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

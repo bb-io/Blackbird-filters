@@ -2,6 +2,7 @@
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Tags;
+using System.Net.Mime;
 
 namespace Blackbird.Filters.Content;
 public class CodedContent
@@ -86,7 +87,7 @@ public class CodedContent
                
             }
 
-            unit.Segments = [new Segment(OriginalMediaType) { Source = parts }];
+            unit.Segments = [new Segment(OriginalMediaType) { Source = parts, Ignorable = parts.All(x => string.IsNullOrWhiteSpace(x.Value)) }];
             transformation.Children.Add(unit);
         }
 
@@ -98,15 +99,27 @@ public class CodedContent
         return transformation;
     }
 
+    /// <summary>
+    /// Get the plaintext of originally coded content. Removes all tags and inline codes.
+    /// </summary>
+    /// <returns>The plaintext</returns>
+    public string GetPlaintext()
+    {
+        return string.Join(Environment.NewLine, TextUnits.Select(x => x.GetPlainText()));
+    }
+
     public string Serialize()
     {
-        return HtmlContentCoder.Serialize(this);
+        if (OriginalMediaType == MediaTypeNames.Text.Html)
+        {
+            return HtmlContentCoder.Serialize(this);
+        }
 
-        // Todo: implement further after we have more serializers.
-        //var codeTypes = TextUnits.Select(x => x.CodeType);
-        //if (codeTypes.Any(x => x == CodeType.Html))
-        //{
-        //    return HtmlContentCoder.Serialize(this);
-        //}
+        if (OriginalMediaType == MediaTypeNames.Text.Plain)
+        {
+            return PlaintextContentCoder.Serialize(this);
+        }
+
+        throw new NotImplementedException($"The serializer for ${OriginalMediaType} is not implemented");
     }
 }

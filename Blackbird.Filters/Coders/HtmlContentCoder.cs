@@ -1,6 +1,5 @@
 ﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Content.Tags;
-using Blackbird.Filters.Enums;
 using HtmlAgilityPack;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
