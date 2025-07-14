@@ -27,13 +27,6 @@ public class TextUnit(string reference, string? originalMediaType)
     /// <returns>The plain text without any tags</returns>
     public string GetPlainText()
     {
-        // In HTML white spaces are not semantic.
-        if (OriginalMediaType == MediaTypeNames.Text.Html)
-        {
-            var partsWithTagsAsSpaces = string.Join(string.Empty, Parts.Select(x => x is InlineCode || x is InlineTag ? " " : x.Value));
-            return Regex.Replace(partsWithTagsAsSpaces, @"\s+", " ").Trim();
-        }
-
         return string.Join(string.Empty, Parts.Where(x => x is not InlineCode && x is not InlineTag).Select(x => x.Value));
     }
 
@@ -43,12 +36,6 @@ public class TextUnit(string reference, string? originalMediaType)
     /// <returns>The text including tags</returns>
     public string GetCodedText()
     {
-        if (OriginalMediaType == MediaTypeNames.Text.Html)
-        {
-            var codedText = string.Join(string.Empty, Parts.Select(x => x.Value));
-            return Regex.Replace(codedText, @"\s+", " ").Trim();
-        }
-
         return string.Join(string.Empty, Parts.Select(x => x.Value));
     }
 

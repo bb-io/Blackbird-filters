@@ -39,12 +39,6 @@ public class Segment()
     /// <returns>The source including tags</returns>
     public string GetSource()
     {
-        if (OriginalMediaType == MediaTypeNames.Text.Html)
-        {
-            var codedText = string.Join(string.Empty, Source.Select(x => x.Value));
-            return Regex.Replace(codedText, @"\s+", " ").Trim();
-        }
-
         return string.Join(string.Empty, Source.Select(x => x.Value));
     }
 
@@ -54,12 +48,6 @@ public class Segment()
     /// <returns>The target including tags</returns>
     public string GetTarget()
     {
-        if (OriginalMediaType == MediaTypeNames.Text.Html)
-        {
-            var codedText = string.Join(string.Empty, Target.Select(x => x.Value));
-            return Regex.Replace(codedText, @"\s+", " ").Trim();
-        }
-
         return string.Join(string.Empty, Target.Select(x => x.Value));
     }
 

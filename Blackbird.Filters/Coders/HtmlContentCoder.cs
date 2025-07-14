@@ -147,7 +147,7 @@ public static class HtmlContentCoder
         {
             if (child.NodeType == HtmlNodeType.Text)
             {
-                parts.Add(new TextPart { Value = child.GetFormatFreeText() });
+                parts.Add(new TextPart { Value = child.InnerText });
             }
             else if (child.NodeType == HtmlNodeType.Element)
             {
