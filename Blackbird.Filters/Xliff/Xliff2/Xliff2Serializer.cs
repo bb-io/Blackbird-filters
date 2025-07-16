@@ -23,7 +23,7 @@ public static class Xliff2Serializer
         }
 
         var ns = xliffNode.GetDefaultNamespace();
-        var sourceLanguage = xliffNode.Get("srcLang", Optionality.Required)!;
+        var sourceLanguage = xliffNode.Get("srcLang");
         var targetLanguage = xliffNode.Get("trgLang");
         var whiteSpaceHandling = xliffNode.GetWhiteSpaceHandling();
         
@@ -383,7 +383,6 @@ public static class Xliff2Serializer
             return transformation;
         }
 
-        
         var files = xliffNode.Elements(ns + "file").Select(DeserializeTransformation);
         var metadata = DeserializeMetadata(xliffNode.Element(MetaNs + "metadata"));
         Transformation transformation;
