@@ -9,6 +9,7 @@ public static class Meta
     public static class Types
     {
         public const string OriginalMediaType = "original-media-type";
+        public const string OriginalName = "original-name";
     }
     
 }

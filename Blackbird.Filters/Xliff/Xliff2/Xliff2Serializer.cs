@@ -1,10 +1,8 @@
-﻿using Blackbird.Filters.Constants;
-using Blackbird.Filters.Content;
+﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
-using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Xml;
@@ -13,7 +11,6 @@ using System.Xml.Linq;
 namespace Blackbird.Filters.Xliff.Xliff2;
 public static class Xliff2Serializer
 {
-    private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
     private static readonly XNamespace MetaNs = "urn:oasis:names:tc:xliff:metadata:2.0";
 
     public static Transformation Deserialize(string fileContent)
@@ -103,7 +100,7 @@ public static class Xliff2Serializer
                 };
 
                 unit.Other.AddRange(node.Elements().GetRemaining([ns + "originalData", ns + "notes", ns + "segment", ns + "ignorable", MetaNs + "metadata"]));
-                unit.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir", BlackbirdNs + "tagHandling"]));
+                unit.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir"]));
 
                 Dictionary<string, XElement> data = node.Element(ns + "originalData")?.Elements()?.ToDictionary(x => x.Get("id", Optionality.Required)!, x => x) ?? [];
 
@@ -203,9 +200,7 @@ public static class Xliff2Serializer
                         {
                             if (lineNode is XText textNode)
                             {
-                                var value = textNode.Value;
-                                if (whiteSpaceHandling != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.Trim();
-                                parts.Add(new TextPart { Value = value });
+                                parts.Add(new TextPart { Value = textNode.Value });
                                 continue;
                             }
 

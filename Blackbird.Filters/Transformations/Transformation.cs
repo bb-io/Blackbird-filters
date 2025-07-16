@@ -1,7 +1,6 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Constants;
 using Blackbird.Filters.Content;
-using Blackbird.Filters.Enums;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
 using System.Text;
@@ -34,6 +33,28 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
             }            
         }
     }
+
+    public string? OriginalName
+    {
+        get
+        {
+            return MetaData.FirstOrDefault(x => x.Category.Contains(Meta.Categories.Blackbird) && x.Type == Meta.Types.OriginalName)?.Value;
+        }
+        internal set
+        {
+            var existingFilename = MetaData.FirstOrDefault(x => x.Category.Contains(Meta.Categories.Blackbird) && x.Type == Meta.Types.OriginalName);
+            if (value is null && existingFilename is not null)
+            {
+                MetaData.Remove(existingFilename);
+            }
+
+            if (value is not null)
+            {
+                MetaData.Add(new Metadata(Meta.Types.OriginalName, value) { Category = [Meta.Categories.Blackbird] });
+            }
+        }
+    }
+
     public IEnumerable<XElement> SkeletonOther { get; set; } = [];
     public string? ExternalReference { get; set; }
     public List<Node> Children { get; set; } = [];
@@ -43,7 +64,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     /// <summary>
     /// Appropriate file name if this was saved as a serialized file.
     /// </summary>
-    public string XliffFileName { get => _xliffFileName ?? ((OriginalReference ?? "transformation") + ".xlf"); set => _xliffFileName = value; }
+    public string XliffFileName { get => _xliffFileName ?? ((OriginalName ?? OriginalReference ?? "transformation") + ".xlf"); set => _xliffFileName = value; }
 
     public IEnumerable<Unit> GetUnits()
     {
@@ -84,7 +105,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public CodedContent Source()
     {
         if (Original is null) throw new Exception("Cannot convert to content, no original data found");
-        var codedContent = new CodedContent(OriginalReference ?? "transformation", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
+        var codedContent = new CodedContent(OriginalName ?? OriginalReference ?? "transformation.txt", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         foreach (var unit in GetUnits().Where(x => x.Name is not null))
         {
             var textUnit = new TextUnit(unit.Name!, OriginalMediaType)
@@ -99,7 +120,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public CodedContent Target()
     {
         if (Original is null) throw new Exception("Cannot convert to content, no original data found");
-        var codedContent = new CodedContent(OriginalReference ?? "transformation", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
+        var codedContent = new CodedContent(OriginalName ?? OriginalReference ?? "transformation.txt", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         foreach(var unit in GetUnits().Where(x => x.Name is not null))
         {
             var textUnit = new TextUnit(unit.Name!, OriginalMediaType)

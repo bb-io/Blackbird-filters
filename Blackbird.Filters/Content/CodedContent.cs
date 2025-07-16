@@ -39,7 +39,7 @@ public class CodedContent
         var transformation = new Transformation(sourceLanguage, targetLanguage) 
         { 
             Original = Original, 
-            OriginalReference = OriginalName, 
+            OriginalName = OriginalName, 
             OriginalMediaType = OriginalMediaType 
         };
 
