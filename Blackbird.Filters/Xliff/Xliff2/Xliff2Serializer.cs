@@ -1,5 +1,6 @@
 ﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
@@ -144,7 +145,7 @@ public static class Xliff2Serializer
                                     if (lineNode is XText textNode && !string.IsNullOrWhiteSpace(textNode.Value))
                                     {
                                         var value = textNode.Value;
-                                        if (dataElement.GetWhiteSpaceHandling(WhiteSpaceHandling.Preserve) != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.Trim();
+                                        if (dataElement.GetWhiteSpaceHandling(WhiteSpaceHandling.Preserve) != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting().Trim();
                                         result += value;
                                         continue;
                                     }
@@ -201,7 +202,9 @@ public static class Xliff2Serializer
                         {
                             if (lineNode is XText textNode)
                             {
-                                parts.Add(new TextPart { Value = textNode.Value });
+                                var value = textNode.Value;
+                                if (whiteSpaceHandling != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting().Trim();
+                                parts.Add(new TextPart { Value = value });
                                 continue;
                             }
 

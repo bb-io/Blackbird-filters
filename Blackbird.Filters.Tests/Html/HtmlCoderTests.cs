@@ -40,6 +40,16 @@ public class HtmlCoderTests : TestBase
     }
 
     [Test]
+    public void Ide_formatting()
+    {
+        var result = Process("Html/Files/ide_formatting.html");
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.All(x => !x.GetCodedText().Contains("\r\n")), "Unit contains newlines");
+        Assert.That(result.Source.TextUnits.All(x => x.GetCodedText()[0] != ' '), "First character is a space");
+    }
+
+    [Test]
     public void Simple()
     {
         var result = Process("Html/Files/simple.html");
@@ -55,6 +65,15 @@ public class HtmlCoderTests : TestBase
         
         HtmlAssert.AreEqual(result.Original, result.SourceString);
         Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void With_lang()
+    {
+        var result = Process("Html/Files/with_lang.html");
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.Language == "en");
     }
 
     [Test]

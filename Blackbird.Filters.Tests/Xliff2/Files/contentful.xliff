@@ -282,17 +282,15 @@
     </unit>
     <unit name="/html[1]/body[1]/div[3]/div[1]/p[5]" id="u10">
       <originalData>
-        <data id="d1">&lt;span&gt;&lt;/span
-          &gt;</data>
+        <data id="d1">&lt;span&gt;&lt;/span&gt;</data>
         <data id="d2">&lt;a id="embedded-entry-inline_3MvZ2M38zOBdztgQJAzw0B" href="https://app.contentful.com/spaces/12ktqqmw656e/entries/3MvZ2M38zOBdztgQJAzw0B"&gt;&lt;/a&gt;</data>
-        <data id="d3">&lt;span&gt;&lt;/span&gt;</data>
       </originalData>
       <segment id="10" state="translated">
         <source>
-          <ph id="1" dataRef="d1" /><ph id="2" dataRef="d2" /><ph id="3" dataRef="d3" />
+          <ph id="1" dataRef="d1" /><ph id="2" dataRef="d2" /><ph id="3" dataRef="d1" />
         </source>
         <target>
-          <ph id="1" dataRef="d1" /><ph id="2" dataRef="d2" /><ph id="3" dataRef="d3" />
+          <ph id="1" dataRef="d1" /><ph id="2" dataRef="d2" /><ph id="3" dataRef="d1" />
         </target>
       </segment>
     </unit>

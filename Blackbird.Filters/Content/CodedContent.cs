@@ -34,13 +34,25 @@ public class CodedContent
     /// </summary>
     public List<TextUnit> TextUnits { get; internal set; } = [];
 
-    public Transformation CreateTransformation(string? sourceLanguage = null, string? targetLanguage = null)
+    /// <summary>
+    /// The language (code) represented in this file
+    /// </summary>
+    public string? Language { get; set; }
+
+    /// <summary>
+    /// A unique identifier to the content in the real world, this can be a content ID, or content ID + organizational information. 
+    /// It can also include the language code, as long as it is unique across content and languages across users.
+    /// </summary>
+    public string? UniqueContentId { get; set; }
+
+    public Transformation CreateTransformation(string? targetLanguage = null)
     {
-        var transformation = new Transformation(sourceLanguage, targetLanguage) 
+        var transformation = new Transformation(Language, targetLanguage) 
         { 
             Original = Original, 
             OriginalName = OriginalName, 
-            OriginalMediaType = OriginalMediaType 
+            OriginalMediaType = OriginalMediaType,
+            UniqueSourceContentId = UniqueContentId,
         };
 
         var unitReferences = new Dictionary<InlineTag, List<TextUnit>>();
@@ -121,5 +133,21 @@ public class CodedContent
         }
 
         throw new NotImplementedException($"The serializer for ${OriginalMediaType} is not implemented");
+    }
+
+    public static CodedContent Parse(string content, string fileName)
+    {
+        if (HtmlContentCoder.IsHtml(content))
+        {
+            return HtmlContentCoder.Deserialize(content, fileName);
+        }
+        else if (PlaintextContentCoder.IsPlaintext(content))
+        {
+            return PlaintextContentCoder.Deserialize(content, fileName);
+        }
+        else
+        {
+            throw new Exception("This file format is not supported by this library.");
+        }
     }
 }
