@@ -4,6 +4,7 @@ using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
 using System.Data;
+using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -875,7 +876,7 @@ public static class Xliff2Serializer
             }
 
             var version = xliffNode.Get("version", Optionality.Required)!;
-            return float.Parse(version) > 2;
+            return float.Parse(version, CultureInfo.InvariantCulture) > 2;
         }
         catch (Exception)
         {
