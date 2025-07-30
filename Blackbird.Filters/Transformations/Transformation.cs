@@ -16,13 +16,13 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public string? OriginalMediaType
     {
         get => GetBlackbirdMetadata(Meta.Types.OriginalMediaType);
-        internal set => SetBlackbirdMetadata(Meta.Types.OriginalMediaType, value);        
+        set => SetBlackbirdMetadata(Meta.Types.OriginalMediaType, value);        
     }
 
     public string? OriginalName
     {
         get => GetBlackbirdMetadata(Meta.Types.OriginalName);
-        internal set => SetBlackbirdMetadata(Meta.Types.OriginalName, value);        
+        set => SetBlackbirdMetadata(Meta.Types.OriginalName, value);        
     }
 
     public IEnumerable<XElement> SkeletonOther { get; set; } = [];
@@ -39,13 +39,13 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public string? UniqueSourceContentId
     {
         get => GetBlackbirdMetadata(Meta.Types.SourceUniqueContentId);
-        internal set => SetBlackbirdMetadata(Meta.Types.SourceUniqueContentId, value);
+        set => SetBlackbirdMetadata(Meta.Types.SourceUniqueContentId, value);
     }
 
     public string? UniqueTargetContentId
     {
         get => GetBlackbirdMetadata(Meta.Types.TargetUniqueContentId);
-        internal set => SetBlackbirdMetadata(Meta.Types.TargetUniqueContentId, value);
+        set => SetBlackbirdMetadata(Meta.Types.TargetUniqueContentId, value);
     }
 
     private string? GetBlackbirdMetadata(string type)
