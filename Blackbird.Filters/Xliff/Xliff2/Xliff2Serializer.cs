@@ -145,7 +145,7 @@ public static class Xliff2Serializer
                                     if (lineNode is XText textNode && !string.IsNullOrWhiteSpace(textNode.Value))
                                     {
                                         var value = textNode.Value;
-                                        if (dataElement.GetWhiteSpaceHandling(WhiteSpaceHandling.Preserve) != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting().Trim();
+                                        if (dataElement.GetWhiteSpaceHandling(WhiteSpaceHandling.Preserve) != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting();
                                         result += value;
                                         continue;
                                     }
@@ -203,7 +203,7 @@ public static class Xliff2Serializer
                             if (lineNode is XText textNode)
                             {
                                 var value = textNode.Value;
-                                if (whiteSpaceHandling != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting().Trim();
+                                if (whiteSpaceHandling != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting();
                                 parts.Add(new TextPart { Value = value });
                                 continue;
                             }

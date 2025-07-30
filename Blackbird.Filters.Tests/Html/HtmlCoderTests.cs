@@ -59,6 +59,16 @@ public class HtmlCoderTests : TestBase
     }
 
     [Test]
+    public void Inline_spaces()
+    {
+        var result = Process("Html/Files/inline_spaces.html");
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.TargetString.Contains("My "), "Inline spaces are not preserved");
+        Assert.That(!result.TargetString.Contains(" My"), "Outline spaces are preserved");
+    }
+
+    [Test]
     public void With_br()
     {
         var result = Process("Html/Files/with_br.html");

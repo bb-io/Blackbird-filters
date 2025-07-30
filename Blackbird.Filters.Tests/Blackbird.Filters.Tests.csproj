@@ -69,6 +69,9 @@
     <None Update="Html\Files\ide_formatting.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Html\Files\inline_spaces.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Html\Files\subflows.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
