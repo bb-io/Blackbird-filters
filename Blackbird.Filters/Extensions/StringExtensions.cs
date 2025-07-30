@@ -19,7 +19,7 @@ public static class StringExtensions
         if (string.IsNullOrWhiteSpace(s))
             return string.Empty;
 
-        var result = Regex.Replace(s, @"\r\n?|\n|\t", string.Empty);
+        var result = Regex.Replace(s, @"\r\n?|\n|\t", " ");
         result = Regex.Replace(result, @" {2,}", " ");
 
         return result;

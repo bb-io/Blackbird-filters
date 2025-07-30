@@ -11,7 +11,7 @@ public abstract class TestBase
 {
     protected void Display(object? value)
     {
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8;
         var settings = new JsonSerializerSettings()
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -30,6 +30,7 @@ public abstract class TestBase
 
     protected void DisplayXml(string rawXml)
     {
+        Console.OutputEncoding = Encoding.UTF8;
         Console.WriteLine(rawXml);
     }
 
@@ -37,7 +38,6 @@ public abstract class TestBase
     {
         var original = File.ReadAllText(filePath, Encoding.UTF8);
         var transformation = Transformation.Parse(original, Path.GetFileName(filePath));
-        //transformation.SourceLanguage = "en";
         transformation.TargetLanguage = "nl";
 
         var source = transformation.Source();
