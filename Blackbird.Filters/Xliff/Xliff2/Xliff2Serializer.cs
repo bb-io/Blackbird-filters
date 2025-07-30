@@ -322,6 +322,12 @@ public static class Xliff2Serializer
                             }
                         }
 
+                        if (parts.Count > 0)
+                        {
+                            parts[0].Value = parts[0].Value.TrimStart();
+                            parts[parts.Count - 1].Value = parts[parts.Count - 1].Value.TrimEnd();
+                        }
+
                         return parts;
                     }
 
