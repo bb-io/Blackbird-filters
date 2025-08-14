@@ -14,6 +14,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/allExtensions.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -26,6 +27,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/almostEmpty.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -38,6 +40,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/emptySkeletonWithHref.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -50,6 +53,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/everything-core.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -62,6 +66,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/nonEmptySkeletonWithoutHref.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -74,6 +79,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/sample1.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -86,6 +92,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/sourceOnly.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -98,6 +105,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/testTranslateWithTarget.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -110,6 +118,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/toJoin.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -122,6 +131,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/toSegment.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -134,6 +144,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/toSegmentAndOrder.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -146,6 +157,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/typeSubTypeValues.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -158,6 +170,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withCDataSections.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -170,6 +183,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withCommentAnnotations.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -182,6 +196,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withGlossary.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -194,6 +209,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withMatches.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -206,6 +222,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withModulesAttributesInEc.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -218,6 +235,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withNotes.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -230,6 +248,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withNotes_complex.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -242,6 +261,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withReferences.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -254,6 +274,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withReorderedCodes.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -266,6 +287,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withTBXExtension.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -278,6 +300,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withValidation.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -290,6 +313,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withXmlLang.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);
@@ -302,6 +326,7 @@ public class Xliff2And12InteroperabilityTests : TestBase
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/withXmlSpace.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var xliff12 = Xliff12Serializer.Serialize(content);
+        DisplayXml(xliff12);
         var back = Xliff12Serializer.Deserialize(xliff12);
         var returned = Xliff2Serializer.Serialize(back);
         DisplayXml(returned);

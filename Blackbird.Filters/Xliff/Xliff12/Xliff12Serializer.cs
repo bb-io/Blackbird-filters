@@ -6,6 +6,7 @@ using Blackbird.Filters.Transformations.Tags;
 using System.Text;
 using System.Xml.Linq;
 using Blackbird.Filters.Xliff.Xliff2;
+using System.Reflection.PortableExecutable;
 
 namespace Blackbird.Filters.Xliff.Xliff12;
 
@@ -60,9 +61,7 @@ public static class Xliff12Serializer
             {
                 if (node is XElement childElement)
                 {
-                    var clonedChild = CloneWithNamespace(childElement);
-                    if (clonedChild != null)
-                        newElement.Add(clonedChild);
+                    newElement.Add(CloneWithNamespace(childElement));
                 }
                 else if (node is XText textNode)
                 {
@@ -234,6 +233,27 @@ public static class Xliff12Serializer
             {
                 root.Add(SerializeFile(file));
             }
+        }
+    }
+
+    private static IEnumerable<XElement> SerializeNotes(List<Note> notes)
+    {
+        foreach (var note in notes)
+        {
+            var noteElement = new XElement(XliffNs + "note", note.Text);
+            noteElement.Set("id", note.Id);
+            noteElement.SetInt("priority", note.Priority);
+            noteElement.Set(BlackbirdNs + "category", note.Category);
+            noteElement.Set(BlackbirdNs + "reference", note.Reference);
+            noteElement.SetLanguageTarget(BlackbirdNs + "languageTarget", note.LanguageTarget);
+            foreach (var attr in note.Other)
+            {
+                if (!attr.IsNamespaceDeclaration)
+                {
+                    noteElement.SetAttributeValue(attr.Name, attr.Value);
+                }
+            }
+            yield return noteElement;
         }
     }
 
@@ -555,8 +575,7 @@ public static class Xliff12Serializer
                 else if (!processedParts.Contains(tag))
                 {
                     var phElement = new XElement(XliffNs + "ph");
-                    if (!string.IsNullOrEmpty(tag.Id))
-                        phElement.SetAttributeValue("id", tag.Id);
+                    phElement.Set("id", tag.Id);
 
                     foreach (var attr in tag.Other.OfType<XAttribute>())
                     {
@@ -572,15 +591,21 @@ public static class Xliff12Serializer
             }
             else if (part is AnnotationStart anno)
             {
-                if (anno.WellFormed && anno.EndAnnotationReference != null)
+                var mrkElement = new XElement(XliffNs + "mrk");
+
+                mrkElement.Set("mid", anno.Id);
+                mrkElement.SetBool(BlackbirdNs + "translate", anno.Translate);
+                mrkElement.Set(BlackbirdNs + "ref", anno.Ref);
+                mrkElement.Set(BlackbirdNs + "value", anno.AttributeValue);
+                mrkElement.Add(anno.Other);
+                mrkElement.Set("mtype", anno.Type);
+
+                if (!anno.WellFormed)
                 {
-                    var mrkElement = new XElement(XliffNs + "mrk");
-
-                    if (!string.IsNullOrEmpty(anno.Id))
-                        mrkElement.SetAttributeValue("mid", anno.Id);
-
-                    mrkElement.SetAttributeValue("mtype", !string.IsNullOrEmpty(anno.Type) ? anno.Type : "x-annotation");
-
+                    mrkElement.Set(BlackbirdNs + "position", "x-start");
+                }
+                else if (anno.EndAnnotationReference is not null)
+                {
                     int startIndex = parts.IndexOf(anno);
                     int endIndex = parts.IndexOf(anno.EndAnnotationReference);
                     if (startIndex != -1 && endIndex != -1 && startIndex < endIndex)
@@ -595,18 +620,71 @@ public static class Xliff12Serializer
                         }
                     }
 
-                    element.Add(mrkElement);
                     processedParts.Add(anno);
                     processedParts.Add(anno.EndAnnotationReference);
                 }
+
+                element.Add(mrkElement);
+
+            }
+            else if (part is AnnotationEnd endAnno)
+            {
+                var mrkElement = new XElement(XliffNs + "mrk");
+                mrkElement.Set(BlackbirdNs + "position", "x-end");
+
+                if (endAnno.StartAnnotationReference is not null)
+                {
+                    mrkElement.Set(BlackbirdNs + "start-ref", endAnno.StartAnnotationReference.Id);
+                }
+                element.Add(mrkElement);
             }
             else if (!(part is AnnotationEnd) && !processedParts.Contains(part))
             {
-                element.Add(part.Value);
+                element.Add(ReplaceInvalidXmlChars(part.Value));
             }
         }
 
         return element;
+    }
+
+    private static IEnumerable<XNode> ReplaceInvalidXmlChars(string input)
+    {
+        var nodes = new List<XNode>();
+        var textBuf = new StringBuilder();
+
+        for (int i = 0; i < input.Length; i++)
+        {
+            int cp = char.ConvertToUtf32(input, i);
+
+            bool valid =
+                   cp == 0x9 || cp == 0xA || cp == 0xD ||
+                  (cp >= 0x20 && cp <= 0xD7FF) ||
+                  (cp >= 0xE000 && cp <= 0xFFFD) ||
+                  (cp >= 0x10000 && cp <= 0x10FFFF);
+
+            if (valid)
+            {
+                textBuf.Append(char.ConvertFromUtf32(cp));
+            }
+            else
+            {
+                FlushText();
+                // Todo: this ph needs an id
+                nodes.Add(new XElement(XliffNs + "ph", new XAttribute(BlackbirdNs + "x-hex", cp.ToString("X4"))));
+            }
+
+            if (char.IsHighSurrogate(input[i])) i++;
+        }
+
+        FlushText();
+        return nodes;
+
+        void FlushText()
+        {
+            if (textBuf.Length == 0) return;
+            nodes.Add(new XText(textBuf.ToString()));
+            textBuf.Clear();
+        }
     }
 
     public static Transformation Deserialize(string fileContent)
@@ -676,18 +754,7 @@ public static class Xliff12Serializer
                 }
             }
 
-            foreach (var note in header.Elements(XliffNs + "note"))
-            {
-                fileTransformation.Notes.Add(new Note(note.Value)
-                {
-                    Id = note.Get("id"),
-                    Priority = note.GetInt("priority"),
-                    Category = note.Get(BlackbirdNs + "category"),
-                    Reference = note.Get(BlackbirdNs + "reference"),
-                    LanguageTarget = note.GetLanguageTarget(BlackbirdNs + "languageTarget"),
-                    Other = note.Attributes().GetRemaining(["id", "priority"]).Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList()
-                });
-            }
+            fileTransformation.Notes = DeserializeNotes(header.Elements(XliffNs + "note"));
 
             foreach (var note in header.Elements().Where(x => x.Name.LocalName != "note" && x.Name.LocalName != "skl"))
             {
@@ -702,6 +769,24 @@ public static class Xliff12Serializer
         }
 
         return fileTransformation;
+    }
+
+    private static List<Note> DeserializeNotes(IEnumerable<XElement> elements)
+    {
+        var notes = new List<Note>();
+        foreach (var note in elements)
+        {
+            notes.Add(new Note(note.Value)
+            {
+                Id = note.Get("id"),
+                Priority = note.GetInt("priority"),
+                Category = note.Get(BlackbirdNs + "category"),
+                Reference = note.Get(BlackbirdNs + "reference"),
+                LanguageTarget = note.GetLanguageTarget(BlackbirdNs + "languageTarget"),
+                Other = note.Attributes().GetRemaining(["id", "priority", "category", "reference"]).Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList()
+            });
+        }
+        return notes;
     }
 
     private static void ProcessBodyContent(XElement body, Node parent)
@@ -881,13 +966,7 @@ public static class Xliff12Serializer
                     unit.Segments.Add(segment);
                 }
 
-                foreach (var note in element.Elements(XliffNs + "note"))
-                {
-                    unit.Notes.Add(new Note(note.Value)
-                    {
-                        Id = note.Get("id")
-                    });
-                }
+                unit.Notes = DeserializeNotes(element.Elements(XliffNs + "note"));
 
                 if (parent is Group parentGroup)
                     parentGroup.Children.Add(unit);
@@ -994,18 +1073,51 @@ public static class Xliff12Serializer
                     var mtype = childElement.Get("mtype");
                     if (mtype != "seg") // Skip segmentation marks
                     {
-                        var annotation = new AnnotationStart(true)
+                        var type = childElement.Get("type");
+                        var position = childElement.Get(BlackbirdNs + "position");
+                        if (position == "x-start")
                         {
-                            Id = childElement.Get("mid") ?? idGenerator(null),
-                            Type = mtype
-                        };
+                            var annotation = new AnnotationStart(false)
+                            {
+                                Id = childElement.Get("mid") ?? idGenerator(null),
+                                Type = mtype,
+                                Translate = childElement.GetBool(BlackbirdNs + "translate"),
+                                Ref = childElement.Get(BlackbirdNs + "ref"),
+                                AttributeValue = childElement.Get(BlackbirdNs + "value"),
+                                Other = childElement.Attributes().GetRemaining(["mid", BlackbirdNs + "translate", "mtype", BlackbirdNs + "value", BlackbirdNs + "ref", BlackbirdNs + "position"]),
+                            };
+                            parts.Add(annotation);
+                        }
+                        else if (position == "x-end")
+                        {
+                            var startRef = childElement.Get(BlackbirdNs + "start-ref", Optionality.Required);
+                            var matchingStartAnnotation = parts.OfType<AnnotationStart>().FirstOrDefault(x => x.Id == startRef);
+                            var annotation = new AnnotationEnd()
+                            {
+                                StartAnnotationReference = matchingStartAnnotation
+                            };
+                            parts.Add(annotation);
+                        }
+                        else
+                        {
+                            var annotation = new AnnotationStart(true)
+                            {
+                                Id = childElement.Get("mid") ?? idGenerator(null),
+                                Type = mtype,
+                                Translate = childElement.GetBool(BlackbirdNs + "translate"),
+                                Ref = childElement.Get(BlackbirdNs + "ref"),
+                                AttributeValue = childElement.Get(BlackbirdNs + "value"),
+                                Other = childElement.Attributes().GetRemaining(["mid", BlackbirdNs + "translate", "mtype", BlackbirdNs + "value", BlackbirdNs + "ref", BlackbirdNs + "position"]),
+                            };
 
-                        var endAnnotation = new AnnotationEnd { StartAnnotationReference = annotation };
-                        annotation.EndAnnotationReference = endAnnotation;
+                            var endAnnotation = new AnnotationEnd { StartAnnotationReference = annotation };
+                            annotation.EndAnnotationReference = endAnnotation;
 
-                        parts.Add(annotation);
-                        parts.AddRange(ExtractTextParts(childElement));
-                        parts.Add(endAnnotation);
+                            parts.Add(annotation);
+                            parts.AddRange(ExtractTextParts(childElement));
+                            parts.Add(endAnnotation);
+                        }
+                        
                     }
                 }
                 else
