@@ -1,0 +1,149 @@
+﻿<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:bb="urn:blackbird:xliff:document:1.2">
+    <file id="f1" original="test-1.html" source-language="en" target-language="fr" datatype="html" tool-id="blackbird" date="2025-08-13T09:36:00Z" 
+          xml:space="preserve" category="general" product-name="blackbird-filters" product-version="1.0.0" build-num="1">
+        <header>
+            <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
+            <note xml:lang="en" from="author" priority="2" annotates="general">Basic set of trans-unit segments (IDs 0–3)</note>
+            <skl>
+                <internal-file form="base64">PGh0bWw+PGhlYWQ+PHRpdGxlPkV4YW1wbGUgRG9jdW1lbnQ8L3RpdGxlPjwvaGVhZD48Ym9keT4KPHA+VGhpcyBpcyBhbiBleGFtcGxlIHRleHQuPC9wPgo8L2JvZHk+PC9odG1sPg==</internal-file>
+            </skl>
+            <phase-group>
+                <phase phase-name="Translation" process-name="translate" company-name="blackbird" tool-id="Xliff12Tester" contact-email="support@blackbird.io">
+                    <note>Translation phase for the first file</note>
+                </phase>
+            </phase-group>
+        </header>
+        <body>
+            <group id="group-1" datatype="html" xml:space="preserve" ts="1251" restype="edit" resname="EditBox" extradata="BlackbirdExtra" 
+                   help-id="21" menu="menu1" menu-option="1" menu-name="TestName" translate="yes" reformat="no" merged-trans="no">
+                <context-group crc="2189364a-b225" name="Blackbird Database" purpose="information">
+                    <context context-type="database" match-mandatory="yes" crc="ce4a9e7add87">She let the balloon float up into the air with her hopes and dreams.</context>
+                    <context context-type="product" match-mandatory="no" crc="be3a9e7acd17">The sign said there was road work ahead so he decided to speed up.</context>
+                </context-group>
+                <count-group name="Blackbird count">
+                    <count count-type="total" phase-name="Translation" unit="word">520</count>
+                    <count count-type="num-usages" phase-name="Translation" unit="item">14</count>
+                </count-group>
+                <prop-group name="Blackbird properties">
+                    <prop prop-type="blackbird" xml:lang="en">
+                        <value>Blackbird Value</value>
+                    </prop>
+                </prop-group>
+                <note xml:lang="en" from="reviewer" priority="8" annotates="general">This is a note for the group, providing additional context or instructions.</note>
+
+                <trans-unit id="0" approved="yes" translate="no" reformat="no" xml:space="default" datatype="html" extradata="BlackbirdExtra" maxwidth="200">
+                    <source>First sentence. Second sentence.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">First sentence.</mrk>
+                        <mrk mtype="seg" mid="2">Second sentence.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Première phrase.</mrk>
+                        <mrk mtype="seg" mid="2">Deuxième phrase.</mrk>
+                    </target>
+
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="paragraph" match-mandatory="no">Two short declarative sentences.</context>
+                        <context context-type="source-string" match-mandatory="yes">First sentence. Second sentence.</context>
+                        <context context-type="target-locale" match-mandatory="no">fr-FR</context>
+                    </context-group>
+
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">4</count>
+                        <count count-type="num-segments" phase-name="Authoring" unit="item">2</count>
+                        <count count-type="num-sentences" phase-name="Authoring" unit="item">2</count>
+                    </count-group>
+
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">General</prop>
+                        <prop prop-type="audience" xml:lang="en">End users</prop>
+                        <prop prop-type="register" xml:lang="en">Neutral</prop>
+                        <prop prop-type="blackbird" xml:lang="en">
+                            <value>tu:0|src:en-US|tgt:fr-FR</value>
+                        </prop>
+                    </prop-group>
+
+                    <note xml:lang="en" from="reviewer" priority="5" annotates="general">Keep the simple, declarative tone. Ensure sentence boundaries remain aligned 1:1 with the source.</note>
+
+                    <alt-trans mid="1" match-quality="0.92" origin="TM">
+                        <source>First sentence.</source>
+                        <target>Première phrase.</target>
+                        <prop-group>
+                            <prop prop-type="segment-id">1</prop>
+                        </prop-group>
+                    </alt-trans>
+                    <alt-trans mid="2" match-quality="0.90" origin="MT">
+                        <source>Second sentence.</source>
+                        <target>Deuxième phrase.</target>
+                        <prop-group>
+                            <prop prop-type="segment-id">2</prop>
+                        </prop-group>
+                    </alt-trans>
+
+                    <bb:metadata bb:tu="0">
+                        <bb:confidence>0.98</bb:confidence>
+                        <bb:reviewed>false</bb:reviewed>
+                        <bb:tags>
+                            <bb:tag>demo</bb:tag>
+                            <bb:tag>short-text</bb:tag>
+                        </bb:tags>
+                    </bb:metadata>
+                </trans-unit>
+                <trans-unit id="1" approved="no" translate="yes" reformat="yes">
+                    <source>Source 1</source>
+                    <target>Target 1</target>
+                </trans-unit>
+                <trans-unit id="2" reformat="yes">
+                    <source>Source 2</source>
+                    <target>Target 2</target>
+                </trans-unit>
+                <trans-unit id="3">
+                    <source>Source 3</source>
+                    <target>Target 3</target>
+                </trans-unit>
+            </group>
+        </body>
+    </file>
+    <file id="f2" original="test-2.html" source-language="en" target-language="fr" datatype="html">
+        <header>
+            <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
+            <prop-group>
+                <prop prop-type="category">Regrouped</prop>
+            </prop-group>
+            <note>Grouped trans-units (IDs 4–9)</note>
+            <skl>
+                <external-file uid="3BB236513BB24732" href="Graphic Example.psd.skl"/>
+            </skl>
+        </header>
+        <body>
+            <group id="grp-test-2" translate="no">
+                <note>This group contains six trans-units for extended testing.</note>
+                <trans-unit id="4">
+                    <source>Source 4</source>
+                    <target>Target 4</target>
+                    <note>Check round-trip integrity for unit 4</note>
+                </trans-unit>
+                <trans-unit id="5">
+                    <source>Source 5</source>
+                    <target>Target 5</target>
+                </trans-unit>
+                <trans-unit id="6">
+                    <source>Source 6</source>
+                    <target>Target 6</target>
+                </trans-unit>
+                <trans-unit id="7">
+                    <source>Source 7</source>
+                    <target>Target 7</target>
+                </trans-unit>
+                <trans-unit id="8">
+                    <source>Source 8</source>
+                    <target>Target 8</target>
+                </trans-unit>
+                <trans-unit id="9">
+                    <source>Source 9</source>
+                    <target>Target 9</target>
+                </trans-unit>
+            </group>
+        </body>
+    </file>
+</xliff>

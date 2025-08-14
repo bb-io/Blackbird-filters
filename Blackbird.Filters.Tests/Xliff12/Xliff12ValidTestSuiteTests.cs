@@ -175,6 +175,21 @@ public class Xliff12ValidTestSuiteTests : HtmlTestBase
         // Assert
         XmlAssert.AreEqual(xliff, returned);
     }
+
+    [Test]
+    public void EverythingCore()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff12/Files/everythingCore.xliff", Encoding.UTF8);
+        
+        // Act
+        var content = Xliff12Serializer.Deserialize(xliff);
+        var returned = Xliff12Serializer.Serialize(content);
+        DisplayXml(returned);
+        
+        // Assert
+        //XmlAssert.AreEqual(xliff, returned);
+    }
     
     [Test]
     public void ContentfulTo12()

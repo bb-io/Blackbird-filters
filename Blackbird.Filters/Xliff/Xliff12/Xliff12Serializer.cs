@@ -38,7 +38,9 @@ public static class Xliff12Serializer
                 return element;
             }
             
+            // Preserve elements that are already in a non-empty namespace (like BlackbirdNs)
             var newElement = new XElement(
+                element.Name.Namespace != XNamespace.None && !element.Name.LocalName.StartsWith("xliff:") ? element.Name :
                 element.Name.LocalName.StartsWith("xliff:") ? element.Name : 
                 XliffNs + element.Name.LocalName);
 
@@ -50,7 +52,7 @@ public static class Xliff12Serializer
                 if (attr.Name.Namespace == XNamespace.None || attr.Name.Namespace == XNamespace.Xmlns)
                     newElement.SetAttributeValue(attr.Name, attr.Value);
                 else
-                    newElement.SetAttributeValue(XliffNs + attr.Name.LocalName, attr.Value);
+                    newElement.SetAttributeValue(attr.Name, attr.Value);
             }
 
             // Process child nodes recursively
@@ -114,6 +116,69 @@ public static class Xliff12Serializer
                 }
             }
 
+            if (!string.IsNullOrEmpty(file.Original) || !string.IsNullOrEmpty(file.OriginalReference))
+            {
+                var skeleton = new XElement(XliffNs + "skl");
+
+                if (!string.IsNullOrEmpty(file.OriginalReference))
+                {
+                    var externalFile = new XElement(XliffNs + "external-file",
+                        new XAttribute("href", file.OriginalReference));
+                    
+                    var externalFileAttrs = file.SkeletonOther.OfType<XElement>()
+                        .FirstOrDefault(x => x.Name.LocalName == "external-file")?.Attributes();
+                    
+                    if (externalFileAttrs != null)
+                    {
+                        foreach (var attr in externalFileAttrs)
+                        {
+                            if (attr.Name.LocalName != "href" && !attr.IsNamespaceDeclaration)
+                            {
+                                externalFile.SetAttributeValue(attr.Name, attr.Value);
+                            }
+                        }
+                    }
+                    
+                    skeleton.Add(externalFile);
+                }
+                else if (!string.IsNullOrEmpty(file.Original))
+                {
+                    var internalFile = new XElement(XliffNs + "internal-file");
+                    
+                    // Add any form attribute if present
+                    var internalFileAttrs = file.SkeletonOther.OfType<XElement>()
+                        .FirstOrDefault(x => x.Name.LocalName == "internal-file")?.Attributes();
+                    
+                    if (internalFileAttrs != null)
+                    {
+                        foreach (var attr in internalFileAttrs)
+                        {
+                            if (!attr.IsNamespaceDeclaration)
+                            {
+                                internalFile.SetAttributeValue(attr.Name, attr.Value);
+                            }
+                        }
+                    }
+                    
+                    internalFile.Add(new XText(file.Original));
+                    
+                    // Handle SkeletonOther elements with namespace correction
+                    foreach (var elem in file.SkeletonOther)
+                    {
+                        if (elem is XElement skelElement && skelElement.Name.LocalName != "internal-file")
+                        {
+                            var clonedSkelElement = CloneWithNamespace(skelElement);
+                            if (clonedSkelElement != null)
+                                internalFile.Add(clonedSkelElement);
+                        }
+                    }
+                    
+                    skeleton.Add(internalFile);
+                }
+
+                header.Add(skeleton);
+            }
+            
             foreach (var otherElements in file.Other)
             {
                 if (otherElements is XElement otherElement)
@@ -128,35 +193,6 @@ public static class Xliff12Serializer
                     if (!attribute.IsNamespaceDeclaration)
                         fileElement.SetAttributeValue(attribute.Name, attribute.Value);
                 }
-            }
-
-            if (!string.IsNullOrEmpty(transformation.Original) || !string.IsNullOrEmpty(transformation.OriginalReference))
-            {
-                var skeleton = new XElement(XliffNs + "skl");
-
-                if (!string.IsNullOrEmpty(transformation.OriginalReference))
-                {
-                    var externalFile = new XElement(XliffNs + "external-file",
-                        new XAttribute("href", transformation.OriginalReference));
-                    skeleton.Add(externalFile);
-                }
-                else if (!string.IsNullOrEmpty(transformation.Original))
-                {
-                    var internalFile = new XElement(XliffNs + "internal-file");
-                    internalFile.Add(new XText(transformation.Original));
-                    
-                    // Handle SkeletonOther elements with namespace correction
-                    foreach (var elem in transformation.SkeletonOther)
-                    {
-                        var clonedSkelElement = CloneWithNamespace(elem);
-                        if (clonedSkelElement != null)
-                            internalFile.Add(clonedSkelElement);
-                    }
-                    
-                    skeleton.Add(internalFile);
-                }
-
-                header.Add(skeleton);
             }
 
             fileElement.Add(header);
@@ -220,6 +256,7 @@ public static class Xliff12Serializer
                 groupElement.SetAttributeValue(attr.Name, attr.Value);
             }
 
+            // Add notes first
             foreach (var note in group.Notes)
             {
                 var noteElement = new XElement(XliffNs + "note", note.Text);
@@ -237,6 +274,14 @@ public static class Xliff12Serializer
                 }
                 
                 groupElement.Add(noteElement);
+            }
+
+            // Add other elements (context-group, count-group, prop-group, etc.)
+            foreach (var otherElement in group.Other.OfType<XElement>())
+            {
+                var clonedElement = CloneWithNamespace(otherElement);
+                if (clonedElement != null)
+                    groupElement.Add(clonedElement);
             }
 
             foreach (var child in group.Children)
@@ -369,13 +414,22 @@ public static class Xliff12Serializer
             }
 
             transUnit.SetCodeType(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.CodeType);
+
+            // Add other elements (context-group, count-group, prop-group, alt-trans, etc.) first
+            foreach (var otherElement in unit.Other.OfType<XElement>())
+            {
+                var clonedElement = CloneWithNamespace(otherElement);
+                if (clonedElement != null)
+                    transUnit.Add(clonedElement);
+            }
+
+            // Add notes last
             foreach (var note in unit.Notes)
             {
                 var noteElement = new XElement(XliffNs + "note", note.Text);
                 transUnit.Add(noteElement);
             }
             
-            transUnit.Add(unit.Other.OfType<XElement>());
             parentElement.Add(transUnit);
         }
 
@@ -670,6 +724,7 @@ public static class Xliff12Serializer
                 
                 var other = element.Attributes().Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList();
                 group.Other.AddRange(other.GetRemaining(["id", "resname", "canResegment", "translate", "srcDir", "trgDir"]));
+                
                 foreach (var note in element.Elements(XliffNs + "note"))
                 {
                     group.Notes.Add(new Note(note.Value)
@@ -682,6 +737,10 @@ public static class Xliff12Serializer
                         Other = note.Attributes().GetRemaining(["id", "priority", "category", "reference"]).Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList()
                     });
                 }
+
+                // Add other elements (context-group, count-group, prop-group, etc.) to Other property
+                var otherElements = element.Elements().Where(e => e.Name.LocalName != "note" && e.Name.LocalName != "group" && e.Name.LocalName != "trans-unit").ToList();
+                group.Other.AddRange(otherElements);
 
                 ProcessBodyContent(element, group);
 
@@ -704,7 +763,10 @@ public static class Xliff12Serializer
                 
                 var other = element.Attributes().Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList();
                 unit.Other.AddRange(other.GetRemaining(["id", "resname", "canResegment", "translate", "srcDir", "trgDir"]));
-                unit.Other.AddRange(element.Elements().GetRemaining(["source", "target", "seg-source", "mrk", "note"]).Where(e => e.Name.Namespace != BlackbirdNs && e.Name.Namespace != XliffNs).ToList());
+
+                // Add other elements (context-group, count-group, prop-group, alt-trans, etc.) to Other property
+                var otherElements = element.Elements().Where(e => e.Name.LocalName != "source" && e.Name.LocalName != "target" && e.Name.LocalName != "seg-source" && e.Name.LocalName != "mrk" && e.Name.LocalName != "note").ToList();
+                unit.Other.AddRange(otherElements);
 
                 var source = element.Element(XliffNs + "source");
                 var target = element.Element(XliffNs + "target");

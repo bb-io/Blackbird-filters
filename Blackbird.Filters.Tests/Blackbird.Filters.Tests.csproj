@@ -206,4 +206,11 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Xliff12\Files\everythingCore.xliff" />
+    <EmbeddedResource Include="Xliff12\Files\everythingCore.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
