@@ -690,7 +690,6 @@ public static class Xliff12Serializer
     public static Transformation Deserialize(string fileContent)
     {
         var xliffNode = GetRootNode(fileContent);
-
         if (xliffNode == null)
         {
             throw new Exception("No root node found in XLIFF content.");
@@ -744,21 +743,22 @@ public static class Xliff12Serializer
                 if (internalFile != null)
                 {
                     fileTransformation.Original = internalFile.Value;
-                    fileTransformation.SkeletonOther = internalFile.Elements().ToList();
+                    fileTransformation.SkeletonOther = new List<XElement> { internalFile };
                 }
 
                 var externalFile = skeleton.Element(XliffNs + "external-file");
                 if (externalFile != null)
                 {
                     fileTransformation.OriginalReference = externalFile.Get("href");
+                    fileTransformation.SkeletonOther = new List<XElement> { externalFile };
                 }
             }
 
             fileTransformation.Notes = DeserializeNotes(header.Elements(XliffNs + "note"));
-
-            foreach (var note in header.Elements().Where(x => x.Name.LocalName != "note" && x.Name.LocalName != "skl"))
+            foreach (var node in header.Elements().Where(x => x.Name.LocalName != "note" && x.Name.LocalName != "skl"))
             {
-                fileTransformation.Other.Add(note);
+                var cleanedNode = FixTabulationWhitespace(node);
+                fileTransformation.Other.Add(cleanedNode);
             }
         }
 
@@ -825,7 +825,7 @@ public static class Xliff12Serializer
 
                 // Add other elements (context-group, count-group, prop-group, etc.) to Other property
                 var otherElements = element.Elements().Where(e => e.Name.LocalName != "note" && e.Name.LocalName != "group" && e.Name.LocalName != "trans-unit").ToList();
-                group.Other.AddRange(otherElements);
+                group.Other.AddRange(otherElements.Select(FixTabulationWhitespace));
 
                 ProcessBodyContent(element, group);
 
@@ -851,7 +851,7 @@ public static class Xliff12Serializer
 
                 // Add other elements (context-group, count-group, prop-group, alt-trans, etc.) to Other property
                 var otherElements = element.Elements().Where(e => e.Name.LocalName != "source" && e.Name.LocalName != "target" && e.Name.LocalName != "seg-source" && e.Name.LocalName != "mrk" && e.Name.LocalName != "note").ToList();
-                unit.Other.AddRange(otherElements);
+                unit.Other.AddRange(otherElements.Select(FixTabulationWhitespace));
 
                 var source = element.Element(XliffNs + "source");
                 var target = element.Element(XliffNs + "target");
@@ -1250,5 +1250,28 @@ public static class Xliff12Serializer
         }
 
         return string.Join("\n", result);
+    }
+
+    private static XElement FixTabulationWhitespace(XElement element)
+    {
+        var newElement = new XElement(element.Name);
+        foreach (var attr in element.Attributes())
+        {
+            newElement.SetAttributeValue(attr.Name, attr.Value);
+        }
+        
+        foreach (var node in element.Nodes())
+        {
+            if (node is XElement childElement)
+            {
+                newElement.Add(FixTabulationWhitespace(childElement));
+            }
+            else if (node is XText textNode && !string.IsNullOrWhiteSpace(textNode.Value))
+            {
+                newElement.Add(new XText(textNode.Value));
+            }
+        }
+        
+        return newElement;
     }
 }

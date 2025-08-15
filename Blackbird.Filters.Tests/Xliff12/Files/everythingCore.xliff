@@ -14,8 +14,7 @@
             </phase-group>
         </header>
         <body>
-            <group id="group-1" datatype="html" xml:space="preserve" ts="1251" restype="edit" resname="EditBox" extradata="BlackbirdExtra" 
-                   help-id="21" menu="menu1" menu-option="1" menu-name="TestName" translate="yes" reformat="no" merged-trans="no">
+            <group id="group-1" datatype="html" xml:space="preserve" ts="1251" restype="edit" resname="EditBox" extradata="BlackbirdExtra" help-id="21" menu="menu1" menu-option="1" menu-name="TestName" translate="yes" reformat="no" merged-trans="no">
                 <context-group crc="2189364a-b225" name="Blackbird Database" purpose="information">
                     <context context-type="database" match-mandatory="yes" crc="ce4a9e7add87">She let the balloon float up into the air with her hopes and dreams.</context>
                     <context context-type="product" match-mandatory="no" crc="be3a9e7acd17">The sign said there was road work ahead so he decided to speed up.</context>
