@@ -368,7 +368,12 @@ public static class Xliff12Serializer
                 var sourceContent = new StringBuilder();
                 foreach (var segment in unit.Segments)
                 {
-                    sourceContent.Append(string.Join("", segment.Source.Select(p => p.Value)));
+                    sourceContent.Append(string.Join(string.Empty, segment.Source.Select(p => p.Value)));
+                    var isLast = segment == unit.Segments.Last();
+                    if (!isLast)
+                    {
+                        sourceContent.Append(' ');
+                    }
                 }
 
                 transUnit.Add(new XElement(XliffNs + "source", sourceContent.ToString()));
@@ -434,6 +439,10 @@ public static class Xliff12Serializer
             }
 
             transUnit.SetCodeType(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.CodeType);
+            foreach (var noteElement in SerializeNotes(unit.Notes))
+            {
+                transUnit.Add(noteElement);
+            }
 
             // Add other elements (context-group, count-group, prop-group, alt-trans, etc.) first
             foreach (var otherElement in unit.Other.OfType<XElement>())
@@ -441,13 +450,6 @@ public static class Xliff12Serializer
                 var clonedElement = CloneWithNamespace(otherElement);
                 if (clonedElement != null)
                     transUnit.Add(clonedElement);
-            }
-
-            // Add notes last
-            foreach (var note in unit.Notes)
-            {
-                var noteElement = new XElement(XliffNs + "note", note.Text);
-                transUnit.Add(noteElement);
             }
             
             parentElement.Add(transUnit);

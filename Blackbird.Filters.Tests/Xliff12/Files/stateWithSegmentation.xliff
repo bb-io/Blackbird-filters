@@ -6,7 +6,7 @@
     </header>
     <body>
       <trans-unit id="u1" approved="yes">
-        <source>First sentence.Second sentence.</source>
+        <source>First sentence. Second sentence.</source>
         <seg-source>
           <mrk mtype="seg" mid="1">First sentence.</mrk>
           <mrk mtype="seg" mid="2">Second sentence.</mrk>
