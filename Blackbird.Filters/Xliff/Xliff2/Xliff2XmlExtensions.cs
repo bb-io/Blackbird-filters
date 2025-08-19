@@ -27,7 +27,27 @@ public static class Xliff2XmlExtensions
     public static bool? GetBool(this XElement element, XName name, Optionality optional = Optionality.Optional)
     {
         var value = element.Get(name, optional);
-        return value != null ? value == "yes" : null;
+        if(string.IsNullOrEmpty(value))
+        {
+            return null;
+        }
+        
+        if (value is "yes" or "true")
+        {
+            return true;
+        }
+        
+        if (value is "no" or "false")
+        {
+            return false;
+        }
+        
+        if (optional == Optionality.Required)
+        {
+            throw new Exception($"The {name.LocalName} attribute must be 'yes', 'no', 'true', or 'false' but found '{value}' in {element.Name}");
+        }
+        
+        return null;
     }
 
     public static void SetBool(this XElement element, XName name, bool? value)

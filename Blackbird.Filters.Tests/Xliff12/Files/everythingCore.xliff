@@ -1,5 +1,5 @@
 ﻿<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:bb="urn:blackbird:xliff:document:1.2">
-    <file id="f1" original="test-1.html" source-language="en" target-language="fr" datatype="html" tool-id="blackbird" date="2025-08-13T09:36:00Z" 
+    <file id="f1" original="test-1.html" source-language="en" target-language="fr" datatype="html" tool-id="blackbird" date="2025-08-13T09:36:00Z"
           xml:space="preserve" category="general" product-name="blackbird-filters" product-version="1.0.0" build-num="1">
         <header>
             <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
@@ -14,7 +14,7 @@
             </phase-group>
         </header>
         <body>
-            <group id="group-1" datatype="html" xml:space="preserve" ts="1251" restype="edit" resname="EditBox" extradata="BlackbirdExtra" help-id="21" menu="menu1" menu-option="1" menu-name="TestName" translate="yes" reformat="no" merged-trans="no">
+            <group id="group-1" datatype="html" xml:space="preserve" ts="1251" restype="edit" resname="EditBox" extradata="BlackbirdExtra" help-id="21" menu="menu1" menu-option="1" menu-name="TestName" reformat="no" merged-trans="no">
                 <context-group crc="2189364a-b225" name="Blackbird Database" purpose="information">
                     <context context-type="database" match-mandatory="yes" crc="ce4a9e7add87">She let the balloon float up into the air with her hopes and dreams.</context>
                     <context context-type="product" match-mandatory="no" crc="be3a9e7acd17">The sign said there was road work ahead so he decided to speed up.</context>
@@ -40,19 +40,16 @@
                         <mrk mtype="seg" mid="1">Première phrase.</mrk>
                         <mrk mtype="seg" mid="2">Deuxième phrase.</mrk>
                     </target>
-
                     <context-group name="Blackbird TU context" purpose="information">
                         <context context-type="paragraph" match-mandatory="no">Two short declarative sentences.</context>
                         <context context-type="source-string" match-mandatory="yes">First sentence. Second sentence.</context>
                         <context context-type="target-locale" match-mandatory="no">fr-FR</context>
                     </context-group>
-
                     <count-group name="Blackbird counts">
                         <count count-type="total-words" phase-name="Authoring" unit="word">4</count>
                         <count count-type="num-segments" phase-name="Authoring" unit="item">2</count>
                         <count count-type="num-sentences" phase-name="Authoring" unit="item">2</count>
                     </count-group>
-
                     <prop-group name="Blackbird properties">
                         <prop prop-type="domain" xml:lang="en">General</prop>
                         <prop prop-type="audience" xml:lang="en">End users</prop>
@@ -61,9 +58,7 @@
                             <value>tu:0|src:en-US|tgt:fr-FR</value>
                         </prop>
                     </prop-group>
-
                     <note xml:lang="en" from="reviewer" priority="5" annotates="general">Keep the simple, declarative tone. Ensure sentence boundaries remain aligned 1:1 with the source.</note>
-
                     <alt-trans mid="1" match-quality="0.92" origin="TM">
                         <source>First sentence.</source>
                         <target>Première phrase.</target>
@@ -78,7 +73,6 @@
                             <prop prop-type="segment-id">2</prop>
                         </prop-group>
                     </alt-trans>
-
                     <bb:metadata bb:tu="0">
                         <bb:confidence>0.98</bb:confidence>
                         <bb:reviewed>false</bb:reviewed>
@@ -88,21 +82,104 @@
                         </bb:tags>
                     </bb:metadata>
                 </trans-unit>
-                <trans-unit id="1" approved="no" translate="yes" reformat="yes">
-                    <source>Source 1</source>
-                    <target>Target 1</target>
+
+                <trans-unit id="1" approved="no" translate="yes" reformat="yes" datatype="html" xml:space="default" maxwidth="160">
+                    <source>Initialize the system. Verify output.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Initialize the system.</mrk>
+                        <mrk mtype="seg" mid="2">Verify output.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Initialisez le système.</mrk>
+                        <mrk mtype="seg" mid="2">Vérifiez la sortie.</mrk>
+                    </target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="paragraph" match-mandatory="no">Two-step instruction.</context>
+                        <context context-type="source-string" match-mandatory="yes">Initialize the system. Verify output.</context>
+                        <context context-type="target-locale" match-mandatory="no">fr-FR</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">4</count>
+                        <count count-type="num-segments" phase-name="Authoring" unit="item">2</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">Technical</prop>
+                        <prop prop-type="audience" xml:lang="en">QA</prop>
+                        <prop prop-type="register" xml:lang="en">Instructional</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:1|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
+                    <note xml:lang="en" from="reviewer" priority="4" annotates="general">Keep short imperative style.</note>
+                    <alt-trans mid="2" match-quality="0.86" origin="TM">
+                        <source>Verify output.</source>
+                        <target>Vérifiez le résultat.</target>
+                        <prop-group><prop prop-type="segment-id">2</prop></prop-group>
+                    </alt-trans>
+                    <bb:metadata bb:tu="1">
+                        <bb:confidence>0.93</bb:confidence>
+                        <bb:reviewed>false</bb:reviewed>
+                    </bb:metadata>
                 </trans-unit>
-                <trans-unit id="2" reformat="yes">
-                    <source>Source 2</source>
-                    <target>Target 2</target>
+
+                <trans-unit id="2" approved="yes" translate="yes" reformat="yes" datatype="html" xml:space="default" extradata="BlackbirdExtra">
+                    <source>Warning: Low battery.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Warning:</mrk>
+                        <mrk mtype="seg" mid="2">Low battery.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Avertissement</mrk>
+                        <mrk mtype="seg" mid="2">Batterie faible.</mrk>
+                    </target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="screen" match-mandatory="no">Status banner</context>
+                        <context context-type="source-string" match-mandatory="yes">Warning: Low battery.</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">3</count>
+                        <count count-type="num-segments" phase-name="Authoring" unit="item">2</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">UI</prop>
+                        <prop prop-type="severity" xml:lang="en">High</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:2|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
+                    <bb:metadata bb:tu="2">
+                        <bb:confidence>0.96</bb:confidence>
+                        <bb:reviewed>true</bb:reviewed>
+                        <bb:tags><bb:tag>alert</bb:tag></bb:tags>
+                    </bb:metadata>
                 </trans-unit>
-                <trans-unit id="3">
-                    <source>Source 3</source>
-                    <target>Target 3</target>
+                <trans-unit id="3" approved="no" translate="yes" reformat="no" datatype="html" xml:space="default" maxwidth="80">
+                    <source>Continue</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Continue</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Continuer</mrk>
+                    </target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="resname" match-mandatory="no">btn_continue</context>
+                        <context context-type="target-locale" match-mandatory="no">fr-FR</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">1</count>
+                        <count count-type="num-segments" phase-name="Authoring" unit="item">1</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">UI</prop>
+                        <prop prop-type="platform" xml:lang="en">Web</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:3|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
+                    <note xml:lang="en" from="reviewer" priority="3" annotates="general">Button label; avoid trailing punctuation.</note>
+                    <bb:metadata bb:tu="3">
+                        <bb:confidence>0.91</bb:confidence>
+                        <bb:reviewed>false</bb:reviewed>
+                    </bb:metadata>
                 </trans-unit>
             </group>
         </body>
     </file>
+
     <file id="f2" original="test-2.html" source-language="en" target-language="fr" datatype="html">
         <header>
             <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
@@ -113,34 +190,161 @@
             <skl>
                 <external-file uid="3BB236513BB24732" href="Graphic Example.psd.skl"/>
             </skl>
+            <phase-group>
+                <phase phase-name="Translation" process-name="translate" company-name="blackbird" tool-id="Xliff12Tester">
+                    <note>Translation phase for the second file</note>
+                </phase>
+            </phase-group>
         </header>
         <body>
-            <group id="grp-test-2" translate="no">
+            <group id="grp-test-2" translate="no" datatype="html" xml:space="preserve" restype="group" resname="TestGroup" extradata="BlackbirdExtra" menu="menu2" menu-option="A" menu-name="TestName-2" reformat="no" merged-trans="no">
+                <context-group name="Blackbird Group Context" purpose="information">
+                    <context context-type="file" match-mandatory="no">test-2.html</context>
+                    <context context-type="target-locale" match-mandatory="no">fr-FR</context>
+                </context-group>
+                <count-group name="Blackbird count">
+                    <count count-type="total" phase-name="Translation" unit="word">310</count>
+                </count-group>
+                <prop-group name="Blackbird properties">
+                    <prop prop-type="domain" xml:lang="en">Mixed</prop>
+                    <prop prop-type="blackbird" xml:lang="en"><value>group:grp-test-2</value></prop>
+                </prop-group>
                 <note>This group contains six trans-units for extended testing.</note>
-                <trans-unit id="4">
-                    <source>Source 4</source>
-                    <target>Target 4</target>
+
+                <trans-unit id="4" approved="yes" translate="yes" reformat="yes" datatype="html" xml:space="default" maxwidth="120">
+                    <source>Open the settings page. Save your changes.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Open the settings page.</mrk>
+                        <mrk mtype="seg" mid="2">Save your changes.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Ouvrez la page des paramètres.</mrk>
+                        <mrk mtype="seg" mid="2">Enregistrez vos modifications.</mrk>
+                    </target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="paragraph" match-mandatory="no">Two-step UI workflow.</context>
+                        <context context-type="source-string" match-mandatory="yes">Open the settings page. Save your changes.</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">7</count>
+                        <count count-type="num-segments" phase-name="Authoring" unit="item">2</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">UI</prop>
+                        <prop prop-type="audience" xml:lang="en">End users</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:4|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
                     <note>Check round-trip integrity for unit 4</note>
+                    <alt-trans mid="1" match-quality="0.87" origin="MT">
+                        <source>Open the settings page.</source>
+                        <target>Ouvrez la page des réglages.</target>
+                        <prop-group><prop prop-type="segment-id">1</prop></prop-group>
+                    </alt-trans>
+                    <bb:metadata bb:tu="4"><bb:confidence>0.92</bb:confidence><bb:reviewed>true</bb:reviewed></bb:metadata>
                 </trans-unit>
-                <trans-unit id="5">
+
+                <trans-unit id="5" approved="no" translate="yes" reformat="no" datatype="html" xml:space="default">
                     <source>Source 5</source>
-                    <target>Target 5</target>
+                    <seg-source><mrk mtype="seg" mid="1">Source 5</mrk></seg-source>
+                    <target><mrk mtype="seg" mid="1">Cible 5</mrk></target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="resname" match-mandatory="no">lbl_source5</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">2</count>
+                        <count count-type="num-segments" phase-name="Authoring" unit="item">1</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">General</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:5|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
+                    <bb:metadata bb:tu="5"><bb:confidence>0.88</bb:confidence><bb:reviewed>false</bb:reviewed></bb:metadata>
                 </trans-unit>
-                <trans-unit id="6">
-                    <source>Source 6</source>
-                    <target>Target 6</target>
+
+                <trans-unit id="6" approved="no" translate="yes" reformat="yes" datatype="html" xml:space="default" maxwidth="90">
+                    <source>Retry</source>
+                    <seg-source><mrk mtype="seg" mid="1">Retry</mrk></seg-source>
+                    <target><mrk mtype="seg" mid="1">Réessayer</mrk></target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="resname" match-mandatory="no">btn_retry</context>
+                        <context context-type="target-locale" match-mandatory="no">fr-FR</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">1</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">UI</prop>
+                        <prop prop-type="platform" xml:lang="en">Desktop</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:6|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
+                    <note xml:lang="en" from="reviewer" priority="3" annotates="general">Single-word control; casing must match platform style.</note>
+                    <bb:metadata bb:tu="6"><bb:confidence>0.9</bb:confidence><bb:reviewed>false</bb:reviewed></bb:metadata>
                 </trans-unit>
-                <trans-unit id="7">
-                    <source>Source 7</source>
-                    <target>Target 7</target>
+
+                <trans-unit id="7" approved="yes" translate="yes" reformat="no" datatype="html" xml:space="default">
+                    <source>Processing request… Please wait.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Processing request…</mrk>
+                        <mrk mtype="seg" mid="2">Please wait.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Traitement de la demande…</mrk>
+                        <mrk mtype="seg" mid="2">Veuillez patienter.</mrk>
+                    </target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="screen" match-mandatory="no">Progress dialog</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">4</count>
+                        <count count-type="num-segments" phase-name="Authoring" unit="item">2</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">UI</prop>
+                        <prop prop-type="register" xml:lang="en">Polite</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:7|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
+                    <bb:metadata bb:tu="7"><bb:confidence>0.95</bb:confidence><bb:reviewed>true</bb:reviewed></bb:metadata>
                 </trans-unit>
-                <trans-unit id="8">
-                    <source>Source 8</source>
-                    <target>Target 8</target>
+
+                <trans-unit id="8" approved="no" translate="yes" reformat="yes" datatype="html" xml:space="default" extradata="BlackbirdExtra">
+                    <source>Failed to connect to the server.</source>
+                    <seg-source><mrk mtype="seg" mid="1">Failed to connect to the server.</mrk></seg-source>
+                    <target><mrk mtype="seg" mid="1">Échec de la connexion au serveur.</mrk></target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="paragraph" match-mandatory="no">Network error message.</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">6</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">Error</prop>
+                        <prop prop-type="severity" xml:lang="en">Critical</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:8|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
+                    <alt-trans mid="1" match-quality="0.84" origin="TM">
+                        <source>Could not connect to the server.</source>
+                        <target>Impossible de se connecter au serveur.</target>
+                        <prop-group><prop prop-type="segment-id">1</prop></prop-group>
+                    </alt-trans>
+                    <bb:metadata bb:tu="8"><bb:confidence>0.89</bb:confidence><bb:reviewed>false</bb:reviewed></bb:metadata>
                 </trans-unit>
-                <trans-unit id="9">
-                    <source>Source 9</source>
-                    <target>Target 9</target>
+
+                <trans-unit id="9" approved="yes" translate="no" reformat="no" datatype="html" xml:space="default" maxwidth="60">
+                    <source>Version</source>
+                    <seg-source><mrk mtype="seg" mid="1">Version</mrk></seg-source>
+                    <target><mrk mtype="seg" mid="1">Version</mrk></target>
+                    <context-group name="Blackbird TU context" purpose="information">
+                        <context context-type="resname" match-mandatory="no">lbl_version</context>
+                    </context-group>
+                    <count-group name="Blackbird counts">
+                        <count count-type="total-words" phase-name="Authoring" unit="word">1</count>
+                    </count-group>
+                    <prop-group name="Blackbird properties">
+                        <prop prop-type="domain" xml:lang="en">UI</prop>
+                        <prop prop-type="blackbird" xml:lang="en"><value>tu:9|src:en-US|tgt:fr-FR</value></prop>
+                    </prop-group>
+                    <note xml:lang="en" from="reviewer" priority="2" annotates="general">Locked string; do not translate.</note>
+                    <bb:metadata bb:tu="9"><bb:confidence>0.97</bb:confidence><bb:reviewed>true</bb:reviewed></bb:metadata>
                 </trans-unit>
             </group>
         </body>

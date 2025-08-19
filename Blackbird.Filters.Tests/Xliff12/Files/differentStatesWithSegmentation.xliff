@@ -12,8 +12,8 @@
           <mrk mtype="seg" mid="2">Second sentence.</mrk>
         </seg-source>
         <target>
-          <mrk mtype="seg" mid="1" state="final">Première phrase.</mrk>
-          <mrk mtype="seg" mid="2" state="translated">Deuxième phrase.</mrk>
+          <mrk mtype="seg" mid="1" p7:customState="final" xmlns:p7="http://blackbird.io/">Première phrase.</mrk>
+          <mrk mtype="seg" mid="2" p7:customState="translated" xmlns:p7="http://blackbird.io/">Deuxième phrase.</mrk>
         </target>
       </trans-unit>
     </body>

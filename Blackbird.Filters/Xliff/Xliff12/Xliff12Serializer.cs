@@ -13,6 +13,7 @@ namespace Blackbird.Filters.Xliff.Xliff12;
 public static class Xliff12Serializer
 {
     private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
+    private static readonly XName HasSegSourceAttrName = BlackbirdNs + "hasSegSource";
     private static readonly XNamespace XliffNs = "urn:oasis:names:tc:xliff:document:1.2";
 
     public static string Serialize(Transformation transformation)
@@ -268,7 +269,7 @@ public static class Xliff12Serializer
             var groupElement = new XElement(XliffNs + "group", new XAttribute("id", group.Id));
             groupElement.Set("resname", group.Name);
             groupElement.SetBool(BlackbirdNs + "canResegment", group.CanResegment);
-            groupElement.SetBool(BlackbirdNs + "translate", group.Translate);
+            groupElement.SetBool("translate", group.Translate);
             groupElement.SetDirection(BlackbirdNs + "srcDir", group.SourceDirection);
             groupElement.SetDirection(BlackbirdNs + "trgDir", group.TargetDirection);
             foreach (var attr in group.Other.OfType<XAttribute>().GetRemaining(["resname", "canResegment", "translate", "srcDir", "trgDir"]).Where(attr => !attr.IsNamespaceDeclaration))
@@ -327,43 +328,43 @@ public static class Xliff12Serializer
             
             transUnit.Set("resname", unit.Name);
             transUnit.SetBool(BlackbirdNs + "canResegment", unit.CanResegment);
-            transUnit.SetBool(BlackbirdNs + "translate", unit.Translate);
+            
+            if (unit.Translate.HasValue)
+            {
+                transUnit.Set("translate", unit.Translate.Value ? "yes" : "no");
+            }
+            
             transUnit.SetDirection(BlackbirdNs + "srcDir", unit.SourceDirection);
             transUnit.SetDirection(BlackbirdNs + "trgDir", unit.TargetDirection);
-            foreach (var attr in unit.Other.OfType<XAttribute>().GetRemaining(["resname", "canResegment", "translate", "srcDir", "trgDir"]).Where(attr => !attr.IsNamespaceDeclaration))
+            foreach (var attr in unit.Other.OfType<XAttribute>().GetRemaining(["resname", "canResegment", "translate", "srcDir", "trgDir", HasSegSourceAttrName]).Where(attr => !attr.IsNamespaceDeclaration))
             {
                 transUnit.SetAttributeValue(attr.Name, attr.Value);
             }
 
-            if (unit.Segments.Count == 1)
+            var hasSegSource = unit.Other.OfType<XAttribute>().Any(a => a.Name == HasSegSourceAttrName && a.Value == "true");
+            if (unit.Segments.Count == 1 && !hasSegSource)
             {
                 var segment = unit.Segments[0];
                 transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes));
-                transUnit.Set(BlackbirdNs + "segmentId", segment.Id);
 
                 if (segment.Target.Any())
                 {
                     var targetElement = SerializeTextParts(segment.Target, "target", segment.TargetAttributes);
                     targetElement.SetBool(BlackbirdNs + "canResegment", segment.CanResegment);
+                    if (segment.State != null)
+                    {
+                        targetElement.Set("state", segment.State.Value.ToTarget12State()?.Serialize());
+                    }
+                    
                     transUnit.Add(targetElement);
                 }
 
-                if (segment.State is SegmentState.Final)
+                if (segment.SubState != null)
                 {
-                    transUnit.SetAttributeValue("approved", "yes");
-                }
-
-                if (!string.IsNullOrEmpty(segment.SubState))
-                {
-                    transUnit.SetAttributeValue("phase-name", segment.SubState);
-                }
-
-                if (segment.Ignorable.HasValue)
-                {
-                    transUnit.SetAttributeValue("translate", segment.Ignorable.Value ? "no" : "yes");
+                    transUnit.Set("phase-name", segment.SubState);
                 }
             }
-            else if (unit.Segments.Count > 1)
+            else
             {
                 var sourceContent = new StringBuilder();
                 foreach (var segment in unit.Segments)
@@ -398,38 +399,63 @@ public static class Xliff12Serializer
                 if (unit.Segments.Any(s => s.Target.Any()))
                 {
                     var target = new XElement(XliffNs + "target");
+                    var states = unit.Segments
+                        .Where(s => s.State.HasValue)
+                        .Select(s => s.State!.Value)
+                        .Distinct()
+                        .ToList();
+
+                    var hasUniformState = states.Count == 1 && unit.Segments.All(s => s.State.HasValue);
+                    if (hasUniformState)
+                    {
+                        var state = states.First().ToTarget12State()?.Serialize();
+                        if (!string.IsNullOrEmpty(state))
+                        {
+                            target.Set("state", state);
+                        }
+                    }
+
+                    var translateValue = unit.Translate.HasValue 
+                        ? unit.Translate.Value ? "yes" : "no" 
+                        : null;
+                    
+                    bool? unitTranslate = null;
+                    if (translateValue == "yes")
+                    {
+                        unitTranslate = true;
+                    }
+                    else if (translateValue == "no")
+                    {
+                        unitTranslate = false;
+                    }
+
                     foreach (var segment in unit.Segments.Where(x => !string.IsNullOrEmpty(x.Id)))
                     {
-                        foreach (var attr in segment.TargetAttributes)
-                        {
-                            target.Set(attr.Name, attr.Value);
-                        }
-                        
                         if (segment.Target.Any())
                         {
                             var mrkElement = SerializeTextParts(segment.Target, "mrk", segment.TargetAttributes);
                             mrkElement.SetAttributeValue("mtype", "seg");
                             mrkElement.SetAttributeValue("mid", segment.Id);
                             mrkElement.SetBool(BlackbirdNs + "canResegment", segment.CanResegment);
-                            if (segment.State.HasValue)
-                            {
-                                var state12 = segment.State.Value.ToTarget12State()?.Serialize();
-                                if (state12 != null)
-                                {
-                                    mrkElement.Set("state", segment.State.Value.ToTarget12State()?.Serialize());
-                                }
-                            }
+
                             mrkElement.Set("phase-name", segment.SubState);
-                            mrkElement.SetBool(BlackbirdNs + "ignorable", segment.Ignorable);
+                            if (segment.Ignorable.HasValue &&
+                                (!unitTranslate.HasValue || segment.Ignorable.Value != !unitTranslate.Value))
+                            {
+                                mrkElement.SetBool(BlackbirdNs + "ignorable", segment.Ignorable);
+                            }
+
                             mrkElement.SetInt(BlackbirdNs + "order", segment.Order);
 
-                            if (segment.State is SegmentState.Final)
+                            if (!hasUniformState)
                             {
-                                if (unit.Segments.All(s => s.State is SegmentState.Final))
+                                var state = segment.State?.ToTarget12State()?.Serialize();
+                                if (!string.IsNullOrEmpty(state))
                                 {
-                                    transUnit.SetAttributeValue("approved", "yes");
+                                    mrkElement.Set(BlackbirdNs + "customState", state);
                                 }
                             }
+
                             target.Add(mrkElement);
                         }
                     }
@@ -799,11 +825,10 @@ public static class Xliff12Serializer
             {
                 var group = new Group
                 {
-                    //id="g1" canResegment="yes" translate="yes" srcDir="ltr" trgDir="ltr" name="group1" type="z:typeg" my:attr="value4"
                     Id = element.Get("id"),
                     Name = element.Get("resname"),
                     CanResegment = element.GetBool(BlackbirdNs + "canResegment"),
-                    Translate = element.GetBool(BlackbirdNs + "translate"),
+                    Translate = element.GetBool("translate"),
                     SourceDirection = element.GetDirection(BlackbirdNs + "srcDir"),
                     TargetDirection = element.GetDirection(BlackbirdNs + "trgDir"),
                     Type = element.Get(BlackbirdNs + "type")
@@ -843,15 +868,20 @@ public static class Xliff12Serializer
                     Id = element.Get("id"),
                     Name = element.Get("resname"),
                     CanResegment = element.GetBool(BlackbirdNs + "canResegment"),
-                    Translate = element.GetBool(BlackbirdNs + "translate"),
+                    Translate = element.GetBool("translate"),
                     SourceDirection = element.GetDirection(BlackbirdNs + "srcDir"),
-                    TargetDirection = element.GetDirection(BlackbirdNs + "trgDir")
+                    TargetDirection = element.GetDirection(BlackbirdNs + "trgDir"),
                 };
+                
+                var hasSegSource = element.Element(XliffNs + "seg-source") != null;
+                if (hasSegSource)
+                {
+                    unit.Other.Add(new XAttribute(HasSegSourceAttrName, "true"));
+                }
                 
                 var other = element.Attributes().Where(a => a.Name.Namespace != BlackbirdNs && a.Name.Namespace != XliffNs).ToList();
                 unit.Other.AddRange(other.GetRemaining(["id", "resname", "canResegment", "translate", "srcDir", "trgDir"]));
-
-                // Add other elements (context-group, count-group, prop-group, alt-trans, etc.) to Other property
+                
                 var otherElements = element.Elements().Where(e => e.Name.LocalName != "source" && e.Name.LocalName != "target" && e.Name.LocalName != "seg-source" && e.Name.LocalName != "mrk" && e.Name.LocalName != "note").ToList();
                 unit.Other.AddRange(otherElements.Select(FixTabulationWhitespace));
 
@@ -859,6 +889,17 @@ public static class Xliff12Serializer
                 var target = element.Element(XliffNs + "target");
                 var segSource = element.Element(XliffNs + "seg-source");
                 var codeType = element.GetCodeType(BlackbirdNs + "tagHandling");
+                
+                var targetState = target?.Get("state");
+                bool? segmentIgnorable = null;
+                if (element.Get("translate") == "yes")
+                {
+                    segmentIgnorable = false;
+                }
+                else if (element.Get("translate") == "no")
+                {
+                    segmentIgnorable = true;
+                }
 
                 if (segSource != null)
                 {
@@ -868,13 +909,9 @@ public static class Xliff12Serializer
                         {
                             Id = mrkElement.Get("mid"),
                             Source = ExtractTextParts(mrkElement),
-                            CodeType = codeType
+                            CodeType = codeType,
+                            Ignorable = segmentIgnorable
                         };
-
-                        if (element.Get("translate") == "no")
-                        {
-                            segment.Ignorable = true;
-                        }
 
                         if (target != null)
                         {
@@ -889,24 +926,33 @@ public static class Xliff12Serializer
                                 segment.CanResegment = matchingTargetMrk.GetBool(BlackbirdNs + "canResegment");
                                 segment.Order = matchingTargetMrk.GetInt(BlackbirdNs + "order");
                                 segment.SubState = matchingTargetMrk.Get("phase-name");
-                                segment.Ignorable = matchingTargetMrk.GetBool(BlackbirdNs + "ignorable");
-                                segment.TargetAttributes = matchingTargetMrk.Attributes().GetRemaining(["mtype", "mid", "phase-name", "canResegment", "ignorable", "order", "state"]).Where(x => x.Name.Namespace != BlackbirdNs).ToList();
-
-                                var stateAttr = matchingTargetMrk.Get("state");
-                                if (!string.IsNullOrEmpty(stateAttr))
+                                segment.Ignorable = matchingTargetMrk.GetBool(BlackbirdNs + "ignorable") ?? segmentIgnorable;
+                                
+                                var mrkState = matchingTargetMrk.Get(BlackbirdNs + "customState");
+                                if (!string.IsNullOrEmpty(mrkState))
                                 {
-                                    var target12State = stateAttr.ToTarget12State();
+                                    var target12State = mrkState.ToTarget12State();
                                     if (target12State.HasValue)
                                     {
                                         segment.State = target12State.Value.ToSegmentState();
                                     }
                                 }
-                                else if (element.Get("approved") == "yes")
+                                else if (!string.IsNullOrEmpty(targetState))
                                 {
-                                    segment.State = SegmentState.Final;
+                                    var target12State = targetState.ToTarget12State();
+                                    if (target12State.HasValue)
+                                    {
+                                        segment.State = target12State.Value.ToSegmentState();
+                                    }
                                 }
+                                
+                                segment.TargetAttributes = matchingTargetMrk.Attributes()
+                                    .GetRemaining(["mtype", "mid", "phase-name", "canResegment", "ignorable", "order", "state"])
+                                    .Where(x => x.Name.Namespace != BlackbirdNs)
+                                    .ToList();
                             }
                         }
+                        
                         unit.Segments.Add(segment);
                     }
                 }
@@ -914,12 +960,13 @@ public static class Xliff12Serializer
                 {
                     var segment = new Segment
                     {
-                        Id = element.Get(BlackbirdNs + "segmentId"),
+                        Id = element.Get("id"),
                         Source = source != null ? ExtractTextParts(source) : new List<TextPart>(),
                         Target = target != null ? ExtractTextParts(target) : new List<TextPart>(),
                         CodeType = codeType,
                         SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
-                        TargetAttributes = target?.Attributes().ToList() ?? new List<XAttribute>()
+                        TargetAttributes = target?.Attributes().GetRemaining(["state"]).ToList() ?? new List<XAttribute>(),
+                        Ignorable = segmentIgnorable
                     };
 
                     var sourceWhiteSpaceHandling = source?.Get(XNamespace.Xml + "space");
@@ -940,16 +987,11 @@ public static class Xliff12Serializer
                         segment.CanResegment = bool.Parse(canResegmentAttr);
                     }
 
-                    if (element.Get("approved") == "yes")
-                    {
-                        segment.State = SegmentState.Final;
-                    }
-                    else if (target != null)
+                    if (target != null)
                     {
                         var stateAttr = target.Get("state");
                         if (!string.IsNullOrEmpty(stateAttr))
                         {
-                            segment.TargetAttributes.Add(new XAttribute(BlackbirdNs + "customState", stateAttr));
                             var target12State = stateAttr.ToTarget12State();
                             if (target12State.HasValue)
                             {
@@ -960,10 +1002,6 @@ public static class Xliff12Serializer
 
                     if (element.Get("phase-name") != null)
                         segment.SubState = element.Get("phase-name");
-
-                    if (element.Get("translate") == "no")
-                        segment.Ignorable = true;
-
 
                     unit.Segments.Add(segment);
                 }
