@@ -5,7 +5,7 @@
             <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
             <note xml:lang="en" from="author" priority="2" annotates="general">Basic set of trans-unit segments (IDs 0–3)</note>
             <skl>
-                <internal-file form="base64">PGh0bWw+PGhlYWQ+PHRpdGxlPkV4YW1wbGUgRG9jdW1lbnQ8L3RpdGxlPjwvaGVhZD48Ym9keT4KPHA+VGhpcyBpcyBhbiBleGFtcGxlIHRleHQuPC9wPgo8L2JvZHk+PC9odG1sPg==</internal-file>
+                <internal-file>PGh0bWw+PGhlYWQ+PHRpdGxlPkV4YW1wbGUgRG9jdW1lbnQ8L3RpdGxlPjwvaGVhZD48Ym9keT4KPHA+VGhpcyBpcyBhbiBleGFtcGxlIHRleHQuPC9wPgo8L2JvZHk+PC9odG1sPg==</internal-file>
             </skl>
             <phase-group>
                 <phase phase-name="Translation" process-name="translate" company-name="blackbird" tool-id="Xliff12Tester" contact-email="support@blackbird.io">
