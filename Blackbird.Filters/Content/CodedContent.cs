@@ -2,6 +2,7 @@
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Tags;
+using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
 
 namespace Blackbird.Filters.Content;
@@ -144,6 +145,15 @@ public class CodedContent
         else if (PlaintextContentCoder.IsPlaintext(content))
         {
             return PlaintextContentCoder.Deserialize(content, fileName);
+        }
+        else if (Xliff2Serializer.IsXliff2(content))
+        {
+            var result = Xliff2Serializer.Deserialize(content).Target();
+            if (result.TextUnits.All(x => string.IsNullOrEmpty(x.GetPlainText())))
+            {
+                return Xliff2Serializer.Deserialize(content).Source();
+            }
+            return result;
         }
         else
         {
