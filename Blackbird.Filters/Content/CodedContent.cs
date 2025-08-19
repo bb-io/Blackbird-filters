@@ -3,7 +3,8 @@ using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Tags;
-using HtmlAgilityPack;
+using Blackbird.Filters.Xliff.Xliff2;
+using System.Net.Mime;
 
 namespace Blackbird.Filters.Content;
 
@@ -82,13 +83,41 @@ public class CodedContent
 
     public string Serialize()
     {
-        return HtmlContentCoder.Serialize(this);
+        if (OriginalMediaType == MediaTypeNames.Text.Html)
+        {
+            return HtmlContentCoder.Serialize(this);
+        }
 
-        // Todo: implement further after we have more serializers.
-        //var codeTypes = TextUnits.Select(x => x.CodeType);
-        //if (codeTypes.Any(x => x == CodeType.Html))
-        //{
-        //    return HtmlContentCoder.Serialize(this);
-        //}
+        if (OriginalMediaType == MediaTypeNames.Text.Plain)
+        {
+            return PlaintextContentCoder.Serialize(this);
+        }
+
+        throw new NotImplementedException($"The serializer for ${OriginalMediaType} is not implemented");
+    }
+
+    public static CodedContent Parse(string content, string fileName)
+    {
+        if (HtmlContentCoder.IsHtml(content))
+        {
+            return HtmlContentCoder.Deserialize(content, fileName);
+        }
+        else if (PlaintextContentCoder.IsPlaintext(content))
+        {
+            return PlaintextContentCoder.Deserialize(content, fileName);
+        }
+        else if (Xliff2Serializer.IsXliff2(content))
+        {
+            var result = Xliff2Serializer.Deserialize(content).Target();
+            if (result.TextUnits.All(x => string.IsNullOrEmpty(x.GetPlainText())))
+            {
+                return Xliff2Serializer.Deserialize(content).Source();
+            }
+            return result;
+        }
+        else
+        {
+            throw new Exception("This file format is not supported by this library.");
+        }
     }
 }
