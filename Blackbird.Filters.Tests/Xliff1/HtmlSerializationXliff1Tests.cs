@@ -12,7 +12,7 @@ public class HtmlSerializationXliff1Tests : TestBase
     public void SerializeSimpleHtmlToXliff12(string fileName)
     {
         // Arrange & Act
-        var processResult = Process($"Xliff12/Files/Html/{fileName}", XliffVersion.Xliff1);
+        var processResult = Process($"Xliff1/Files/Html/{fileName}", XliffVersion.Xliff1);
 
         // Assert
         var targetHtml = processResult.Target.Serialize();

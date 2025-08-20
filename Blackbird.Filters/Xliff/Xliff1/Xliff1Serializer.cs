@@ -408,20 +408,23 @@ public static class Xliff1Serializer
             }
 
             var hasSegSource = unit.Other.OfType<XAttribute>().Any(a => a.Name == HasSegSourceAttrName && a.Value == "true");
+            
+            XElement? sourceElement = null;
+            XElement? segSourceElement = null;
+            XElement? targetElement = null;
             if (unit.Segments.Count == 1 && !hasSegSource)
             {
                 var segment = unit.Segments[0];
-                transUnit.Add(SerializeTextParts(segment.Source, "source", segment.SourceAttributes));
+                sourceElement = SerializeTextParts(segment.Source, "source", segment.SourceAttributes);
+                
                 if (segment.Target.Any())
                 {
-                    var targetElement = SerializeTextParts(segment.Target, "target", segment.TargetAttributes);
+                    targetElement = SerializeTextParts(segment.Target, "target", segment.TargetAttributes);
                     targetElement.SetBool(BlackbirdNs + "canResegment", segment.CanResegment);
                     if (segment.State != null)
                     {
                         targetElement.Set("state", segment.State.Value.ToTarget12State()?.Serialize());
                     }
-                    
-                    transUnit.Add(targetElement);
                 }
 
                 if (segment.SubState != null)
@@ -442,25 +445,24 @@ public static class Xliff1Serializer
                     }
                 }
 
-                transUnit.Add(new XElement(XliffNs + "source", sourceContent.ToString()));
-                var segSource = new XElement(XliffNs + "seg-source");
+                sourceElement = new XElement(XliffNs + "source", sourceContent.ToString());
+                segSourceElement = new XElement(XliffNs + "seg-source");
                 foreach (var segment in unit.Segments.Where(x => !string.IsNullOrEmpty(x.Id)))
                 {
                     var mrkElement = SerializeTextParts(segment.Source, "mrk", null);
                     mrkElement.SetAttributeValue("mtype", "seg");
                     mrkElement.SetAttributeValue("mid", segment.Id);
-                    segSource.Add(mrkElement);
+                    segSourceElement.Add(mrkElement);
                     
                     foreach (var attr in segment.SourceAttributes.GetRemaining(["space"]))
                     {
-                        segSource.Set(attr.Name, attr.Value);
+                        segSourceElement.Set(attr.Name, attr.Value);
                     }
                 }
 
-                transUnit.Add(segSource);
                 if (unit.Segments.Any(s => s.Target.Any()))
                 {
-                    var target = new XElement(XliffNs + "target");
+                    targetElement = new XElement(XliffNs + "target");
                     var states = unit.Segments
                         .Where(s => s.State.HasValue)
                         .Select(s => s.State!.Value)
@@ -473,7 +475,7 @@ public static class Xliff1Serializer
                         var state = states.First().ToTarget12State()?.Serialize();
                         if (!string.IsNullOrEmpty(state))
                         {
-                            target.Set("state", state);
+                            targetElement.Set("state", state);
                         }
                     }
 
@@ -513,15 +515,27 @@ public static class Xliff1Serializer
                                 }
                             }
 
-                            target.Add(mrkElement);
+                            targetElement.Add(mrkElement);
                         }
                     }
-
-                    transUnit.Add(target);
                 }
             }
 
-            transUnit.Set(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.OriginalMediaType);
+            if (sourceElement != null)
+            {
+                transUnit.Add(sourceElement);
+            }
+            
+            if (segSourceElement != null)
+            {
+                transUnit.Add(segSourceElement);
+            }
+            
+            if (targetElement != null)
+            {
+                transUnit.Add(targetElement);
+            }
+
             foreach (var noteElement in SerializeNotes(unit.Notes))
             {
                 transUnit.Add(noteElement);
@@ -535,7 +549,8 @@ public static class Xliff1Serializer
                     transUnit.Add(clonedElement);
                 }
             }
-            
+
+            transUnit.Set(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.OriginalMediaType);
             parentElement.Add(transUnit);
         }
 

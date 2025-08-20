@@ -19,7 +19,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void Basic()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/basic.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/basic.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -56,7 +56,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void Segmented()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/segmented.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/segmented.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -84,7 +84,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void InitialSegments()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/emptyTarget.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/emptyTarget.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -106,7 +106,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void TranslatedSegments()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/translate.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/translate.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -128,7 +128,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void ApprovedSegments()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/approved.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/approved.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -149,7 +149,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void MultipleFiles()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/multifile.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/multifile.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -165,7 +165,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void Complex()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/complex.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/complex.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -180,7 +180,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void EverythingCore()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/everythingCore.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/everythingCore.xliff", Encoding.UTF8);
         
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -207,7 +207,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void StateHandling()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/state.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/state.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -236,7 +236,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void StateHandlingWithSegmentation()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/stateWithSegmentation.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/stateWithSegmentation.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -260,7 +260,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
     public void DifferentStatesHandlingWithSegmentation()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff12/Files/differentStatesWithSegmentation.xliff", Encoding.UTF8);
+        var xliff = File.ReadAllText("Xliff1/Files/differentStatesWithSegmentation.xliff", Encoding.UTF8);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);

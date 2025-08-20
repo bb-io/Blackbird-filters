@@ -22,7 +22,7 @@ public class Xliff12To22AndBackTests : TestBase
     public void RoundTripTest(string fileName)
     {
         // Arrange
-        var originalXliff12 = File.ReadAllText($"Xliff12/Files/{fileName}", Encoding.UTF8);
+        var originalXliff12 = File.ReadAllText($"Xliff1/Files/{fileName}", Encoding.UTF8);
 
         // Act - Convert XLIFF 1.2 → XLIFF 2.2 → XLIFF 1.2
         var content = Xliff1Serializer.Deserialize(originalXliff12);
