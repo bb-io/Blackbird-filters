@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 using System.Text;
 using Blackbird.Filters.Tests.Models;
 using Blackbird.Filters.Xliff.Xliff1;
-using Blackbird.Filters.Xliff.Xliff2;
 
 namespace Blackbird.Filters.Tests;
+
 public abstract class TestBase
 {
     protected void Display(object? value)
@@ -46,12 +46,12 @@ public abstract class TestBase
         var source = transformation.Source();
         var sourceString = source.Serialize();
 
-        var serialized = transformation.Serialize();
+        var serialized = SerializeBasedOnXliffVersion(transformation, xliffVersion);
         serialized = PseudoTranslateXliff(serialized, transformation.XliffFileName);
         var deserialized = Transformation.Parse(serialized, transformation.XliffFileName);
 
         var target = deserialized.Target();
-        var targetString = SerializeBasedOnXliffVersion(transformation, xliffVersion);
+        var targetString = target.Serialize();
 
         DisplayXml(serialized);
         Console.WriteLine("------");
@@ -59,10 +59,12 @@ public abstract class TestBase
         if (HtmlContentCoder.IsHtml(targetString))
         {
             DisplayHtml(targetString);
-        } else
+        } 
+        else
         {
             Display(targetString);
         }
+        
         DisplayHtml(targetString);
 
         return new ProcessResult(original, transformation, source, target, sourceString, targetString);

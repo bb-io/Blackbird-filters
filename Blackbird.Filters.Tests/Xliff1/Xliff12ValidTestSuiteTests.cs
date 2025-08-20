@@ -2,7 +2,6 @@ using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Xliff.Xliff1;
 using System.Text;
 using Blackbird.Filters.Enums;
-using Blackbird.Filters.Tests.Html;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Xml.Linq;
 using Blackbird.Filters.Transformations;
@@ -14,12 +13,18 @@ public class Xliff12ValidTestSuiteTests : TestBase
 {
     private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
     private static readonly XNamespace XliffNs = "urn:oasis:names:tc:xliff:document:1.2";
-    
-    [Test]
-    public void Basic()
+
+    private (string content, string fileName) ReadXliffFile(string relativePath)
+    {
+        var fileName = Path.GetFileName(relativePath);
+        var content = File.ReadAllText(relativePath, Encoding.UTF8);
+        return (content, fileName);
+    }
+
+    private Transformation PerformDeserializeSerializeTest(string relativePath)
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/basic.xliff", Encoding.UTF8);
+        var (xliff, fileName) = ReadXliffFile(relativePath);
 
         // Act
         var content = Xliff1Serializer.Deserialize(xliff);
@@ -28,6 +33,16 @@ public class Xliff12ValidTestSuiteTests : TestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
+        
+        return content;
+    }
+    
+    [Test]
+    public void Basic()
+    {
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/basic.xliff");
+        
         Assert.That(content.Children.Count(x => x is Transformation), Is.EqualTo(0));
 
         // Additional assertions to verify structure
@@ -55,16 +70,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
     [Test]
     public void Segmented()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/segmented.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/segmented.xliff");
         
         // Verify segmentation was preserved
         var units = content.GetUnits().ToList();
@@ -83,16 +90,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
     [Test]
     public void InitialSegments()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/emptyTarget.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/emptyTarget.xliff");
         
         // Additional assertions to verify structure
         Assert.That(content, Is.Not.Null);
@@ -105,16 +104,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
     [Test]
     public void TranslatedSegments()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/translate.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/translate.xliff");
         
         // Additional assertions to verify structure
         Assert.That(content, Is.Not.Null);
@@ -127,16 +118,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
     [Test]
     public void ApprovedSegments()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/approved.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/approved.xliff");
         
         Assert.That(content, Is.Not.Null);
         Assert.That(content!.Id, Is.EqualTo("f1"));
@@ -148,54 +131,31 @@ public class Xliff12ValidTestSuiteTests : TestBase
     [Test]
     public void MultipleFiles()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/multifile.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/multifile.xliff");
+        
         Assert.That(content.Children.Count, Is.EqualTo(2));
     }
     
     [Test]
     public void Complex()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/complex.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        PerformDeserializeSerializeTest("Xliff1/Files/complex.xliff");
     }
 
     [Test]
     public void EverythingCore()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/everythingCore.xliff", Encoding.UTF8);
-        
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-        
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        PerformDeserializeSerializeTest("Xliff1/Files/everythingCore.xliff");
     }
     
     [Test]
     public void ContentfulTo12()
     {
         // Arrange
-        var xliff = File.ReadAllText("Xliff2/Files/contentful.xliff", Encoding.UTF8);
+        var (xliff, fileName) = ReadXliffFile("Xliff2/Files/contentful.xliff");
 
         // Act
         var content = Xliff2Serializer.Deserialize(xliff);
@@ -206,16 +166,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
     [Test]
     public void StateHandling()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/state.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/state.xliff");
         
         // Additional assertions to verify state handling
         Assert.That(content, Is.Not.Null);
@@ -227,24 +179,13 @@ public class Xliff12ValidTestSuiteTests : TestBase
         
         // Check if the state is correctly set to Translated
         Assert.That(segment.State, Is.EqualTo(SegmentState.Translated));
-        
-        // Verify the state is properly written back in serialization
-        Assert.That(returned.Contains("state=\"translated\""), Is.True);
     }
     
     [Test]
     public void StateHandlingWithSegmentation()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/stateWithSegmentation.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/stateWithSegmentation.xliff");
         
         // Additional assertions to verify state handling with segmentation
         Assert.That(content, Is.Not.Null);
@@ -259,16 +200,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
     [Test]
     public void DifferentStatesHandlingWithSegmentation()
     {
-        // Arrange
-        var xliff = File.ReadAllText("Xliff1/Files/differentStatesWithSegmentation.xliff", Encoding.UTF8);
-
-        // Act
-        var content = Xliff1Serializer.Deserialize(xliff);
-        var returned = Xliff1Serializer.Serialize(content);
-        DisplayXml(returned);
-
-        // Assert
-        XmlAssert.AreEqual(xliff, returned);
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/differentStatesWithSegmentation.xliff");
         
         // Additional assertions to verify state handling with segmentation
         Assert.That(content, Is.Not.Null);

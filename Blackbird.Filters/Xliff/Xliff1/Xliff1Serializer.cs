@@ -5,6 +5,7 @@ using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
 using System.Text;
 using System.Xml.Linq;
+using Blackbird.Filters.Constants;
 using Blackbird.Filters.Xliff.Xliff2;
 
 namespace Blackbird.Filters.Xliff.Xliff1;
@@ -159,28 +160,6 @@ public static class Xliff1Serializer
             fileElement.SetDirection(BlackbirdNs + "trgDir", file.TargetDirection);
 
             var header = new XElement(XliffNs + "header");
-            if (file.Notes.Count > 0)
-            {
-                foreach (var note in file.Notes)
-                {
-                    var noteElement = new XElement(XliffNs + "note", note.Text);
-                    noteElement.Set("id", note.Id);
-                    noteElement.SetInt("priority", note.Priority);
-                    noteElement.Set(BlackbirdNs + "category", note.Category);
-                    noteElement.Set(BlackbirdNs + "reference", note.Reference);
-                    noteElement.SetLanguageTarget(BlackbirdNs + "languageTarget", note.LanguageTarget);
-                    foreach (var attr in note.Other)
-                    {
-                        if (!attr.IsNamespaceDeclaration)
-                        {
-                            noteElement.Set(attr.Name, attr.Value);
-                        }
-                    }
-                    
-                    header.Add(noteElement);
-                }
-            }
-
             if (!string.IsNullOrEmpty(file.Original) || !string.IsNullOrEmpty(file.OriginalReference))
             {
                 var skeleton = new XElement(XliffNs + "skl");
@@ -241,10 +220,70 @@ public static class Xliff1Serializer
 
                 header.Add(skeleton);
             }
+
+            var phaseGroupElement = file.Other.OfType<XElement>().FirstOrDefault(x => x.Name.LocalName == "phase-group");
+            if (phaseGroupElement != null)
+            {
+                var clonedPhaseGroup = CloneWithNamespace(phaseGroupElement);
+                if (clonedPhaseGroup != null)
+                {
+                    header.Add(clonedPhaseGroup);
+                }
+            }
+
+            var xliffElementNames = new[] { "glossary", "reference", "count-group", "prop-group", "tool" };
+            if (file.Notes.Count > 0)
+            {
+                foreach (var note in file.Notes)
+                {
+                    var noteElement = new XElement(XliffNs + "note", note.Text);
+                    noteElement.Set("id", note.Id);
+                    noteElement.SetInt("priority", note.Priority);
+                    noteElement.Set(BlackbirdNs + "category", note.Category);
+                    noteElement.Set(BlackbirdNs + "reference", note.Reference);
+                    noteElement.SetLanguageTarget(BlackbirdNs + "languageTarget", note.LanguageTarget);
+                    foreach (var attr in note.Other)
+                    {
+                        if (!attr.IsNamespaceDeclaration)
+                        {
+                            noteElement.Set(attr.Name, attr.Value);
+                        }
+                    }
+                    
+                    header.Add(noteElement);
+                }
+            }
+
+            foreach (var otherElement in file.Other.OfType<XElement>().Where(x => 
+                xliffElementNames.Contains(x.Name.LocalName)))
+            {
+                var clonedElement = CloneWithNamespace(otherElement);
+                if (clonedElement != null)
+                {
+                    header.Add(clonedElement);
+                }
+            }
             
+            if (transformation.MetaData.Any())
+            {
+                var metadataElement = new XElement(BlackbirdNs + "metadata");
+                foreach (var metadata in transformation.MetaData)
+                {
+                    var metaElement = new XElement(BlackbirdNs + "meta",
+                        new XAttribute("type", metadata.Type),
+                        new XAttribute(Meta.Types.OriginalName, metadata.Value));
+                    metaElement.Set(BlackbirdNs + "category", string.Join(",", metadata.Category));
+                    metadataElement.Add(metaElement);
+                }
+                
+                header.Add(metadataElement);
+            }
+
             foreach (var otherElements in file.Other)
             {
-                if (otherElements is XElement otherElement)
+                if (otherElements is XElement otherElement && 
+                    !xliffElementNames.Contains(otherElement.Name.LocalName) &&
+                    otherElement.Name.LocalName != "phase-group")
                 {
                     var clonedElement = CloneWithNamespace(otherElement);
                     if (clonedElement != null)
@@ -257,7 +296,7 @@ public static class Xliff1Serializer
                     fileElement.SetAttributeValue(attribute.Name, attribute.Value);
                 }
             }
-
+            
             fileElement.Add(header);
 
             var body = new XElement(XliffNs + "body");
@@ -550,7 +589,6 @@ public static class Xliff1Serializer
                 }
             }
 
-            transUnit.Set(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.OriginalMediaType);
             parentElement.Add(transUnit);
         }
 
@@ -820,7 +858,6 @@ public static class Xliff1Serializer
                 if (internalFile != null)
                 {
                     fileTransformation.Original = internalFile.Value;
-                    //fileTransformation.SkeletonOther = new List<XElement> { internalFile };
                 }
 
                 var externalFile = skeleton.Element(XliffNs + "external-file");
@@ -836,6 +873,24 @@ public static class Xliff1Serializer
             {
                 var cleanedNode = node.FixTabulationWhitespace();
                 fileTransformation.Other.Add(cleanedNode);
+            }
+            
+            var metadata = header.Element(BlackbirdNs + "metadata");
+            if (metadata != null)
+            {
+                var metadataCollection = new List<Metadata>();
+                foreach (var meta in metadata.Elements(BlackbirdNs + "meta"))
+                {
+                    var type = meta.Get("type");
+                    var value = meta.Get(Meta.Types.OriginalName);
+                    var category = meta.Get(BlackbirdNs + "category")?.Split(',').ToList() ?? new List<string>();
+                    metadataCollection.Add(new Metadata(type, value)
+                    {
+                        Category = category
+                    });
+                }
+            
+                fileTransformation.MetaData.AddRange(metadataCollection);
             }
         }
 
@@ -934,7 +989,6 @@ public static class Xliff1Serializer
                 var source = element.Element(XliffNs + "source");
                 var target = element.Element(XliffNs + "target");
                 var segSource = element.Element(XliffNs + "seg-source");
-                var mediaType = element.Get(BlackbirdNs + "tagHandling");
                 
                 var targetState = target?.Get("state");
                 bool? segmentIgnorable = null;
@@ -955,8 +1009,7 @@ public static class Xliff1Serializer
                         {
                             Id = mrkElement.Get("mid"),
                             Source = ExtractTextParts(mrkElement),
-                            OriginalMediaType = mediaType,
-                            Ignorable = segmentIgnorable
+                            Ignorable = segmentIgnorable,
                         };
 
                         if (target != null)
@@ -1009,7 +1062,6 @@ public static class Xliff1Serializer
                         Id = element.Get("id"),
                         Source = source != null ? ExtractTextParts(source) : new List<TextPart>(),
                         Target = target != null ? ExtractTextParts(target) : new List<TextPart>(),
-                        OriginalMediaType = mediaType,
                         SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
                         TargetAttributes = target?.Attributes().GetRemaining(["state"]).ToList() ?? new List<XAttribute>(),
                         Ignorable = segmentIgnorable
