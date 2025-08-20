@@ -1,11 +1,13 @@
 ﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Content.Tags;
-using Blackbird.Filters.Enums;
+using Blackbird.Filters.Extensions;
+using Blackbird.Filters.Transformations;
 using HtmlAgilityPack;
+using System.Net.Mime;
+using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Coders;
-
 public static class HtmlContentCoder
 {
     /// <summary>
@@ -13,19 +15,45 @@ public static class HtmlContentCoder
     /// </summary>
     /// <param name="content">The HTML string</param>
     /// <returns></returns>
-    public static CodedContent Deserialize(string content)
+    public static CodedContent Deserialize(string content, string fileName)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(content);
 
-        var codedContent = new CodedContent()
+        var codedContent = new CodedContent(fileName, MediaTypeNames.Text.Html, content)
         {
-            Original = content,
             TextUnits = ExtractTextUnits(doc.DocumentNode),
         };
 
+        codedContent.Language = GetHtmlLangAttribute(doc);
+        codedContent.UniqueContentId = GetBlackbirdUcid(doc);
+
         return codedContent;
-    } 
+    }
+
+    private static string? GetHtmlLangAttribute(HtmlDocument document)
+    {
+        var htmlNode = document.DocumentNode.SelectSingleNode("//html");
+
+        if (htmlNode != null && htmlNode.Attributes["lang"] != null)
+        {
+            return htmlNode.Attributes["lang"].Value;
+        }
+
+        return null;
+    }
+
+    private static string? GetBlackbirdUcid(HtmlDocument document)
+    {
+        var metaNode = document.DocumentNode.SelectSingleNode("//meta[@name='blackbird-ucid']");
+
+        if (metaNode != null && metaNode.Attributes["content"] != null)
+        {
+            return metaNode.Attributes["content"].Value;
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// Turn HTML coded content back into a plain HTML string
@@ -37,6 +65,11 @@ public static class HtmlContentCoder
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(content.Original);
+
+        if (content.UniqueContentId != null)
+        {
+            SetOrUpdateBlackbirdUcid(doc, content.UniqueContentId);
+        }
 
         foreach(var unit in content.TextUnits)
         {
@@ -58,6 +91,36 @@ public static class HtmlContentCoder
         return doc.DocumentNode.OuterHtml;
     }
 
+    private static void SetOrUpdateBlackbirdUcid(HtmlDocument document, string ucidValue)
+    {
+        var headNode = document.DocumentNode.SelectSingleNode("//head");
+        if (headNode == null)
+        {
+            // Create <head> if it doesn't exist
+            headNode = document.CreateElement("head");
+            var htmlNode = document.DocumentNode.SelectSingleNode("//html");
+            if (htmlNode != null)
+                htmlNode.PrependChild(headNode);
+            else
+                document.DocumentNode.AppendChild(headNode);
+        }
+
+        var metaNode = headNode.SelectSingleNode("meta[@name='blackbird-ucid']");
+        if (metaNode != null)
+        {
+            // Update existing
+            metaNode.SetAttributeValue("content", ucidValue);
+        }
+        else
+        {
+            // Create new
+            var newMeta = document.CreateElement("meta");
+            newMeta.SetAttributeValue("name", "blackbird-ucid");
+            newMeta.SetAttributeValue("content", ucidValue);
+            headNode.AppendChild(newMeta);
+        }
+    }
+
 
     /// <summary>
     /// Checks if the provided string is actually an HTML file.
@@ -67,11 +130,6 @@ public static class HtmlContentCoder
     public static bool IsHtml(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
-            return false;
-
-        // Check if it's an XML file (like XLIFF)
-        if (Regex.IsMatch(content.TrimStart(), @"^\s*<\?xml") || 
-            Regex.IsMatch(content, @"<xliff\b[^>]*>", RegexOptions.IgnoreCase))
             return false;
 
         var htmlTagPattern = @"<\s*(html|body|head|title|div|span|p|a|!DOCTYPE)";
@@ -106,7 +164,6 @@ public static class HtmlContentCoder
             {
                 units.AddRange(BuildUnits(node));
             }
-            
             return units;
         }
 
@@ -128,15 +185,21 @@ public static class HtmlContentCoder
 
     internal static List<TextUnit> BuildUnits(HtmlNode node)
     {
-        var unit = new TextUnit(node.XPath, CodeType.Html);
+        var unit = new TextUnit(node.XPath, MediaTypeNames.Text.Html);
 
         if (node.NodeType == HtmlNodeType.Text)
         {
-            unit.Parts.Add(new TextPart { Value = node.GetFormatFreeText() });
+            unit.Parts.Add(new TextPart { Value = node.InnerText.RemoveIdeFormatting() });
         }
         else
         {
             unit.Parts = BuildTextParts(node.ChildNodes);
+        }
+
+        if (unit.Parts.Count > 0) 
+        {
+            unit.Parts[0].Value = unit.Parts[0].Value.TrimStart();
+            unit.Parts[unit.Parts.Count - 1].Value = unit.Parts[unit.Parts.Count - 1].Value.TrimEnd();
         }
 
         var units = new List<TextUnit>();
@@ -155,7 +218,7 @@ public static class HtmlContentCoder
         {
             if (child.NodeType == HtmlNodeType.Text)
             {
-                parts.Add(new TextPart { Value = child.GetFormatFreeText() });
+                parts.Add(new TextPart { Value = child.InnerText.RemoveIdeFormatting() });
             }
             else if (child.NodeType == HtmlNodeType.Element)
             {
@@ -184,7 +247,7 @@ public static class HtmlContentCoder
         return parts;
     }
 
-    private static TextUnit BuildUnit(HtmlAttribute attribute) => new(attribute.XPath, CodeType.PlainText) { Parts = [new TextPart { Value = attribute.Value }] };
+    private static TextUnit BuildUnit(HtmlAttribute attribute) => new(attribute.XPath, MediaTypeNames.Text.Plain) { Parts = [new TextPart { Value = attribute.Value }] };
 
     private static (string StartTag, string Content, string EndTag) ParseHtmlParts(string html)
     {
@@ -204,8 +267,6 @@ public static class HtmlContentCoder
 
         return (string.Empty, string.Empty, string.Empty);
     }
-
-    private static string GetFormatFreeText(this HtmlNode node) => Regex.Replace(node.InnerText, @"\s+", " ").Trim();
 
     // https://www.w3schools.com/htmL/html_blocks.asp
     // https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2

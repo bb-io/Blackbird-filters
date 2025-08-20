@@ -37,15 +37,14 @@ public class FileHeapTest : TestBase
     public void FileParses(string filePath)
     {
         Assert.That(File.Exists(filePath), Is.True, $"Missing file: {filePath}");
-        TestContext.WriteLine($"Testing file: {Path.GetFileName(filePath)}");
 
         var serialized = File.ReadAllText(filePath, Encoding.UTF8);
 
-        var transformation = Transformation.Parse(serialized);
+        var transformation = Transformation.Parse(serialized, Path.GetFileName(filePath));
 
         foreach(var segment in transformation.GetSegments())
         {
-            segment.SetTarget(segment.GetSource());
+            segment.SetTarget(segment.GetSource() + " - modified");
         }
 
         var returned = transformation.Serialize();
@@ -53,7 +52,7 @@ public class FileHeapTest : TestBase
 
         if (filePath.EndsWith(".html"))
         {
-            var original = transformation.Source().Serialize();
+            var original = transformation.Target().Serialize();
             DisplayHtml(original);
         }
     }

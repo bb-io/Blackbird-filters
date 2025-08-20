@@ -30,7 +30,22 @@
     <None Update="Heap\Files\contentful.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Html\Files\contentful.html">
+    <None Update="Heap\Files\contentful.html.xlf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Heap\Files\contentful.html.xliff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Heap\Files\contentful.translated.xlf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Heap\Files\no_src_lang.xlf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Heap\Files\zendesk.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Heap\Files\zendesk.html.xlf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Html\Files\meta_content.html">
@@ -51,6 +66,12 @@
     <None Update="Html\Files\comments.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Html\Files\ide_formatting.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Html\Files\inline_spaces.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Html\Files\subflows.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -60,10 +81,22 @@
     <None Update="Html\Files\inline_tags.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Html\Files\with_lang.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Html\Files\with_br.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Html\Files\simple.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plaintext\Files\linebreak.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plaintext\Files\paragraphs.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plaintext\Files\simple.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Xliff2\Files\annotations.xliff">
@@ -127,6 +160,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Xliff2\XLIFF valid\withCDataSections.xlf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Xliff2\XLIFF valid\withMetaData.xlf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Xliff2\XLIFF valid\withCommentAnnotations.xlf">
@@ -207,10 +243,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Xliff12\Files\Html\contentful.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Remove="Xliff12\Files\everythingCore.xliff" />
     <EmbeddedResource Include="Xliff12\Files\everythingCore.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Remove="Html\Files\contentful.html" />
+    <EmbeddedResource Include="Html\Files\contentful.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Plaintext\Files\" />
   </ItemGroup>
 
 </Project>

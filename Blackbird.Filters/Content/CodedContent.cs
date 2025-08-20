@@ -1,30 +1,61 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content.Tags;
-using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Tags;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
 
 namespace Blackbird.Filters.Content;
-
 public class CodedContent
 {
-    internal CodedContent() { }
+    internal CodedContent(string fileName, string mediaType, string fileContent) 
+    {
+        OriginalName = fileName;
+        OriginalMediaType = mediaType;
+        Original = fileContent;
+    }
+
+    /// <summary>
+    /// The original file name.
+    /// </summary>
+    public string OriginalName { get; set; }
+
+    /// <summary>
+    /// The original media type name.
+    /// </summary>
+    public string OriginalMediaType { get; internal set; }
 
     /// <summary>
     /// The original file in plain text.
     /// </summary>
-    public string Original { get; internal set; } = string.Empty;
+    public string Original { get; internal set; }
 
     /// <summary>
     /// Extracted units of content from the original file.
     /// </summary>
     public List<TextUnit> TextUnits { get; internal set; } = [];
 
-    public Transformation CreateTransformation(string? sourceLanguage = null, string? targetLanguage = null)
+    /// <summary>
+    /// The language (code) represented in this file
+    /// </summary>
+    public string? Language { get; set; }
+
+    /// <summary>
+    /// A unique identifier to the content in the real world, this can be a content ID, or content ID + organizational information. 
+    /// It can also include the language code, as long as it is unique across content and languages across users.
+    /// </summary>
+    public string? UniqueContentId { get; set; }
+
+    public Transformation CreateTransformation(string? targetLanguage = null)
     {
-        var transformation = new Transformation(sourceLanguage, targetLanguage) { Original = Original };
+        var transformation = new Transformation(Language, targetLanguage) 
+        { 
+            Original = Original, 
+            OriginalName = OriginalName, 
+            OriginalMediaType = OriginalMediaType,
+            UniqueSourceContentId = UniqueContentId,
+        };
+
         var unitReferences = new Dictionary<InlineTag, List<TextUnit>>();
         var unitsDictionary = new Dictionary<TextUnit, Unit>();
 
@@ -69,7 +100,7 @@ public class CodedContent
                
             }
 
-            unit.Segments = [new Segment() { Source = parts, CodeType = textUnit.CodeType }];
+            unit.Segments = [new Segment(OriginalMediaType) { Source = parts, Ignorable = parts.All(x => string.IsNullOrWhiteSpace(x.Value)) }];
             transformation.Children.Add(unit);
         }
 
@@ -79,6 +110,15 @@ public class CodedContent
         }
 
         return transformation;
+    }
+
+    /// <summary>
+    /// Get the plaintext of originally coded content. Removes all tags and inline codes.
+    /// </summary>
+    /// <returns>The plaintext</returns>
+    public string GetPlaintext()
+    {
+        return string.Join(Environment.NewLine, TextUnits.Select(x => x.GetPlainText()));
     }
 
     public string Serialize()

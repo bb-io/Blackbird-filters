@@ -1,6 +1,11 @@
-﻿using Blackbird.Filters.Tests.CustomAssertions;
+﻿using Blackbird.Filters.Coders;
+using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Xliff.Xliff2;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Blackbird.Filters.Tests.Xliff2;
 
@@ -11,6 +16,16 @@ public class Xliff2ValidTestSuiteTests : TestBase
     public void all_extensions()
     {
         var xliff = File.ReadAllText("Xliff2/XLIFF valid/allExtensions.xlf", Encoding.UTF8);
+        var content = Xliff2Serializer.Deserialize(xliff);
+        var returned = Xliff2Serializer.Serialize(content);
+        DisplayXml(returned);
+        XmlAssert.AreEqual(xliff, returned);
+    }
+
+    [Test]
+    public void with_metadata()
+    {
+        var xliff = File.ReadAllText("Xliff2/XLIFF valid/withMetaData.xlf", Encoding.UTF8);
         var content = Xliff2Serializer.Deserialize(xliff);
         var returned = Xliff2Serializer.Serialize(content);
         DisplayXml(returned);

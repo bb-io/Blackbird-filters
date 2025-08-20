@@ -4,16 +4,21 @@ using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations.Tags;
 using HtmlAgilityPack;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
-
-public class Segment
+public class Segment()
 {
-    public string? Id { get; internal set; }
+    internal Segment(string? originalMediaType) : this()
+    {
+        OriginalMediaType = originalMediaType;
+    }
+
     public List<TextPart> Source { get; set; } = [];
     public List<TextPart> Target { get; set; } = [];
+    public string? Id { get; internal set; }
     public bool? CanResegment { get; set; }
     public SegmentState? State { get; set; }
     public string? SubState { get; set; }
@@ -23,7 +28,8 @@ public class Segment
     public WhiteSpaceHandling TargetWhiteSpaceHandling { get; set; } = WhiteSpaceHandling.Default;
     public List<XAttribute> SourceAttributes { get; set; } = [];
     public List<XAttribute> TargetAttributes { get; set; } = [];
-    public CodeType? CodeType { get; set; }
+    internal string? OriginalMediaType { get; set; }
+
     public bool IsIgnorbale => Ignorable.HasValue && Ignorable.Value;
     public bool IsInitial => State.HasValue ? State.Value == SegmentState.Initial : true;
 
@@ -33,12 +39,6 @@ public class Segment
     /// <returns>The source including tags</returns>
     public string GetSource()
     {
-        if (CodeType.HasValue && CodeType.Value == Enums.CodeType.Html)
-        {
-            var codedText = string.Join(string.Empty, Source.Select(x => x.Value));
-            return Regex.Replace(codedText, @"\s+", " ").Trim();
-        }
-
         return string.Join(string.Empty, Source.Select(x => x.Value));
     }
 
@@ -48,12 +48,6 @@ public class Segment
     /// <returns>The target including tags</returns>
     public string GetTarget()
     {
-        if (CodeType.HasValue && CodeType.Value == Enums.CodeType.Html)
-        {
-            var codedText = string.Join(string.Empty, Target.Select(x => x.Value));
-            return Regex.Replace(codedText, @"\s+", " ").Trim();
-        }
-
         return string.Join(string.Empty, Target.Select(x => x.Value));
     }
 
@@ -63,7 +57,7 @@ public class Segment
     /// <returns>The text including tags</returns>
     public void SetTarget(string content)
     {
-        if (CodeType.HasValue && CodeType.Value == Enums.CodeType.Html)
+        if (OriginalMediaType == MediaTypeNames.Text.Html)
         {
             var doc = new HtmlDocument();
             doc.LoadHtml(content);

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.2" xmlns:fs="urn:oasis:names:tc:xliff:fs:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" version="2.2" srcLang="en">
+	<file id="f1">
+		<group id="g1" name="document">
+			<mda:metadata>
+				<mda:metaGroup category="document_xml_attribute">
+					<mda:meta type="version">3</mda:meta>
+					<mda:meta type="phase">draft</mda:meta>
+				</mda:metaGroup>
+			</mda:metadata>
+			<group id="g2" name="table">
+				<group id="g3" name="row">
+					<mda:metadata>
+						<mda:metaGroup category="row_xml_attribute">
+							<mda:meta type="style">head</mda:meta>
+						</mda:metaGroup>
+					</mda:metadata>
+					<unit id="u1" name="cell">
+						<segment>
+							<source>Name</source>
+						</segment>
+					</unit>
+					<unit id="u2" name="cell">
+						<segment>
+							<source>Position</source>
+						</segment>
+					</unit>
+				</group>
+				<group id="g4" name="row">
+					<unit id="u3" name="cell">
+						<segment>
+							<source>Patrick K.</source>
+						</segment>
+					</unit>
+					<unit id="u4" name="cell">
+						<segment>
+							<source>Right Wing</source>
+						</segment>
+					</unit>
+				</group>
+				<group id="g5" name="row">
+					<unit id="u5" name="cell">
+						<segment>
+							<source>Bryan B.</source>
+						</segment>
+					</unit>
+					<unit id="u6" name="cell">
+						<segment>
+							<source>Left Wing</source>
+						</segment>
+					</unit>
+				</group>
+			</group>
+		</group>
+	</file>
+</xliff>

@@ -10,7 +10,7 @@ using Blackbird.Filters.Transformations;
 namespace Blackbird.Filters.Tests.Xliff12;
 
 [TestFixture]
-public class Xliff12ValidTestSuiteTests : HtmlTestBase
+public class Xliff12ValidTestSuiteTests : TestBase
 {
     private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
     private static readonly XNamespace XliffNs = "urn:oasis:names:tc:xliff:document:1.2";

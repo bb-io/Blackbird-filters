@@ -12,4 +12,5 @@ public abstract class Node
     public Direction? TargetDirection { get; set; }
     public List<Note> Notes { get; set; } = [];
     public List<XObject> Other { get; set; } = [];
+    public List<Metadata> MetaData { get; set; } = [];
 }

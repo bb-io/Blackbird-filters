@@ -1,18 +1,19 @@
 ﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
+using System.Data;
 using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Xliff.Xliff2;
-
 public static class Xliff2Serializer
 {
-    private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
+    private static readonly XNamespace MetaNs = "urn:oasis:names:tc:xliff:metadata:2.0";
 
     public static Transformation Deserialize(string fileContent)
     {
@@ -24,13 +25,14 @@ public static class Xliff2Serializer
         }
 
         var ns = xliffNode.GetDefaultNamespace();
-        var sourceLanguage = xliffNode.Get("srcLang", Optionality.Required)!;
+        var sourceLanguage = xliffNode.Get("srcLang");
         var targetLanguage = xliffNode.Get("trgLang");
         var whiteSpaceHandling = xliffNode.GetWhiteSpaceHandling();
+        
 
         List<Note> DeserializeNotes(XElement? node)
         {
-            if (node == null) return new List<Note>();
+            if (node == null) return [];
             return node.Elements(ns + "note").Select(x => new Note(x.Value.Trim())
             {
                 Id = x.Get("id"),
@@ -40,6 +42,20 @@ public static class Xliff2Serializer
                 Other = x.Attributes().GetRemaining(["id", "priority", "category", "appliesTo"]),
                 // TODO: Implement reference property handling
             }).ToList();
+        }
+
+        List<Metadata> DeserializeMetadata(XElement? node, List<string>? category = null)
+        {
+            var metadata = new List<Metadata>();
+            if (node == null) return metadata;
+            if (category == null) category = [];
+            var categoryName = node.Get("category");
+            if (categoryName is not null) category.Add(categoryName);
+            metadata.AddRange(node.Elements(MetaNs + "metaGroup").SelectMany(x => DeserializeMetadata(x, category.ToList())));            
+            metadata.AddRange(node.Elements(MetaNs + "meta").Select(
+                x => new Metadata(x.Get("type", Optionality.Required)!, x.Value) { Category = category }
+                ));
+            return metadata;
         }
 
         Transformation DeserializeTransformation(XElement node)
@@ -56,10 +72,11 @@ public static class Xliff2Serializer
                 SourceDirection = node.GetDirection("srcDir"),
                 TargetDirection = node.GetDirection("trgDir"),
                 Notes = DeserializeNotes(node.Element(ns + "notes")),
+                MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                 OriginalReference = node.Element(ns + "skeleton")?.Get("href")
             };
 
-            transformation.Other.AddRange(node.Elements().GetRemaining([ns + "skeleton", ns + "group", ns + "unit", ns + "notes"]));
+            transformation.Other.AddRange(node.Elements().GetRemaining([ns + "skeleton", ns + "group", ns + "unit", ns + "notes", MetaNs + "metadata"]));
             transformation.Other.AddRange(node.Attributes().GetRemaining(["id", "original", "canResegment", "translate", "srcDir", "trgDir"]));
 
             var skeleton = node.Element(ns + "skeleton");
@@ -80,12 +97,12 @@ public static class Xliff2Serializer
                     Translate = node.GetBool("translate"),
                     SourceDirection = node.GetDirection("srcDir"),
                     TargetDirection = node.GetDirection("trgDir"),
-                    Notes = DeserializeNotes(node.Element(ns + "notes"))
+                    Notes = DeserializeNotes(node.Element(ns + "notes")),
+                    MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                 };
-                var codeType = node.GetCodeType(BlackbirdNs + "tagHandling");
 
-                unit.Other.AddRange(node.Elements().GetRemaining([ns + "originalData", ns + "notes", ns + "segment", ns + "ignorable"]));
-                unit.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir", BlackbirdNs + "tagHandling"]));
+                unit.Other.AddRange(node.Elements().GetRemaining([ns + "originalData", ns + "notes", ns + "segment", ns + "ignorable", MetaNs + "metadata"]));
+                unit.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir"]));
 
                 Dictionary<string, XElement> data = node.Element(ns + "originalData")?.Elements()?.ToDictionary(x => x.Get("id", Optionality.Required)!, x => x) ?? [];
 
@@ -128,7 +145,7 @@ public static class Xliff2Serializer
                                     if (lineNode is XText textNode && !string.IsNullOrWhiteSpace(textNode.Value))
                                     {
                                         var value = textNode.Value;
-                                        if (dataElement.GetWhiteSpaceHandling(WhiteSpaceHandling.Preserve) != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.Trim();
+                                        if (dataElement.GetWhiteSpaceHandling(WhiteSpaceHandling.Preserve) != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting();
                                         result += value;
                                         continue;
                                     }
@@ -186,7 +203,7 @@ public static class Xliff2Serializer
                             if (lineNode is XText textNode)
                             {
                                 var value = textNode.Value;
-                                if (whiteSpaceHandling != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.Trim();
+                                if (whiteSpaceHandling != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting();
                                 parts.Add(new TextPart { Value = value });
                                 continue;
                             }
@@ -305,6 +322,12 @@ public static class Xliff2Serializer
                             }
                         }
 
+                        if (parts.Count > 0)
+                        {
+                            parts[0].Value = parts[0].Value.TrimStart();
+                            parts[parts.Count - 1].Value = parts[parts.Count - 1].Value.TrimEnd();
+                        }
+
                         return parts;
                     }
 
@@ -318,7 +341,7 @@ public static class Xliff2Serializer
                         SubState = node.Get("subState"),
                         Ignorable = node.Name == ns + "ignorable",
                         SourceAttributes = sourceNode.Attributes().ToList(),
-                        CodeType = codeType,
+                        OriginalMediaType = transformation.OriginalMediaType,
                     };
 
                     if (targetNode != null)
@@ -349,8 +372,9 @@ public static class Xliff2Serializer
                     SourceDirection = node.GetDirection("srcDir"),
                     TargetDirection = node.GetDirection("trgDir"),
                     Notes = DeserializeNotes(node.Element(ns + "notes")),
+                    MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                 };
-                group.Other.AddRange(node.Elements().GetRemaining([ns + "notes", ns + "group", ns + "unit"]));
+                group.Other.AddRange(node.Elements().GetRemaining([ns + "notes", ns + "group", ns + "unit", MetaNs + "metadata"]));
                 group.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir"]));
                 group.Children.AddRange(node.Elements(ns + "group").Select(DeserializeGroup));
                 group.Children.AddRange(node.Elements(ns + "unit").Select(DeserializeUnit));
@@ -363,38 +387,36 @@ public static class Xliff2Serializer
             // Fix unit references
             foreach (var (tag, ids) in unitReferences)
             {
-                tag.UnitReferences = ids.Select(x => transformation.GetUnits().FirstOrDefault(y => y.Id == x)).Where(x => x is not null).ToList();
+                tag.UnitReferences = ids?.Select(x => transformation.GetUnits().FirstOrDefault(y => y.Id == x)!).Where(x => x is not null)?.ToList() ?? [];
             }
 
             return transformation;
         }
 
         var files = xliffNode.Elements(ns + "file").Select(DeserializeTransformation);
+        var metadata = DeserializeMetadata(xliffNode.Element(MetaNs + "metadata"));
         Transformation transformation;
         if (files.Count() == 1)
         {
             transformation = files.First();
+            transformation.MetaData.AddRange(metadata);
         }
         else
         {
             transformation = new Transformation(sourceLanguage, targetLanguage);
             transformation.Children.AddRange(files); 
+            transformation.MetaData = metadata;
         }
-        
         transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["srcLang", "trgLang"]));
         return transformation;
     }
 
     public static string Serialize(Transformation xliffTransformation)
     {
-        XNamespace ns =
-            xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns")?.Value ??
-            "urn:oasis:names:tc:xliff:document:2.0";
-        if(ns.ToString().StartsWith("urn:oasis:names:tc:xliff:document:1."))
-        {
-            ns = "urn:oasis:names:tc:xliff:document:2.0";
-        }
-        
+        var xmlnsAttribute = xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns");;
+        XNamespace ns = xmlnsAttribute?.Value ?? $"urn:oasis:names:tc:xliff:document:2.2";
+        bool metaUsed = false;
+
         XElement? SerializeNotes(List<Note> notes)
         {
             if (notes.Count == 0) return null;
@@ -411,7 +433,40 @@ public static class Xliff2Serializer
                 noteRoot.Add(note.Other);
                 root.Add(noteRoot);
             }
-            
+            return root;
+        }
+
+        XElement? SerializeMetadata(List<Metadata> metadata)
+        {
+            if (metadata.Count == 0) return null;
+            var root = new XElement(MetaNs + "metadata");
+
+            XElement FindCategory(XElement element, List<string> category)
+            {
+                if (category.Count == 0) return element;
+                var child = element.Elements(MetaNs + "metaGroup").Where(x => x.Get("category") == category[0]).FirstOrDefault();
+
+                if (child is null)
+                {
+                    var newCategory = new XElement(MetaNs + "metaGroup", new XAttribute("category", category[0]));
+                    element.Add(newCategory);
+                    child = newCategory;
+                }
+
+                return FindCategory(child, category.Skip(1).ToList());    
+            }
+
+            foreach (var meta in metadata)
+            {
+                var metaRoot = new XElement(MetaNs + "meta");
+                metaRoot.Set("type", meta.Type);
+                metaRoot.Value = meta.Value;
+
+                var categoryNode = FindCategory(root, meta.Category);
+                categoryNode.Add(metaRoot);
+                metaUsed = true;
+            }
+
             return root;
         }
 
@@ -652,9 +707,9 @@ public static class Xliff2Serializer
                 root.SetDirection("srcDir", unit.SourceDirection);
                 root.SetDirection("trgDir", unit.TargetDirection);
                 root.Add(SerializeNotes(unit.Notes));
+                root.Add(SerializeMetadata(unit.MetaData));
                 root.Add(unit.Segments.Select(SerializeSegment));
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
-                root.SetCodeType(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.CodeType);
                 root.Add(unit.Other);
 
                 return root;
@@ -671,6 +726,7 @@ public static class Xliff2Serializer
                 root.SetDirection("srcDir", group.SourceDirection);
                 root.SetDirection("trgDir", group.TargetDirection);
                 root.Add(SerializeNotes(group.Notes));
+                root.Add(SerializeMetadata(group.MetaData));
                 root.Add(group.Children.OfType<Group>().Select(SerializeGroup));
                 root.Add(group.Children.OfType<Unit>().Select(SerializeUnit));
                 root.Add(group.Other);
@@ -686,6 +742,7 @@ public static class Xliff2Serializer
             root.SetDirection("srcDir", transformation.SourceDirection);
             root.SetDirection("trgDir", transformation.TargetDirection);
             root.Add(SerializeNotes(transformation.Notes));
+            root.Add(SerializeMetadata(transformation.MetaData));
 
             if (transformation.Original is not null || transformation.OriginalReference is not null)
             {
@@ -704,23 +761,8 @@ public static class Xliff2Serializer
         var root = new XElement(ns + "xliff");
         root.Set("srcLang", xliffTransformation.SourceLanguage);
         root.Set("trgLang", xliffTransformation.TargetLanguage);
-        var version = xliffTransformation.XliffOther.OfType<XAttribute>()
-            .FirstOrDefault(x => x.Name.LocalName == "version")?.Value ?? "2.0";
-        root.Set("version", version);
-        
-        foreach (var attr in xliffTransformation.XliffOther.OfType<XAttribute>())
-        {
-            if (attr.Name.LocalName != "xmlns" && attr.Name.LocalName != "version")
-            {
-                root.Add(attr);
-            }
-        }
-
-        // Add all non-attribute XliffOther elements
-        foreach (var element in xliffTransformation.XliffOther.OfType<XElement>())
-        {
-            root.Add(element);
-        }
+        if (xmlnsAttribute is null) root.Set("version", "2.2");
+        root.Add(xliffTransformation.XliffOther);
 
         if (!xliffTransformation.Children.OfType<Transformation>().Any())
         {
@@ -729,7 +771,13 @@ public static class Xliff2Serializer
         else
         {
             root.Add(xliffTransformation.Children.OfType<Transformation>().Select(SerializeTransformation));
-        }        
+        }
+
+        if (metaUsed && root.Attribute(XNamespace.Xmlns + "mda") == null)
+        {
+            root.Add(new XAttribute(XNamespace.Xmlns + "mda", MetaNs));
+        }
+
         var doc = new XDocument(root);
         return doc.ToString();
     }
@@ -837,9 +885,9 @@ public static class Xliff2Serializer
             }
 
             var version = xliffNode.Get("version", Optionality.Required)!;
-            return float.Parse(version, CultureInfo.InvariantCulture) >= 2;
+            return float.Parse(version, CultureInfo.InvariantCulture) > 2;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return false;
         }

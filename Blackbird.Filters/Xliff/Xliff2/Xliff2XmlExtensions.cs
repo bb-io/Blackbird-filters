@@ -27,27 +27,7 @@ public static class Xliff2XmlExtensions
     public static bool? GetBool(this XElement element, XName name, Optionality optional = Optionality.Optional)
     {
         var value = element.Get(name, optional);
-        if(string.IsNullOrEmpty(value))
-        {
-            return null;
-        }
-        
-        if (value is "yes" or "true")
-        {
-            return true;
-        }
-        
-        if (value is "no" or "false")
-        {
-            return false;
-        }
-        
-        if (optional == Optionality.Required)
-        {
-            throw new Exception($"The {name.LocalName} attribute must be 'yes', 'no', 'true', or 'false' but found '{value}' in {element.Name}");
-        }
-        
-        return null;
+        return value != null ? value == "yes" : null;
     }
 
     public static void SetBool(this XElement element, XName name, bool? value)
@@ -183,19 +163,5 @@ public static class Xliff2XmlExtensions
     public static List<XElement> GetRemaining(this IEnumerable<XElement> elements, XName[] usedElements)
     {
         return elements.Where(a => !usedElements.Contains(a.Name)).ToList();
-    }
-
-    public static CodeType? GetCodeType(this XElement element, XName name, Optionality optional = Optionality.Optional)
-    {
-        var value = element.Get(name, optional);
-        return value?.ToCodeType();
-    }
-
-    public static void SetCodeType(this XElement element, XName name, CodeType? value)
-    {
-        if (value.HasValue)
-        {
-            element.SetAttributeValue(name, value.Value.Serialize());
-        }
     }
 }

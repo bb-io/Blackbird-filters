@@ -1,11 +1,14 @@
 ﻿using Blackbird.Filters.Coders;
+using Blackbird.Filters.Content;
+using Blackbird.Filters.Enums;
 using Blackbird.Filters.Tests.CustomAssertions;
-using Blackbird.Filters.Tests.Models;
+using Blackbird.Filters.Transformations;
+using System.Text;
 
 namespace Blackbird.Filters.Tests.Html;
 
 [TestFixture]
-public class HtmlCoderTests : HtmlTestBase
+public class HtmlCoderTests : TestBase
 {
     [Test]
     public void Is_html()
@@ -26,134 +29,166 @@ public class HtmlCoderTests : HtmlTestBase
         Assert.IsFalse(result3);
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Empty(XliffVersion version)
+    [Test]
+    public void Empty()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/empty.html", version);
+        var result = Process("Html/Files/empty.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(0));
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(0));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Simple(XliffVersion version)
+    [Test]
+    public void Ide_formatting()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/simple.html", version);
+        var result = Process("Html/Files/ide_formatting.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.All(x => !x.GetCodedText().Contains("\r\n")), "Unit contains newlines");
+        Assert.That(result.Source.TextUnits.All(x => x.GetCodedText()[0] != ' '), "First character is a space");
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void With_br(XliffVersion version)
+    [Test]
+    public void Simple()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/with_br.html", version);
+        var result = Process("Html/Files/simple.html");
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
+    }
+
+    [Test]
+    public void Inline_spaces()
+    {
+        var result = Process("Html/Files/inline_spaces.html");
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.TargetString.Contains("My "), "Inline spaces are not preserved");
+        Assert.That(!result.TargetString.Contains(" My"), "Outline spaces are preserved");
+    }
+
+    [Test]
+    public void With_br()
+    {
+        var result = Process("Html/Files/with_br.html");
         
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(1));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(1));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Inline_tags(XliffVersion version)
+    [Test]
+    public void With_lang()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/inline_tags.html", version);
+        var result = Process("Html/Files/with_lang.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(2));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.Language == "en");
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Floating_text(XliffVersion version)
+    [Test]
+    public void Inline_tags()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/floating_text.html", version);
+        var result = Process("Html/Files/inline_tags.html");
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void Floating_text()
+    {
+        var result = Process("Html/Files/floating_text.html");
       
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Img_alt_text(XliffVersion version)
+    [Test]
+    public void Img_alt_text()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/img_alt_text.html", version);
+        var result = Process("Html/Files/img_alt_text.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
-        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Button_subflows(XliffVersion version)
+    [Test]
+    public void Button_subflows()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/subflows.html", version);
+        var result = Process("Html/Files/subflows.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(3));
-        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Click here to start!", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Click here to start!", StringComparison.InvariantCultureIgnoreCase)));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Img_title_attr(XliffVersion version)
+    [Test]
+    public void Img_title_attr()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/img_title_attr.html", version);
+        var result = Process("Html/Files/img_title_attr.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
-        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("I'm a tooltip", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("I'm a tooltip", StringComparison.InvariantCultureIgnoreCase)));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Comments(XliffVersion version)
+    [Test]
+    public void Comments()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/comments.html", version);
+        var result = Process("Html/Files/comments.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(1));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(1));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Script(XliffVersion version)
+    [Test]
+    public void Script()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/script.html", version);
+        var result = Process("Html/Files/script.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
-        Assert.IsFalse(content.TextUnits.Any(x => x.GetCodedText().Contains("function", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsFalse(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("function", StringComparison.InvariantCultureIgnoreCase)));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Meta_content(XliffVersion version)
+    [Test]
+    public void Meta_content()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/meta_content.html", version);
+        var result = Process("Html/Files/meta_content.html");
 
-        HtmlAssert.AreEqual(html, returned);
-        Assert.That(content.TextUnits.Count(), Is.EqualTo(4));
-        Assert.IsTrue(content.TextUnits.Any(x => x.GetCodedText().Contains("Free Web tutorials", StringComparison.InvariantCultureIgnoreCase)));
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(4));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Free Web tutorials", StringComparison.InvariantCultureIgnoreCase)));
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Full_example(XliffVersion version)
+    [Test]
+    public void Full_example()
     {
-        var (html, content, returned) = ProcessSource("Html/Files/contentful.html", version);
-        HtmlAssert.AreEqual(html, returned);
+        var result = Process("Html/Files/contentful.html");
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
     }
 
-    [TestCase(XliffVersion.Xliff2)]
-    [TestCase(XliffVersion.Xliff1)]
-    public void Full_translated(XliffVersion version)
+    [Test]
+    public void Full_translated()
     {
-        var (html, content, returned) = ProcessTarget("Html/Files/contentful.html", version);
-        HtmlAssert.AreNotEqual(html, returned);
+        var result = Process("Html/Files/contentful.html");
+
+        HtmlAssert.AreNotEqual(result.Original, result.TargetString);
     }
+
+    [Test]
+    public void To_plaintext()
+    {
+        var original = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
+        var coded = HtmlContentCoder.Deserialize(original, "contentful.html");
+
+        var plaintext = coded.GetPlaintext();
+        Assert.IsNotEmpty(plaintext);
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.WriteLine(plaintext);
+    }
+
 }

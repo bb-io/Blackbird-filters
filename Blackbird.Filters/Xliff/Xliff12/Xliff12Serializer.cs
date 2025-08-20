@@ -521,7 +521,7 @@ public static class Xliff12Serializer
                 }
             }
 
-            transUnit.SetCodeType(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.CodeType);
+            transUnit.Set(BlackbirdNs + "tagHandling", unit.Segments.FirstOrDefault()?.OriginalMediaType);
             foreach (var noteElement in SerializeNotes(unit.Notes))
             {
                 transUnit.Add(noteElement);
@@ -919,7 +919,7 @@ public static class Xliff12Serializer
                 var source = element.Element(XliffNs + "source");
                 var target = element.Element(XliffNs + "target");
                 var segSource = element.Element(XliffNs + "seg-source");
-                var codeType = element.GetCodeType(BlackbirdNs + "tagHandling");
+                var mediaType = element.Get(BlackbirdNs + "tagHandling");
                 
                 var targetState = target?.Get("state");
                 bool? segmentIgnorable = null;
@@ -940,7 +940,7 @@ public static class Xliff12Serializer
                         {
                             Id = mrkElement.Get("mid"),
                             Source = ExtractTextParts(mrkElement),
-                            CodeType = codeType,
+                            OriginalMediaType = mediaType,
                             Ignorable = segmentIgnorable
                         };
 
@@ -994,7 +994,7 @@ public static class Xliff12Serializer
                         Id = element.Get("id"),
                         Source = source != null ? ExtractTextParts(source) : new List<TextPart>(),
                         Target = target != null ? ExtractTextParts(target) : new List<TextPart>(),
-                        CodeType = codeType,
+                        OriginalMediaType = mediaType,
                         SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
                         TargetAttributes = target?.Attributes().GetRemaining(["state"]).ToList() ?? new List<XAttribute>(),
                         Ignorable = segmentIgnorable

@@ -66,6 +66,7 @@ public class UnitBuilderTests : TestBase
 
         // Assert
         Assert.That(units.FirstOrDefault()!.Parts.Count(), Is.EqualTo(4));
+        Assert.That(html, Is.EqualTo(original));
     }
 
     [Test]
