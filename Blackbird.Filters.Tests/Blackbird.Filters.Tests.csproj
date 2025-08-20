@@ -201,53 +201,53 @@
     <None Update="Xliff2\XLIFF valid\withXmlSpace.xlf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\basic.xliff">
+    <None Update="Xliff1\Files\basic.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\segmented.xliff">
+    <None Update="Xliff1\Files\segmented.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\Html\simple.html">
+    <None Update="Xliff1\Files\Html\simple.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\Html\hypertext.html">
+    <None Update="Xliff1\Files\Html\hypertext.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\Html\multipleFiles.html">
+    <None Update="Xliff1\Files\Html\multipleFiles.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\multifile.xliff">
+    <None Update="Xliff1\Files\multifile.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\complex.xliff">
+    <None Update="Xliff1\Files\complex.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\translate.xliff">
+    <None Update="Xliff1\Files\translate.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\approved.xliff">
+    <None Update="Xliff1\Files\approved.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\emptyTarget.xliff">
+    <None Update="Xliff1\Files\emptyTarget.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\stateWithSegmentation.xliff">
+    <None Update="Xliff1\Files\stateWithSegmentation.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\state.xliff">
+    <None Update="Xliff1\Files\state.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xliff12\Files\differentStatesWithSegmentation.xliff">
+    <None Update="Xliff1\Files\differentStatesWithSegmentation.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Xliff12\Files\Html\contentful.html">
+    <EmbeddedResource Include="Xliff1\Files\Html\contentful.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Remove="Xliff12\Files\everythingCore.xliff" />
-    <EmbeddedResource Include="Xliff12\Files\everythingCore.xliff">
+    <None Remove="Xliff1\Files\everythingCore.xliff" />
+    <EmbeddedResource Include="Xliff1\Files\everythingCore.xliff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Remove="Html\Files\contentful.html" />

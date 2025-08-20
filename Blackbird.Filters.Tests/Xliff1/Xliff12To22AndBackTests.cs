@@ -1,9 +1,9 @@
 ﻿using Blackbird.Filters.Tests.CustomAssertions;
-using Blackbird.Filters.Xliff.Xliff12;
+using Blackbird.Filters.Xliff.Xliff1;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Text;
 
-namespace Blackbird.Filters.Tests.Xliff12;
+namespace Blackbird.Filters.Tests.Xliff1;
 
 [TestFixture]
 public class Xliff12To22AndBackTests : TestBase
@@ -25,12 +25,12 @@ public class Xliff12To22AndBackTests : TestBase
         var originalXliff12 = File.ReadAllText($"Xliff12/Files/{fileName}", Encoding.UTF8);
 
         // Act - Convert XLIFF 1.2 → XLIFF 2.2 → XLIFF 1.2
-        var content = Xliff12Serializer.Deserialize(originalXliff12);
+        var content = Xliff1Serializer.Deserialize(originalXliff12);
         var xliff22 = Xliff2Serializer.Serialize(content);
         DisplayXml(xliff22);
         
         var contentFromXliff22 = Xliff2Serializer.Deserialize(xliff22);
-        var finalXliff12 = Xliff12Serializer.Serialize(contentFromXliff22);
+        var finalXliff12 = Xliff1Serializer.Serialize(contentFromXliff22);
         DisplayXml(finalXliff12);
 
         // Assert

@@ -1,9 +1,9 @@
 ﻿using System.Text;
 using System.Xml.Linq;
 
-namespace Blackbird.Filters.Xliff.Xliff12;
+namespace Blackbird.Filters.Xliff.Xliff1;
 
-public static class Xliff12XmlExtensions
+public static class Xliff1XmlExtensions
 {
     public static XElement FixTabulationWhitespace(this XElement element)
     {

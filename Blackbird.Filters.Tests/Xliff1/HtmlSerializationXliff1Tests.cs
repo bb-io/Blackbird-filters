@@ -1,7 +1,7 @@
 using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Tests.Models;
 
-namespace Blackbird.Filters.Tests.Xliff12;
+namespace Blackbird.Filters.Tests.Xliff1;
 
 [TestFixture]
 public class HtmlSerializationXliff1Tests : TestBase

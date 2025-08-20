@@ -7,9 +7,9 @@ using System.Text;
 using System.Xml.Linq;
 using Blackbird.Filters.Xliff.Xliff2;
 
-namespace Blackbird.Filters.Xliff.Xliff12;
+namespace Blackbird.Filters.Xliff.Xliff1;
 
-public static class Xliff12Serializer
+public static class Xliff1Serializer
 {
     private static readonly XNamespace BlackbirdNs = "http://blackbird.io/";
     private static readonly XName HasSegSourceAttrName = BlackbirdNs + "hasSegSource";
@@ -25,12 +25,12 @@ public static class Xliff12Serializer
         var doc = new XDocument(root);
         var xmlString = doc.ToString();
 
-        return Xliff12XmlExtensions.CompactSourceElements(xmlString);
+        return Xliff1XmlExtensions.CompactSourceElements(xmlString);
     }
     
     public static Transformation Deserialize(string fileContent)
     {
-        var xliffNode = Xliff12XmlExtensions.GetRootNode(fileContent);
+        var xliffNode = Xliff1XmlExtensions.GetRootNode(fileContent);
         if (xliffNode == null)
         {
             throw new Exception("No root node found in XLIFF content.");
@@ -60,11 +60,11 @@ public static class Xliff12Serializer
         return transformation;
     }
     
-    public static bool IsXliff12(string content)
+    public static bool IsXliff1(string content)
     {
         try
         {
-            var xliffNode = Xliff12XmlExtensions.GetRootNode(content);
+            var xliffNode = Xliff1XmlExtensions.GetRootNode(content);
             if (xliffNode == null)
             {
                 return false;

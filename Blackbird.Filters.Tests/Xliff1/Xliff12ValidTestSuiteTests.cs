@@ -1,5 +1,5 @@
 using Blackbird.Filters.Tests.CustomAssertions;
-using Blackbird.Filters.Xliff.Xliff12;
+using Blackbird.Filters.Xliff.Xliff1;
 using System.Text;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Tests.Html;
@@ -7,7 +7,7 @@ using Blackbird.Filters.Xliff.Xliff2;
 using System.Xml.Linq;
 using Blackbird.Filters.Transformations;
 
-namespace Blackbird.Filters.Tests.Xliff12;
+namespace Blackbird.Filters.Tests.Xliff1;
 
 [TestFixture]
 public class Xliff12ValidTestSuiteTests : TestBase
@@ -22,8 +22,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/basic.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -59,8 +59,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/segmented.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -87,8 +87,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/emptyTarget.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -109,8 +109,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/translate.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -131,8 +131,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/approved.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -152,8 +152,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/multifile.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -168,8 +168,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/complex.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -183,8 +183,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/everythingCore.xliff", Encoding.UTF8);
         
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
         
         // Assert
@@ -199,7 +199,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
 
         // Act
         var content = Xliff2Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
     }
     
@@ -210,8 +210,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/state.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -239,8 +239,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/stateWithSegmentation.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert
@@ -263,8 +263,8 @@ public class Xliff12ValidTestSuiteTests : TestBase
         var xliff = File.ReadAllText("Xliff12/Files/differentStatesWithSegmentation.xliff", Encoding.UTF8);
 
         // Act
-        var content = Xliff12Serializer.Deserialize(xliff);
-        var returned = Xliff12Serializer.Serialize(content);
+        var content = Xliff1Serializer.Deserialize(xliff);
+        var returned = Xliff1Serializer.Serialize(content);
         DisplayXml(returned);
 
         // Assert

@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 using Newtonsoft.Json;
 using System.Text;
 using Blackbird.Filters.Tests.Models;
-using Blackbird.Filters.Xliff.Xliff12;
+using Blackbird.Filters.Xliff.Xliff1;
 using Blackbird.Filters.Xliff.Xliff2;
 
 namespace Blackbird.Filters.Tests;
@@ -83,7 +83,7 @@ public abstract class TestBase
     {
         if (xliffVersion == XliffVersion.Xliff1)
         {
-            return Xliff12Serializer.Serialize(transformation);
+            return Xliff1Serializer.Serialize(transformation);
         }
 
         return transformation.Serialize();

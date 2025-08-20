@@ -5,6 +5,7 @@ using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
 using System.Text;
 using System.Xml.Linq;
+using Blackbird.Filters.Xliff.Xliff1;
 
 namespace Blackbird.Filters.Transformations;
 public class Transformation(string? sourceLanguage, string? targetLanguage) : Node
@@ -146,6 +147,13 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
             return transformation;
         }
         
+        if(Xliff1Serializer.IsXliff1(content))
+        {
+            var transformation = Xliff1Serializer.Deserialize(content);
+            transformation.XliffFileName = fileName;
+            return transformation;
+        }
+        
         return CodedContent.Parse(content, fileName).CreateTransformation();
     }
 
@@ -157,6 +165,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
             await content.CopyToAsync(resultFileStream);
             bytes = resultFileStream.ToArray();
         }
+        
         return Parse(Encoding.UTF8.GetString(bytes), fileName);
     }
 
