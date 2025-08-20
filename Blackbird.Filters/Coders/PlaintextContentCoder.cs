@@ -38,9 +38,9 @@ public class PlaintextContentCoder
     private static string GetNewLineCharacter(string content)
     {
         return content.Contains("\r\n") ? "\r\n"
-             : content.Contains('\n') ? "\n"
-             : content.Contains('\r') ? "\r"
-             : Environment.NewLine;
+            : content.Contains('\n') ? "\n"
+            : content.Contains('\r') ? "\r"
+            : Environment.NewLine;
     }
 
 

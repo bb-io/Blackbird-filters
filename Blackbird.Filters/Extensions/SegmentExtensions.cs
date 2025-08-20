@@ -15,7 +15,7 @@ public static class SegmentExtensions
             .GroupBy(item => item.Index / batchSize)
             .Select(group => group.Select(item => item.Segment));
     }
-
+    
     public static IEnumerable<(Segment, T)> Process<T>(this IEnumerable<IEnumerable<Segment>> batches, Func<IEnumerable<Segment>, IEnumerable<T>> func)
     {
         foreach (var batch in batches)

@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
+
 public abstract class Node
 {
     public string? Id { get; internal set; }

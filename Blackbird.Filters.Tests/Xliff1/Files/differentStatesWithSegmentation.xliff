@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file id="f1" original="test.txt" source-language="en" target-language="fr" datatype="plaintext">
+    <header>
+      <note>Sample segmented XLIFF 1.2 file</note>
+    </header>
+    <body>
+      <trans-unit id="u1">
+        <source>First sentence. Second sentence.</source>
+        <seg-source>
+          <mrk mtype="seg" mid="1">First sentence.</mrk>
+          <mrk mtype="seg" mid="2">Second sentence.</mrk>
+        </seg-source>
+        <target>
+          <mrk mtype="seg" mid="1" p7:customState="final" xmlns:p7="http://blackbird.io/">Première phrase.</mrk>
+          <mrk mtype="seg" mid="2" p7:customState="translated" xmlns:p7="http://blackbird.io/">Deuxième phrase.</mrk>
+        </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

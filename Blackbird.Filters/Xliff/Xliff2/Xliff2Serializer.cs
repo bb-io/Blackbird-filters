@@ -761,7 +761,11 @@ public static class Xliff2Serializer
         var root = new XElement(ns + "xliff");
         root.Set("srcLang", xliffTransformation.SourceLanguage);
         root.Set("trgLang", xliffTransformation.TargetLanguage);
-        if (xmlnsAttribute is null) root.Set("version", "2.2");
+        if (xmlnsAttribute is null || !xliffTransformation.XliffOther.OfType<XAttribute>().Any(x => x.Name.LocalName == "version"))
+        {
+            root.Set("version", "2.2");
+        }
+        
         root.Add(xliffTransformation.XliffOther);
 
         if (!xliffTransformation.Children.OfType<Transformation>().Any())

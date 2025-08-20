@@ -1,4 +1,5 @@
 ﻿namespace Blackbird.Filters.Transformations;
+
 public class Group : UnitGrouping
 {
     public List<UnitGrouping> Children { get; set; } = [];

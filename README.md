@@ -178,7 +178,7 @@ To publish the Blackbird.Filters library to NuGet manually:
    ```
    nuget push bin/Release/Blackbird.Filters.<version>.nupkg -ApiKey <your-api-key> -Source https://api.nuget.org/v3/index.json
    ```
-  
+
 5. **Alternative: Go to NuGet.org** and upload manually.
 
 ### Package Configuration

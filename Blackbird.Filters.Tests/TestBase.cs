@@ -5,8 +5,11 @@ using Blackbird.Filters.Transformations;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 using System.Text;
+using Blackbird.Filters.Tests.Models;
+using Blackbird.Filters.Xliff.Xliff1;
 
 namespace Blackbird.Filters.Tests;
+
 public abstract class TestBase
 {
     protected void Display(object? value)
@@ -34,7 +37,7 @@ public abstract class TestBase
         Console.WriteLine(rawXml);
     }
 
-    protected ProcessResult Process(string filePath)
+    protected ProcessResult Process(string filePath, XliffVersion? xliffVersion = null)
     {
         var original = File.ReadAllText(filePath, Encoding.UTF8);
         var transformation = Transformation.Parse(original, Path.GetFileName(filePath));
@@ -43,7 +46,7 @@ public abstract class TestBase
         var source = transformation.Source();
         var sourceString = source.Serialize();
 
-        var serialized = transformation.Serialize();
+        var serialized = SerializeBasedOnXliffVersion(transformation, xliffVersion);
         serialized = PseudoTranslateXliff(serialized, transformation.XliffFileName);
         var deserialized = Transformation.Parse(serialized, transformation.XliffFileName);
 
@@ -56,10 +59,12 @@ public abstract class TestBase
         if (HtmlContentCoder.IsHtml(targetString))
         {
             DisplayHtml(targetString);
-        } else
+        } 
+        else
         {
             Display(targetString);
         }
+        
         DisplayHtml(targetString);
 
         return new ProcessResult(original, transformation, source, target, sourceString, targetString);
@@ -73,6 +78,16 @@ public abstract class TestBase
             segment.SetTarget(segment.GetSource() + "TRANSLATED");
             segment.State = SegmentState.Translated;
         }
+        return transformation.Serialize();
+    }
+    
+    private string SerializeBasedOnXliffVersion(Transformation transformation, XliffVersion? xliffVersion)
+    {
+        if (xliffVersion == XliffVersion.Xliff1)
+        {
+            return Xliff1Serializer.Serialize(transformation);
+        }
+
         return transformation.Serialize();
     }
 }

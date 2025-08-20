@@ -1,0 +1,151 @@
+﻿<xliff version="1.2"
+       xmlns="urn:oasis:names:tc:xliff:document:1.2">
+
+    <file id="f1"
+          original="test-1.html"
+          source-language="en"
+          target-language="fr"
+          datatype="html">
+        <header>
+            <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
+            <note>Basic segmented trans-units (IDs 0–3), with unit 0 showing complex inline codes</note>
+        </header>
+        <body>
+
+            <trans-unit id="0">
+                <source xml:space="preserve"><g ctype="bold" id="65">Click here to search for information:</g><bpt ctype="link" id="b66" rid="r66">&lt;w:hyperlink r:id="rId7" w:history="1"&gt;</bpt><g ctype="bold underlined x-mc-char-color x-mc-char-kern" id="67">https://duckduckgo.com</g><ept id="e66" rid="r66" xml:ctype="link">&lt;/w:hyperlink&gt;</ept></source>
+                <target state="translated" xml:space="preserve" xml:lang="fr">Cliquez ici pour rechercher des informations:<bpt ctype="link" id="b66" rid="r66">&lt;w:hyperlink r:id="rId7" w:history="1"&gt;</bpt>https://duckduckgo.com/?kad=fr_FR<ept id="e66" rid="r66" xml:ctype="link">&lt;/w:hyperlink&gt;</ept></target>
+            </trans-unit>
+
+            <trans-unit id="1">
+                <source>Alpha segment. Beta segment.</source>
+                <seg-source>
+                    <mrk mtype="seg" mid="1">Alpha segment.</mrk>
+                    <mrk mtype="seg" mid="2">Beta segment.</mrk>
+                </seg-source>
+                <target>
+                    <mrk mtype="seg" mid="1">Segment alpha.</mrk>
+                    <mrk mtype="seg" mid="2">Segment bêta.</mrk>
+                </target>
+            </trans-unit>
+
+            <trans-unit id="2">
+                <source>Part A. Part B.</source>
+                <seg-source>
+                    <mrk mtype="seg" mid="1">Part A.</mrk>
+                    <mrk mtype="seg" mid="2">Part B.</mrk>
+                </seg-source>
+                <target>
+                    <mrk mtype="seg" mid="1">Partie A.</mrk>
+                    <mrk mtype="seg" mid="2">Partie B.</mrk>
+                </target>
+            </trans-unit>
+
+            <trans-unit id="3">
+                <source>Sentence one. Sentence two.</source>
+                <seg-source>
+                    <mrk mtype="seg" mid="1">Sentence one.</mrk>
+                    <mrk mtype="seg" mid="2">Sentence two.</mrk>
+                </seg-source>
+                <target>
+                    <mrk mtype="seg" mid="1">Phrase une.</mrk>
+                    <mrk mtype="seg" mid="2">Phrase deux.</mrk>
+                </target>
+            </trans-unit>
+
+        </body>
+    </file>
+
+    <file id="f2"
+          original="test-2.html"
+          source-language="en"
+          target-language="fr"
+          datatype="html">
+        <header>
+            <tool tool-id="Xliff12Tester" tool-name="XLIFF 1.2 Test Suite"/>
+            <prop-group>
+                <prop prop-type="category">Regrouped</prop>
+            </prop-group>
+            <note>Grouped segmented trans-units (IDs 4–9)</note>
+        </header>
+        <body>
+            <group id="grp-test-2">
+                <note>This group contains segmented trans-units for extended testing.</note>
+
+                <trans-unit id="4">
+                    <source>Source 4a. Source 4b.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Source 4a.</mrk>
+                        <mrk mtype="seg" mid="2">Source 4b.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Cible 4a.</mrk>
+                        <mrk mtype="seg" mid="2">Cible 4b.</mrk>
+                    </target>
+                </trans-unit>
+
+                <trans-unit id="5">
+                    <source>Source 5a. Source 5b.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Source 5a.</mrk>
+                        <mrk mtype="seg" mid="2">Source 5b.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Cible 5a.</mrk>
+                        <mrk mtype="seg" mid="2">Cible 5b.</mrk>
+                    </target>
+                </trans-unit>
+
+                <trans-unit id="6">
+                    <source>Source 6a. Source 6b.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Source 6a.</mrk>
+                        <mrk mtype="seg" mid="2">Source 6b.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Cible 6a.</mrk>
+                        <mrk mtype="seg" mid="2">Cible 6b.</mrk>
+                    </target>
+                </trans-unit>
+
+                <trans-unit id="7">
+                    <source>Source 7a. Source 7b.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Source 7a.</mrk>
+                        <mrk mtype="seg" mid="2">Source 7b.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Cible 7a.</mrk>
+                        <mrk mtype="seg" mid="2">Cible 7b.</mrk>
+                    </target>
+                </trans-unit>
+
+                <trans-unit id="8">
+                    <source>Source 8a. Source 8b.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Source 8a.</mrk>
+                        <mrk mtype="seg" mid="2">Source 8b.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Cible 8a.</mrk>
+                        <mrk mtype="seg" mid="2">Cible 8b.</mrk>
+                    </target>
+                </trans-unit>
+
+                <trans-unit id="9">
+                    <source>Source 9a. Source 9b.</source>
+                    <seg-source>
+                        <mrk mtype="seg" mid="1">Source 9a.</mrk>
+                        <mrk mtype="seg" mid="2">Source 9b.</mrk>
+                    </seg-source>
+                    <target>
+                        <mrk mtype="seg" mid="1">Cible 9a.</mrk>
+                        <mrk mtype="seg" mid="2">Cible 9b.</mrk>
+                    </target>
+                </trans-unit>
+
+            </group>
+        </body>
+    </file>
+
+</xliff>

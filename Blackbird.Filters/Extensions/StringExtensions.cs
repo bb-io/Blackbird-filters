@@ -1,5 +1,4 @@
-﻿using HtmlAgilityPack;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Extensions;
 public static class StringExtensions
@@ -13,7 +12,7 @@ public static class StringExtensions
         memoryStream.Position = 0L;
         return memoryStream;
     }
-
+    
     public static string RemoveIdeFormatting(this string s)
     {
         if (string.IsNullOrWhiteSpace(s))
