@@ -30,7 +30,9 @@ The library is organized around two main components:
 - **Parse**: Static method to parse content from a string or stream. The string or stream can contain XLIFF or HTML content, both will be deserialized using the appropriate serializer. If no appropriate deserializer is found it will throw an exception
 - **Serialize**: Serializes the transformation in the default way: using XLIFF 2.2
 
-## Code example
+## Code examples
+
+### Simple translation
 ```cs
     public string TranslateFile(string fileContent)
     {
@@ -51,6 +53,75 @@ The library is organized around two main components:
 
         // To get the target as the original content format:
         return transformation.Target().Serialize();
+    }
+```
+
+### Batch translation (when an API can take multiple segments at once and returns them in order)
+
+##### Synchronous (example from ModernMT)
+```cs
+    [Action("Translate", Description = "Translate file content retrieved from a CMS or file storage. The output can be used in compatible actions")]
+    public async Task<FileTranslationResponse> TranslateFile([ActionParameter] TranslateFileRequest input)
+    {
+        // [...Some verification code here]
+
+        var client = new ModernMtClient(Credentials);
+        var stream = await fileManagementClient.DownloadAsync(input.File);
+        var content = await Transformation.Parse(stream);
+        var segmentTranslations = content
+            .GetSegments() // Iterate through all segments inside the content
+            .Where(x => !x.IsIgnorbale && x.IsInitial) // Filter for segments that actually need to be translated
+            .Batch(100) // Set an appropriate batch size depending on what the API can handle
+            .Process(batch => client.Translate( // Apply the API translation method, takes a single batch
+                input.SourceLanguage, 
+                input.TargetLanguage, 
+                batch.Select(x => x.GetSource()).ToList(),
+                input.Hints?.Select(long.Parse).ToArray(), 
+                input.Context, 
+                input.CreateOptions())
+            );
+
+
+        var billedCharacters = 0;
+        // Loop over each segment result. .Process() returns a tuple containing the original segment paired with each translation
+        foreach(var (segment, translation) in segmentTranslations) 
+        {
+            segment.SetTarget(translation.TranslationText); // Update the target
+            segment.State = SegmentState.Translated; // Update other variabels
+            billedCharacters += translation.BilledCharacters; // Update other counters relevant to the output depending on the app
+        }
+    }
+```
+
+##### Async example (DeepL)
+```cs
+    private async Task<FileResponse> HandleInteroperableTransformation(Transformation content, ContentTranslationRequest input)
+    {
+          // [...Some option setup code here]
+
+         // You'll probably want to separate the translation method for readability and proper typing.
+         async Task<IEnumerable<TextResult>> BatchTranslate(IEnumerable<Segment> batch)
+         {
+            return await ErrorHandler.ExecuteWithErrorHandlingAsync(async () =>
+                     await Client.TranslateTextAsync(batch.Select(x => x.GetSource()), content.SourceLanguage, input.TargetLanguage, options));
+         }
+
+         // The rest should be the same
+         var segmentTranslations = await content
+            .GetSegments()
+            .Where(x => !x.IsIgnorbale && x.IsInitial)
+            .Batch(100).Process(BatchTranslate);
+
+         var sourceLanguages = new List<string>();
+         foreach (var (segment, translation) in segmentTranslations)
+         {
+            segment.SetTarget(translation.Text);
+            segment.State = SegmentState.Translated;
+            if (!string.IsNullOrEmpty(translation.DetectedSourceLanguageCode))
+            {
+                  sourceLanguages.Add(translation.DetectedSourceLanguageCode.ToLower());
+            }
+         }
     }
 ```
 
@@ -107,7 +178,7 @@ To publish the Blackbird.Filters library to NuGet manually:
    ```
    nuget push bin/Release/Blackbird.Filters.<version>.nupkg -ApiKey <your-api-key> -Source https://api.nuget.org/v3/index.json
    ```
-  
+
 5. **Alternative: Go to NuGet.org** and upload manually.
 
 ### Package Configuration
