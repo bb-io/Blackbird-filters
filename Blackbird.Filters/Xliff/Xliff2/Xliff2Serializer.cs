@@ -699,8 +699,6 @@ public static class Xliff2Serializer
                 }
 
                 var root = new XElement(ns + "unit");
-                var segmentElements = unit.Segments.Select(SerializeSegment).ToList();
-
                 unit.Id = GetUniqueUnitId(unit.Id);
                 root.Set("id", unit.Id);
                 root.Set("name", unit.Name);
@@ -710,8 +708,8 @@ public static class Xliff2Serializer
                 root.SetDirection("trgDir", unit.TargetDirection);
                 root.Add(SerializeNotes(unit.Notes));
                 root.Add(SerializeMetadata(unit.MetaData));
+                root.Add(unit.Segments.Select(SerializeSegment));
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
-                root.Add(segmentElements);
                 root.Add(unit.Other);
 
                 return root;
