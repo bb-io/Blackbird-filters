@@ -897,7 +897,7 @@ public static class Xliff1Serializer
         var body = fileElement.Element(XliffNs + "body");
         if (body != null)
         {
-            ProcessBodyContent(body, fileTransformation);
+            ProcessBodyContent(body, fileTransformation, fileTransformation);
         }
 
         return fileTransformation;
@@ -917,7 +917,7 @@ public static class Xliff1Serializer
             .ToList();
     }
 
-    private static void ProcessBodyContent(XElement body, Node parent)
+    private static void ProcessBodyContent(XElement body, Node parent, Transformation rootTransformation)
     {
         foreach (var element in body.Elements())
         {
@@ -951,7 +951,7 @@ public static class Xliff1Serializer
                 
                 var otherElements = element.Elements().Where(e => e.Name.LocalName != "note" && e.Name.LocalName != "group" && e.Name.LocalName != "trans-unit").ToList();
                 group.Other.AddRange(otherElements.Select(x => x.FixTabulationWhitespace()));
-                ProcessBodyContent(element, group);
+                ProcessBodyContent(element, group, rootTransformation);
 
                 if (parent is Group parentGroup)
                 {
@@ -1010,6 +1010,7 @@ public static class Xliff1Serializer
                             Id = mrkElement.Get("mid"),
                             Source = ExtractTextParts(mrkElement),
                             Ignorable = segmentIgnorable,
+                            OriginalMediaType = rootTransformation.OriginalMediaType
                         };
 
                         if (target != null)
@@ -1064,7 +1065,8 @@ public static class Xliff1Serializer
                         Target = target != null ? ExtractTextParts(target) : new List<TextPart>(),
                         SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
                         TargetAttributes = target?.Attributes().GetRemaining(["state"]).ToList() ?? new List<XAttribute>(),
-                        Ignorable = segmentIgnorable
+                        Ignorable = segmentIgnorable,
+                        OriginalMediaType = rootTransformation.OriginalMediaType
                     };
 
                     var sourceWhiteSpaceHandling = source?.Get(XNamespace.Xml + "space");

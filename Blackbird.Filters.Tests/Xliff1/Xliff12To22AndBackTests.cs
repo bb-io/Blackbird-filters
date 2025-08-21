@@ -19,6 +19,7 @@ public class Xliff12To22AndBackTests : TestBase
     [TestCase("stateWithSegmentation.xliff")]
     [TestCase("emptyTarget.xliff")]
     [TestCase("everythingCore.xliff")]
+    [TestCase("contentful.html.xliff")]
     public void RoundTripTest(string fileName)
     {
         // Arrange
