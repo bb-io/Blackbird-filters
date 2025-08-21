@@ -28,42 +28,42 @@ public static class Xliff1XmlExtensions
         return newElement;
     }
     
-    public static string CompactSourceElements(string xmlString)
+    public static string CompactTextElements(string xmlString)
     {
         var lines = xmlString.Split('\n');
         var result = new List<string>();
-        var inSourceElement = false;
-        var sourceContent = new StringBuilder();
-        var sourceIndent = string.Empty;
+        var inTextElement = false;
+        var textContent = new StringBuilder();
+        var textIndent = string.Empty;
 
         foreach (var line in lines)
         {
             var trimmedLine = line.Trim();
 
-            if (trimmedLine.StartsWith("<source"))
+            if (trimmedLine.StartsWith("<source") || trimmedLine.StartsWith("<target"))
             {
-                inSourceElement = true;
-                sourceContent.Clear();
-                sourceContent.Append(trimmedLine);
+                inTextElement = true;
+                textContent.Clear();
+                textContent.Append(trimmedLine);
 
-                sourceIndent = line.Substring(0, line.IndexOf('<'));
-                if (trimmedLine.EndsWith("</source>") || trimmedLine.EndsWith("/>"))
+                textIndent = line.Substring(0, line.IndexOf('<'));
+                if (trimmedLine.EndsWith("</source>") || trimmedLine.EndsWith("</target>") || trimmedLine.EndsWith("/>"))
                 {
                     result.Add(line);
-                    inSourceElement = false;
+                    inTextElement = false;
                 }
             }
-            else if (inSourceElement)
+            else if (inTextElement)
             {
-                if (trimmedLine.EndsWith("</source>"))
+                if (trimmedLine.EndsWith("</source>") || trimmedLine.EndsWith("</target>"))
                 {
-                    sourceContent.Append(trimmedLine);
-                    result.Add(sourceIndent + sourceContent);
-                    inSourceElement = false;
+                    textContent.Append(trimmedLine);
+                    result.Add(textIndent + textContent);
+                    inTextElement = false;
                 }
                 else
                 {
-                    sourceContent.Append(trimmedLine);
+                    textContent.Append(trimmedLine);
                 }
             }
             else

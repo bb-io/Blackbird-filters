@@ -11,7 +11,7 @@
 	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
 	  <PackageTags>Blackbird</PackageTags>
 	  <Copyright>Copyright © 2021-2025 Blackbird.io</Copyright>
-	  <Version>1.1.14</Version>
+	  <Version>1.1.15</Version>
   </PropertyGroup>
 
 	<ItemGroup>

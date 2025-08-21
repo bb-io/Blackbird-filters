@@ -26,7 +26,7 @@ public static class Xliff1Serializer
         var doc = new XDocument(root);
         var xmlString = doc.ToString();
 
-        return Xliff1XmlExtensions.CompactSourceElements(xmlString);
+        return Xliff1XmlExtensions.CompactTextElements(xmlString);
     }
     
     public static Transformation Deserialize(string fileContent)
@@ -869,7 +869,7 @@ public static class Xliff1Serializer
             }
 
             fileTransformation.Notes = DeserializeNotes(header.Elements(XliffNs + "note"));
-            foreach (var node in header.Elements().Where(x => x.Name.LocalName != "note" && x.Name.LocalName != "skl"))
+            foreach (var node in header.Elements().Where(x => x.Name.LocalName != "note" && x.Name.LocalName != "skl" && x.Name.LocalName != "metadata"))
             {
                 var cleanedNode = node.FixTabulationWhitespace();
                 fileTransformation.Other.Add(cleanedNode);
