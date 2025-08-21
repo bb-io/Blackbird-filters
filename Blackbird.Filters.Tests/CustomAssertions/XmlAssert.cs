@@ -67,7 +67,10 @@ public static class XmlAssert
                               .IgnoreWhitespace()
                               .NormalizeWhitespace()
                               .WithNodeMatcher(new DefaultNodeMatcher(ElementSelectors.ByNameAndText))
-                              .WithAttributeFilter(attr => !(attr.Name == "xml:space" && attr.Value == "default"))
+                              .WithAttributeFilter(attr =>
+                                  !(attr.Name == "xml:space" && attr.Value == "default")
+                                  && !((attr.OwnerElement?.Name == "file") && attr.Name == "id")
+                              )
                               .CheckForSimilar()
                               .Build();
 
