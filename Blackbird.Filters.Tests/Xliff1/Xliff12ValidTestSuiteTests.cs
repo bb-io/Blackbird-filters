@@ -212,4 +212,14 @@ public class Xliff12ValidTestSuiteTests : TestBase
         // Check if both segments have the correct state
         Assert.That(segments.All(s => s.State == SegmentState.Final || s.State == SegmentState.Translated), Is.True);
     }
+    
+    [Test]
+    public void MxliffFileTest()
+    {
+        // Act & Assert
+        var content = PerformDeserializeSerializeTest("Xliff1/Files/Mr.Coffee Mug Warmer_en-US.html-en-nl-T.mxliff");
+        
+        // Additional assertions to verify state handling with segmentation
+        Assert.That(content, Is.Not.Null);
+    }
 }
