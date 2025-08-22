@@ -27,6 +27,7 @@ public static class Xliff2Serializer
         var ns = xliffNode.GetDefaultNamespace();
         var sourceLanguage = xliffNode.Get("srcLang");
         var targetLanguage = xliffNode.Get("trgLang");
+        var version = xliffNode.GetXliffVersion("version");
         var whiteSpaceHandling = xliffNode.GetWhiteSpaceHandling();
         
 
@@ -407,14 +408,13 @@ public static class Xliff2Serializer
             transformation.Children.AddRange(files); 
             transformation.MetaData = metadata;
         }
-        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["srcLang", "trgLang"]));
+        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["srcLang", "trgLang", "version"]));
         return transformation;
     }
 
-    public static string Serialize(Transformation xliffTransformation)
+    public static string Serialize(Transformation xliffTransformation, Xliff2Version version = Xliff2Version.Xliff22)
     {
-        var xmlnsAttribute = xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns");;
-        XNamespace ns = xmlnsAttribute?.Value ?? $"urn:oasis:names:tc:xliff:document:2.2";
+        XNamespace ns = $"urn:oasis:names:tc:xliff:document:{version.Serialize()}";
         bool metaUsed = false;
 
         XElement? SerializeNotes(List<Note> notes)
@@ -761,11 +761,8 @@ public static class Xliff2Serializer
         var root = new XElement(ns + "xliff");
         root.Set("srcLang", xliffTransformation.SourceLanguage);
         root.Set("trgLang", xliffTransformation.TargetLanguage);
-        if (xmlnsAttribute is null || !xliffTransformation.XliffOther.OfType<XAttribute>().Any(x => x.Name.LocalName == "version"))
-        {
-            root.Set("version", "2.2");
-        }
-        
+        root.SetXliffVersion("version", version);
+
         root.Add(xliffTransformation.XliffOther);
 
         if (!xliffTransformation.Children.OfType<Transformation>().Any())
@@ -888,8 +885,13 @@ public static class Xliff2Serializer
                 return false;
             }
 
-            var version = xliffNode.Get("version", Optionality.Required)!;
-            return float.Parse(version, CultureInfo.InvariantCulture) > 2;
+            var version = xliffNode.Get("version");
+            if (string.IsNullOrEmpty(version))
+            {
+                return false;
+            }
+
+            return version.StartsWith("2.");
         }
         catch (Exception)
         {
