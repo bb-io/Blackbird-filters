@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="fr" xmlns:my="myNS" xmlns:fs="urn:oasis:names:tc:xliff:fs:2.0" xmlns:val="urn:oasis:names:tc:xliff:validation:2.0">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.2" version="2.2" srcLang="en" trgLang="fr" xmlns:my="myNS" xmlns:fs="urn:oasis:names:tc:xliff:fs:2.0" xmlns:val="urn:oasis:names:tc:xliff:validation:2.0">
  <file id="f1" my:attr="val">
   <skeleton>data<my:elem/></skeleton>
   <my:elem id="my1">data</my:elem>

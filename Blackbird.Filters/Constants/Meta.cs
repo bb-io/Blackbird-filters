@@ -4,6 +4,7 @@ public static class Meta
     public static class Categories
     {
         public const string Blackbird = "blackbird";
+        public const string Global = "global";
     }
 
     public static class Types

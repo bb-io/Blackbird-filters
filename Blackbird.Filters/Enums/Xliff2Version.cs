@@ -1,7 +1,7 @@
 ﻿namespace Blackbird.Filters.Enums;
 public enum Xliff2Version
 {
-    Xliff2,
+    Xliff20,
     Xliff21,
     Xliff22,
 }
@@ -10,7 +10,7 @@ public static  class Xliff2VersionHelper
 {
     private static readonly Dictionary<Xliff2Version, string> _enumToString = new()
     {
-        { Xliff2Version.Xliff2, "2.0" },
+        { Xliff2Version.Xliff20, "2.0" },
         { Xliff2Version.Xliff21, "2.1" },
         { Xliff2Version.Xliff22, "2.2" },
     };

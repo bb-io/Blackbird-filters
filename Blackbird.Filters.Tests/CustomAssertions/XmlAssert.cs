@@ -46,19 +46,23 @@ public static class XmlAssert
         }
     }
 
+    public static string Normalize(string xml)
+    {
+        return NormalizedDocument(xml).OuterXml;
+    }
+
+    public static XmlDocument NormalizedDocument(string xml)
+    {
+        var doc = new XmlDocument();
+        doc.LoadXml(xml);
+
+        RemoveEmptyTargets(doc.DocumentElement);
+        NormalizeCDataInNode(doc);
+        return doc;
+    }
+
     public static void AreEqual(string expectedXml, string actualXml, string? message = null)
     {
-        static string Normalize(string xml)
-        {
-            var doc = new XmlDocument();
-            doc.LoadXml(xml);
-
-            RemoveEmptyTargets(doc.DocumentElement);
-            NormalizeCDataInNode(doc);
-
-            return doc.OuterXml;
-        }
-
         string normalizedExpected = Normalize(expectedXml);
         string normalizedActual = Normalize(actualXml);
 

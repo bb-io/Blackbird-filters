@@ -12,4 +12,5 @@ public class Note(string text)
     public string? Reference { get; set; }
     public string Text { get; set; } = text;
     public List<XAttribute> Other { get; set; } = [];
+    internal bool Global { get; set; } = false;
 }

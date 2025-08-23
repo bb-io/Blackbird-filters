@@ -57,7 +57,7 @@ public static class Xliff1Serializer
             }
         }
         
-        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["source-language", "target-language", "version"]));
+        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["source-language", "target-language", "version", "xmlns"]));
         return transformation;
     }
     
