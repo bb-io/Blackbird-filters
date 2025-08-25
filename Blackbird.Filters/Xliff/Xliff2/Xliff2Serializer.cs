@@ -632,11 +632,8 @@ public static class Xliff2Serializer
                             {
                                 if (endTag.StartTag is not null && endTag.StartTag.WellFormed) continue;
 
-                                var endId = GetUniqueId(endTag.Id);
-                                endTag.Id = endId;
-
                                 var element = new XElement(ns + "ec");
-                                element.Set("id", endId);
+                                element.Set("id", endTag.Id);
                                 AddDataRefToElement(element, endTag, "dataRef");
                                 AddSubflowsToElement(element, endTag, "subFlows");
                                 SetCommonInlineArguments(element, endTag);
