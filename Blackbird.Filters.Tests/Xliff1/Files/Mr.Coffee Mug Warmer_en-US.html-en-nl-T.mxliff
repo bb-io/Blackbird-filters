@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8'?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:m="http://www.memsource.com/mxlf/2.0" version="1.2" m:level="1" m:version="2.13">
+<file datatype="x-undefined" original="Mr. Coffee Mug Warmer_en-US.html (1).xlf" source-language="en" target-language="nl" m:begin-group-id="0" m:end-group-id="5" m:file-format="XLF" m:job-uid="SWv7GnGg80MGmaOUbdZV77" m:project-uid="8H5tPmQtD0Pch2bHn0wig5" m:task-id="64ui9bPH9ZS4zraq_dc2" m:transmem-ignore-tag-metadata="yes">
+<body>
+
+<group id="0" m:para-id="0">
+<context-group>
+<context context-type="x-key">u1</context>
+</context-group>
+<trans-unit id="64ui9bPH9ZS4zraq_dc2:0" m:confirmed="0" m:created-at="1755767571769" m:created-by="189816" m:gross-score="0.0" m:level-edited="false" m:locked="false" m:modified-at="1755767597573" m:modified-by="189816" m:para-id="0" m:score="0.0" m:trans-origin="null" xml:space="preserve">
+<source>Mr. Coffee Mug Warmer</source>
+<target/>
+<alt-trans match-quality="0.51" origin="machine-trans" m:mt-id="185644"><target>Mr. Coffee mokverwarmer</target></alt-trans>
+<alt-trans origin="memsource-tm"><target/></alt-trans>
+<m:editing-stats>
+                            <m:editing-time>2649</m:editing-time>
+                            <m:thinking-time>2408</m:thinking-time>
+            </m:editing-stats>
+</trans-unit>
+</group>
+<group id="1" m:para-id="1">
+<context-group>
+<context context-type="x-key">u2</context>
+</context-group>
+<trans-unit id="64ui9bPH9ZS4zraq_dc2:1" m:confirmed="0" m:created-at="1755767571774" m:created-by="189816" m:gross-score="0.0" m:level-edited="false" m:locked="false" m:modified-at="1755767598545" m:modified-by="189816" m:para-id="1" m:score="0.0" m:trans-origin="null" xml:space="preserve">
+<source>{1}Are you ready to join Blackbird {2}</source>
+<target/>
+<alt-trans match-quality="0.83" origin="machine-trans" m:mt-id="185644"><target>{1}Ben je klaar om lid te worden van Blackbird {2}</target></alt-trans>
+<alt-trans origin="memsource-tm"><target/></alt-trans>
+<m:tunit-metadata>
+<m:mark id="1">
+<m:type>bpt</m:type>
+<m:content>&lt;bpt&gt;&amp;lt;strong&amp;gt;&lt;/bpt&gt;</m:content>
+</m:mark>
+<m:mark id="2">
+<m:type>ept</m:type>
+<m:content>&lt;ept&gt;&amp;lt;/strong&amp;gt;&lt;/ept&gt;</m:content>
+</m:mark>
+</m:tunit-metadata>
+<m:editing-stats>
+                            <m:editing-time>969</m:editing-time>
+                            <m:thinking-time>534</m:thinking-time>
+            </m:editing-stats>
+</trans-unit>
+</group>
+<group id="2" m:para-id="2">
+<context-group>
+<context context-type="x-key">u3</context>
+</context-group>
+<trans-unit id="64ui9bPH9ZS4zraq_dc2:2" m:confirmed="0" m:created-at="1755767571776" m:created-by="189816" m:gross-score="0.0" m:level-edited="false" m:locked="false" m:modified-at="1755767599266" m:modified-by="189816" m:para-id="2" m:score="0.0" m:trans-origin="null" xml:space="preserve">
+<source>{1}and shape the future of work?{2}</source>
+<target/>
+<alt-trans match-quality="0.77" origin="machine-trans" m:mt-id="185644"><target>{1}en de toekomst van werk vormgeven?{2}</target></alt-trans>
+<alt-trans origin="memsource-tm"><target/></alt-trans>
+<m:tunit-metadata>
+<m:mark id="1">
+<m:type>bpt</m:type>
+<m:content>&lt;bpt&gt;&amp;lt;strong&amp;gt;&lt;/bpt&gt;</m:content>
+</m:mark>
+<m:mark id="2">
+<m:type>ept</m:type>
+<m:content>&lt;ept&gt;&amp;lt;/strong&amp;gt;&lt;/ept&gt;</m:content>
+</m:mark>
+</m:tunit-metadata>
+<m:editing-stats>
+                            <m:editing-time>722</m:editing-time>
+                            <m:thinking-time>494</m:thinking-time>
+            </m:editing-stats>
+</trans-unit>
+</group>
+<group id="3" m:para-id="3">
+<context-group>
+<context context-type="x-key">u4</context>
+</context-group>
+<trans-unit id="64ui9bPH9ZS4zraq_dc2:3" m:confirmed="0" m:created-at="1755767571780" m:created-by="189816" m:gross-score="0.0" m:level-edited="false" m:locked="false" m:modified-at="1755767600188" m:modified-by="189816" m:para-id="3" m:score="0.0" m:trans-origin="null" xml:space="preserve">
+<source>We want you to succeed in your application! Click the button below to view our interview guide or reach out with questions to {1}hiring@Blackbird.com{2}!</source>
+<target/>
+<alt-trans match-quality="0.85" origin="machine-trans" m:mt-id="185644"><target>We willen dat je sollicitatie slaagt! Klik op de onderstaande knop om onze interviewgids te bekijken of neem contact op met vragen naar hiring@Blackbird.com!</target></alt-trans>
+<alt-trans origin="memsource-tm"><target/></alt-trans>
+<m:tunit-metadata>
+<m:mark id="1">
+<m:type>bpt</m:type>
+<m:content>&lt;bpt&gt;&amp;lt;a href="mailto:hiring@Blackbird.com"&amp;gt;&lt;/bpt&gt;</m:content>
+</m:mark>
+<m:mark id="2">
+<m:type>ept</m:type>
+<m:content>&lt;ept&gt;&amp;lt;/a&amp;gt;&lt;/ept&gt;</m:content>
+</m:mark>
+</m:tunit-metadata>
+<m:editing-stats>
+                            <m:editing-time>919</m:editing-time>
+                            <m:thinking-time>475</m:thinking-time>
+            </m:editing-stats>
+</trans-unit>
+</group>
+<group id="4" m:para-id="4">
+<context-group>
+<context context-type="x-key">u5</context>
+</context-group>
+<trans-unit id="64ui9bPH9ZS4zraq_dc2:4" m:confirmed="0" m:created-at="1755767571852" m:created-by="189816" m:gross-score="0.0" m:level-edited="false" m:locked="false" m:modified-at="1755767600879" m:modified-by="189816" m:para-id="4" m:score="0.0" m:trans-origin="null" xml:space="preserve">
+<source>Before text {1}Hyperlink to the flight{2} after text</source>
+<target/>
+<alt-trans match-quality="0.59" origin="machine-trans" m:mt-id="185644"><target>Voor de tekst Hyperlink naar de vlucht na de tekst</target></alt-trans>
+<alt-trans origin="memsource-tm"><target/></alt-trans>
+<m:tunit-metadata>
+<m:mark id="1">
+<m:type>bpt</m:type>
+<m:content>&lt;bpt&gt;&amp;lt;a href="https://sandbox.blackbird.io/n/302/flights/6876409f45343655bfee8c8b"&amp;gt;&lt;/bpt&gt;</m:content>
+</m:mark>
+<m:mark id="2">
+<m:type>ept</m:type>
+<m:content>&lt;ept&gt;&amp;lt;/a&amp;gt;&lt;/ept&gt;</m:content>
+</m:mark>
+</m:tunit-metadata>
+<m:editing-stats>
+                            <m:editing-time>692</m:editing-time>
+                            <m:thinking-time>443</m:thinking-time>
+            </m:editing-stats>
+</trans-unit>
+</group>
+<group id="5" m:para-id="5">
+<context-group>
+<context context-type="x-key">u6</context>
+</context-group>
+<trans-unit id="64ui9bPH9ZS4zraq_dc2:5" m:confirmed="0" m:created-at="1755767571857" m:created-by="189816" m:gross-score="0.0" m:level-edited="false" m:locked="false" m:modified-at="1755767602818" m:modified-by="189816" m:para-id="5" m:score="0.0" m:trans-origin="null" xml:space="preserve">
+<source>{1}{2}Some hypertexts {3}{4}that divided by 2 lines{5}{6}{7}</source>
+<target/>
+<alt-trans match-quality="0.63" origin="machine-trans" m:mt-id="185644"><target>{1}{2}Enkele hyperteksten die gedeeld worden door 2 regels{5}{6}{7}</target></alt-trans>
+<alt-trans origin="memsource-tm"><target/></alt-trans>
+<m:tunit-metadata>
+<m:mark id="1">
+<m:type>ph</m:type>
+<m:content>&lt;ph&gt;&amp;lt;span&amp;gt;&amp;lt;/span&amp;gt;&lt;/ph&gt;</m:content>
+</m:mark>
+<m:mark id="2">
+<m:type>bpt</m:type>
+<m:content>&lt;bpt&gt;&amp;lt;a href="https://sitecore.blackbird.io/sitecore/shell/default.aspx"&amp;gt;&lt;/bpt&gt;</m:content>
+</m:mark>
+<m:mark id="3">
+<m:type>ph</m:type>
+<m:content>&lt;ph&gt;&amp;lt;br&amp;gt;&lt;/ph&gt;</m:content>
+</m:mark>
+<m:mark id="4">
+<m:type>bpt</m:type>
+<m:content>&lt;bpt&gt;&amp;lt;i&amp;gt;&lt;/bpt&gt;</m:content>
+</m:mark>
+<m:mark id="5">
+<m:type>ept</m:type>
+<m:content>&lt;ept&gt;&amp;lt;/i&amp;gt;&lt;/ept&gt;</m:content>
+</m:mark>
+<m:mark id="6">
+<m:type>ept</m:type>
+<m:content>&lt;ept&gt;&amp;lt;/a&amp;gt;&lt;/ept&gt;</m:content>
+</m:mark>
+<m:mark id="7">
+<m:type>ph</m:type>
+<m:content>&lt;ph&gt;&amp;lt;span&amp;gt;&amp;lt;/span&amp;gt;&lt;/ph&gt;</m:content>
+</m:mark>
+</m:tunit-metadata>
+<m:editing-stats>
+                            <m:editing-time>1937</m:editing-time>
+                            <m:thinking-time>512</m:thinking-time>
+            </m:editing-stats>
+</trans-unit>
+</group>
+</body>
+</file>
+<m:extra>
+<m:users>
+<m:user fullname="Vitalii Bezuhlyi" id="189816" uid="pMyxwAlflzGmehAs16nq72" username="vitalii.bezuhlyi"/>
+</m:users>
+</m:extra>
+</xliff>
