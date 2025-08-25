@@ -555,7 +555,7 @@ public static class Xliff2Serializer
                 var GetUniqueId = UniqueIdGenerator();
                 XElement SerializeSegment(Segment segment)
                 {
-                    XElement SerializeParts(List<TextPart> parts, string elementName)
+                    XElement SerializeParts(List<TextPart> parts, string elementName, List<TextPart> idTagsToMatch = null)
                     {
                         void SetCommonInlineArguments(XElement element, InlineTag tag)
                         {
@@ -573,7 +573,9 @@ public static class Xliff2Serializer
 
                         void SetCommonAnnotationArguments(XElement element, AnnotationStart annotationStart)
                         {
-                            element.Set("id", GetUniqueId(annotationStart.Id));
+                            var id = GetUniqueId(annotationStart.Id ?? FindMatchingTagId(annotationStart));
+                            annotationStart.Id = id;
+                            element.Set("id", annotationStart.Id);
                             element.SetBool("translate", annotationStart.Translate);
                             element.Set("type", annotationStart.Type);
                             element.Set("ref", annotationStart.Ref);
@@ -617,6 +619,67 @@ public static class Xliff2Serializer
                             }
                         }
 
+                        Dictionary<string, int> passedTagInferences = new Dictionary<string, int>
+                        {
+                            { "mrk", 0 },
+                            { "sm", 0 },
+                            { "pc", 0 },
+                            { "ph", 0 },
+                        };
+
+                        string? FindMatchingTagId(TextPart part)
+                        {
+                            T? FindTagGivenPassedReferences<T>(List<T> tags, string type)
+                            {
+                                if (!passedTagInferences.ContainsKey(type))
+                                {
+                                    passedTagInferences[type] = 0;
+                                }
+                                var numberOfPassedTags = passedTagInferences[type];
+                                if (tags.Count() <= numberOfPassedTags) return default;
+                                passedTagInferences[type] = numberOfPassedTags + 1;
+                                return tags[numberOfPassedTags];
+                            }
+
+                            if (idTagsToMatch == null) return null;
+                            if (part is StartTag wellFormedTag && wellFormedTag.WellFormed)
+                            {
+                                var tags = idTagsToMatch.OfType<StartTag>().Where(x => x.Id is not null && x.WellFormed).ToList();
+                                return FindTagGivenPassedReferences(tags, "ph")?.Id;
+                                
+                            }
+                            else if (part is StartTag startTag)
+                            {
+                                var tags = idTagsToMatch.OfType<StartTag>().Where(x => x.Id is not null && !x.WellFormed && x.Value == part.Value).ToList();
+                                return FindTagGivenPassedReferences(tags, startTag.Value)?.Id;
+                            }
+                            else if (part is EndTag endTag)
+                            {
+                                if (endTag.StartTag is not null && endTag.StartTag.WellFormed) return null;
+                                var tags = idTagsToMatch.OfType<EndTag>().Where(x => x.Id is not null && x.StartTag is not null && !x.StartTag.WellFormed && x.Value == part.Value).ToList();
+                                return FindTagGivenPassedReferences(tags, endTag.Value)?.Id;
+                            }
+                            else if (part is InlineTag standaloneTag)
+                            {
+                                var tags = idTagsToMatch.OfType<InlineTag>().Where(x => x.Id is not null && x is not StartTag && x is not EndTag).ToList();
+                                return FindTagGivenPassedReferences(tags, "pc")?.Id;
+                            }
+                            else if (part is AnnotationStart annotation && annotation.WellFormed)
+                            {
+                                var tags = idTagsToMatch.OfType<AnnotationStart>().Where(x => x.Id is not null && x.WellFormed).ToList();
+                                return FindTagGivenPassedReferences(tags, "mrk")?.Id;
+                            }
+                            else if (part is AnnotationStart annotationStart)
+                            {
+                                var tags = idTagsToMatch.OfType<AnnotationStart>().Where(x => x.Id is not null && !x.WellFormed).ToList();
+                                return FindTagGivenPassedReferences(tags, "sm")?.Id;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+
                         var root = new XElement(ns + elementName);
                         TextPart? skipUntil = null;
                         foreach (var part in parts)
@@ -635,7 +698,9 @@ public static class Xliff2Serializer
                                 if (wellFormedTag.EndTag is null) throw new Exception("Malformed data. Expected endtag for well formed start tag");
                                 var children = GetChildrenOfStartTag(parts, wellFormedTag);
                                 var element = SerializeParts(children, "pc");
-                                element.Set("id", GetUniqueId(wellFormedTag.Id));
+                                var id = GetUniqueId(wellFormedTag.Id ?? FindMatchingTagId(wellFormedTag));
+                                wellFormedTag.Id = id;
+                                element.Set("id", wellFormedTag.Id);
                                 AddDataRefToElement(element, wellFormedTag, "dataRefStart");
                                 AddDataRefToElement(element, wellFormedTag.EndTag, "dataRefEnd");
                                 AddSubflowsToElement(element, wellFormedTag, "subFlowsStart");
@@ -650,7 +715,7 @@ public static class Xliff2Serializer
                             }
                             else if (part is StartTag startTag)
                             {
-                                var startId = GetUniqueId(startTag.Id);
+                                var startId = GetUniqueId(startTag.Id ?? FindMatchingTagId(startTag));
                                 startTag.Id = startId;
 
                                 var element = new XElement(ns + "sc");
@@ -667,7 +732,7 @@ public static class Xliff2Serializer
                                 if (endTag.StartTag is not null && endTag.StartTag.WellFormed) continue;
 
                                 var element = new XElement(ns + "ec");
-                                element.Set("id", endTag.Id);
+                                element.Set("id", endTag.Id ?? FindMatchingTagId(endTag));
                                 AddDataRefToElement(element, endTag, "dataRef");
                                 AddSubflowsToElement(element, endTag, "subFlows");
                                 SetCommonInlineArguments(element, endTag);
@@ -679,7 +744,9 @@ public static class Xliff2Serializer
                             else if (part is InlineTag standaloneTag)
                             {
                                 var element = new XElement(ns + "ph");
-                                element.Set("id", GetUniqueId(standaloneTag.Id));
+                                var id = GetUniqueId(standaloneTag.Id ?? FindMatchingTagId(standaloneTag));
+                                standaloneTag.Id = id;
+                                element.Set("id", standaloneTag.Id);
                                 AddDataRefToElement(element, standaloneTag, "dataRef");
                                 AddSubflowsToElement(element, standaloneTag, "subFlows");
                                 SetCommonInlineArguments(element, standaloneTag);
@@ -728,7 +795,7 @@ public static class Xliff2Serializer
 
                     if (segment.Target.Count > 0)
                     {
-                        var targetNode = SerializeParts(segment.Target, "target");
+                        var targetNode = SerializeParts(segment.Target, "target", segment.Source);
                         targetNode.SetInt("order", segment.Order);
                         targetNode.Add(segment.TargetAttributes);
                         root.Add(targetNode);
@@ -746,12 +813,12 @@ public static class Xliff2Serializer
                 root.SetBool("translate", unit.Translate);
                 root.SetDirection("srcDir", unit.SourceDirection);
                 root.SetDirection("trgDir", unit.TargetDirection);
-                root.Add(SerializeNotes(unit.Notes));
+                
                 root.Add(SerializeMetadata(unit.MetaData));
+                root.Add(unit.Other);
+                root.Add(SerializeNotes(unit.Notes));
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
                 root.Add(segmentElements);
-                root.Add(unit.Other);
-
                 return root;
             }
 
@@ -765,11 +832,11 @@ public static class Xliff2Serializer
                 root.SetBool("translate", group.Translate);
                 root.SetDirection("srcDir", group.SourceDirection);
                 root.SetDirection("trgDir", group.TargetDirection);
-                root.Add(SerializeNotes(group.Notes));
                 root.Add(SerializeMetadata(group.MetaData));
+                root.Add(group.Other);
+                root.Add(SerializeNotes(group.Notes));
                 root.Add(group.Children.OfType<Group>().Select(SerializeGroup));
                 root.Add(group.Children.OfType<Unit>().Select(SerializeUnit));
-                root.Add(group.Other);
                 return root;
             }
 
@@ -793,8 +860,6 @@ public static class Xliff2Serializer
             root.Set("original", transformation.ExternalReference);
             root.SetDirection("srcDir", transformation.SourceDirection);
             root.SetDirection("trgDir", transformation.TargetDirection);
-            root.Add(SerializeNotes(notes));
-            root.Add(SerializeMetadata(metadata));
 
             if (transformation.Original is not null || transformation.OriginalReference is not null)
             {
@@ -803,9 +868,11 @@ public static class Xliff2Serializer
                 root.Add(skeleton);
             }
 
+            root.Add(SerializeMetadata(metadata));
+            root.Add(transformation.Other);
+            root.Add(SerializeNotes(notes));
             root.Add(transformation.Children.OfType<Group>().Select(SerializeGroup));
             root.Add(transformation.Children.OfType<Unit>().Select(SerializeUnit));
-            root.Add(transformation.Other);
 
             return root;
         }

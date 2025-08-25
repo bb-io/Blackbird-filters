@@ -151,6 +151,7 @@ The `Xliff2Serializer` handles XLIFF 2.x format:
 - **IsXliff2**: Checks if a string is valid XLIFF 2.x content
 
 The XLIFF serializer is compatible with the entire XLIFF 2.x standard. It supports additional custom XML tags. Not all submodules of XLIFF 2.x are *semantically supported* but their nodes will be persisted.
+If you need an XLIFF 2.0 or 2.1 document you can use this serializer and specify the format as the second argument instead of calling `Transformation.Serialize()`.
 
 ## Testing
 Every serializer and content coder has an extensive set of test cases. F.e. the XLIFF 2.x test cases came directly from the XLIFF TC repository.
