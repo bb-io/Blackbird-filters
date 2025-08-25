@@ -23,4 +23,10 @@ public static class StringExtensions
 
         return result;
     }
+
+    public static string? NullIfEmpty(this string? s)
+    {
+        if (string.IsNullOrEmpty(s)) return null;
+        return s;
+    }
 }

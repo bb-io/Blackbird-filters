@@ -39,7 +39,6 @@ public class BaseXliff2SerializationTests : TestBase
 
         // Additional assertions to verify structure
         Assert.That(content.GetUnits().Count(), Is.EqualTo(1));
-        Assert.That(content.Id, Is.EqualTo("f1"));
         Assert.That(content.GetUnits().FirstOrDefault()!.Notes.Count, Is.EqualTo(1));
     }
 

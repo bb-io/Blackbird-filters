@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.2" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" version="2.2" srcLang="en" trgLang="fr">
+	<notes>
+		<note>Top level note</note>
+	</notes>
+	<mda:metadata>
+		<mda:metaGroup category="Top level attributes">
+			<mda:meta type="version">3</mda:meta>
+			<mda:meta type="phase">draft</mda:meta>
+		</mda:metaGroup>
+	</mda:metadata>
+    <file id="f1">
+        <unit id="u1">
+            <segment id="s1">
+                <source>Hello World</source>
+                <target>Bonjour le monde</target>
+            </segment>
+        </unit>
+    </file>
+</xliff>

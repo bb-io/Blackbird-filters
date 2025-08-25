@@ -1,4 +1,5 @@
-﻿using Blackbird.Filters.Content;
+﻿using Blackbird.Filters.Constants;
+using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Transformations;
@@ -27,35 +28,58 @@ public static class Xliff2Serializer
         var ns = xliffNode.GetDefaultNamespace();
         var sourceLanguage = xliffNode.Get("srcLang");
         var targetLanguage = xliffNode.Get("trgLang");
+        var version = xliffNode.GetXliffVersion("version");
         var whiteSpaceHandling = xliffNode.GetWhiteSpaceHandling();
-        
 
-        List<Note> DeserializeNotes(XElement? node)
+        var globalMetadata = new List<Metadata>();
+        var globalNotes = new List<Note>();
+
+        List<Note> DeserializeNotes(XElement? node, bool global = false)
         {
             if (node == null) return [];
-            return node.Elements(ns + "note").Select(x => new Note(x.Value.Trim())
+            var notes = node.Elements(ns + "note").Select(x => new Note(x.Value.Trim())
             {
                 Id = x.Get("id"),
                 Priority = x.GetInt("priority"),
-                Category = x.Get("category"),
+                Category = x.Get("category")?.Replace(Meta.Categories.Global, string.Empty).NullIfEmpty(),
                 LanguageTarget = x.GetLanguageTarget("appliesTo"),
                 Other = x.Attributes().GetRemaining(["id", "priority", "category", "appliesTo"]),
+                Global = global || (x.Get("category")?.Contains(Meta.Categories.Global) ?? false),
                 // TODO: Implement reference property handling
             }).ToList();
+            foreach(var note in notes.Where(x => x.Global))
+            {
+                if (!globalNotes.Any(x => x.Id == note.Id && x.Text == note.Text))
+                {
+                    globalNotes.Add(note);
+                }
+            }
+            return notes.Where(x => !x.Global).ToList();
         }
 
-        List<Metadata> DeserializeMetadata(XElement? node, List<string>? category = null)
+        List<Metadata> DeserializeMetadata(XElement? node, List<string>? category = null, bool global = false)
         {
             var metadata = new List<Metadata>();
             if (node == null) return metadata;
             if (category == null) category = [];
             var categoryName = node.Get("category");
             if (categoryName is not null) category.Add(categoryName);
-            metadata.AddRange(node.Elements(MetaNs + "metaGroup").SelectMany(x => DeserializeMetadata(x, category.ToList())));            
+            metadata.AddRange(node.Elements(MetaNs + "metaGroup").SelectMany(x => DeserializeMetadata(x, category.ToList(), global)));            
             metadata.AddRange(node.Elements(MetaNs + "meta").Select(
-                x => new Metadata(x.Get("type", Optionality.Required)!, x.Value) { Category = category }
+                x => new Metadata(x.Get("type", Optionality.Required)!, x.Value) 
+                {
+                    Category = category.Where(x => x != Meta.Categories.Global).ToList(), 
+                    Global = global || category.Contains(Meta.Categories.Global),
+                }
                 ));
-            return metadata;
+            foreach (var meta in metadata.Where(x => x.Global))
+            {
+                if (!globalMetadata.Any(x => x.Value == meta.Value && x.Type == meta.Type))
+                {
+                    globalMetadata.Add(meta);
+                }
+            }
+            return metadata.Where(x => !x.Global).ToList();
         }
 
         Transformation DeserializeTransformation(XElement node)
@@ -393,31 +417,37 @@ public static class Xliff2Serializer
             return transformation;
         }
 
-        var files = xliffNode.Elements(ns + "file").Select(DeserializeTransformation);
-        var metadata = DeserializeMetadata(xliffNode.Element(MetaNs + "metadata"));
+        if (version >= Xliff2Version.Xliff22)
+        {
+            DeserializeMetadata(xliffNode.Element(MetaNs + "metadata"), null, true);
+            DeserializeNotes(xliffNode.Element(ns + "notes"), true);
+        }
+
+        var files = xliffNode.Elements(ns + "file").Select(DeserializeTransformation).ToList();
         Transformation transformation;
         if (files.Count() == 1)
         {
             transformation = files.First();
-            transformation.MetaData.AddRange(metadata);
+            transformation.MetaData.AddRange(globalMetadata);
+            transformation.Notes.AddRange(globalNotes);
         }
         else
         {
             transformation = new Transformation(sourceLanguage, targetLanguage);
-            transformation.Children.AddRange(files); 
-            transformation.MetaData = metadata;
+            transformation.Children.AddRange(files);
+            transformation.MetaData = globalMetadata;
+            transformation.Notes = globalNotes;
         }
-        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["srcLang", "trgLang"]));
+        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["srcLang", "trgLang", "version", "xmlns"]));
         return transformation;
     }
 
-    public static string Serialize(Transformation xliffTransformation)
+    public static string Serialize(Transformation xliffTransformation, Xliff2Version version = Xliff2Version.Xliff22)
     {
-        var xmlnsAttribute = xliffTransformation.XliffOther.OfType<XAttribute>().FirstOrDefault(x => x.Name == "xmlns");;
-        XNamespace ns = xmlnsAttribute?.Value ?? $"urn:oasis:names:tc:xliff:document:2.2";
+        XNamespace ns = $"urn:oasis:names:tc:xliff:document:{version.Serialize()}";
         bool metaUsed = false;
 
-        XElement? SerializeNotes(List<Note> notes)
+        XElement? SerializeNotes(List<Note> notes, bool global = false)
         {
             if (notes.Count == 0) return null;
             var root = new XElement(ns + "notes");
@@ -426,7 +456,7 @@ public static class Xliff2Serializer
                 var noteRoot = new XElement(ns + "note");
                 noteRoot.Set("id", note.Id);
                 noteRoot.SetInt("priority", note.Priority);
-                noteRoot.Set("category", note.Category);
+                noteRoot.Set("category", note.Global && !global ? Meta.Categories.Global + note.Category : note.Category);
                 noteRoot.SetLanguageTarget("appliesTo", note.LanguageTarget);
                 noteRoot.Value = note.Text;
                 // TODO: Implement reference property handling
@@ -436,7 +466,7 @@ public static class Xliff2Serializer
             return root;
         }
 
-        XElement? SerializeMetadata(List<Metadata> metadata)
+        XElement? SerializeMetadata(List<Metadata> metadata, bool global = false)
         {
             if (metadata.Count == 0) return null;
             var root = new XElement(MetaNs + "metadata");
@@ -458,6 +488,10 @@ public static class Xliff2Serializer
 
             foreach (var meta in metadata)
             {
+                if (meta.Global && !global)
+                {
+                    meta.Category.Insert(0, Meta.Categories.Global);
+                }
                 var metaRoot = new XElement(MetaNs + "meta");
                 metaRoot.Set("type", meta.Type);
                 metaRoot.Value = meta.Value;
@@ -741,14 +775,26 @@ public static class Xliff2Serializer
 
             var root = new XElement(ns + "file");
             transformation.Id = GetUniqueFileId(transformation.Id);
+
+            var notes = new List<Note>();
+            var metadata = new List<Metadata>();
+            notes = transformation.Notes.Where(x => !x.Global).ToList();
+            metadata = transformation.MetaData.Where(x => !x.Global).ToList();
+
+            if (version < Xliff2Version.Xliff22)            
+            {
+                notes.AddRange(xliffTransformation.Notes);
+                metadata.AddRange(xliffTransformation.MetaData);
+            }
+
             root.Set("id", transformation.Id);
             root.SetBool("canResegment", transformation.CanResegment);
             root.SetBool("translate", transformation.Translate);
             root.Set("original", transformation.ExternalReference);
             root.SetDirection("srcDir", transformation.SourceDirection);
             root.SetDirection("trgDir", transformation.TargetDirection);
-            root.Add(SerializeNotes(transformation.Notes));
-            root.Add(SerializeMetadata(transformation.MetaData));
+            root.Add(SerializeNotes(notes));
+            root.Add(SerializeMetadata(metadata));
 
             if (transformation.Original is not null || transformation.OriginalReference is not null)
             {
@@ -767,12 +813,15 @@ public static class Xliff2Serializer
         var root = new XElement(ns + "xliff");
         root.Set("srcLang", xliffTransformation.SourceLanguage);
         root.Set("trgLang", xliffTransformation.TargetLanguage);
-        if (xmlnsAttribute is null || !xliffTransformation.XliffOther.OfType<XAttribute>().Any(x => x.Name.LocalName == "version"))
-        {
-            root.Set("version", "2.2");
-        }
-        
+        root.SetXliffVersion("version", version);
+
         root.Add(xliffTransformation.XliffOther);
+
+        if (version >= Xliff2Version.Xliff22)
+        {
+            root.Add(SerializeNotes(xliffTransformation.Notes.Where(x => x.Global).ToList(), true));
+            root.Add(SerializeMetadata(xliffTransformation.MetaData.Where(x => x.Global).ToList(), true));
+        }
 
         if (!xliffTransformation.Children.OfType<Transformation>().Any())
         {
@@ -780,7 +829,7 @@ public static class Xliff2Serializer
         }
         else
         {
-            root.Add(xliffTransformation.Children.OfType<Transformation>().Select(SerializeTransformation));
+            root.Add(xliffTransformation.Children.OfType<Transformation>().Select(SerializeTransformation).ToList());
         }
 
         if (metaUsed && root.Attribute(XNamespace.Xmlns + "mda") == null)
@@ -894,8 +943,13 @@ public static class Xliff2Serializer
                 return false;
             }
 
-            var version = xliffNode.Get("version", Optionality.Required)!;
-            return float.Parse(version, CultureInfo.InvariantCulture) > 2;
+            var version = xliffNode.Get("version");
+            if (string.IsNullOrEmpty(version))
+            {
+                return false;
+            }
+
+            return version.StartsWith("2.");
         }
         catch (Exception)
         {
