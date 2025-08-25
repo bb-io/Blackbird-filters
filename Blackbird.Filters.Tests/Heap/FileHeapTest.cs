@@ -29,6 +29,10 @@ public class FileHeapTest : TestBase
         foreach (var file in Directory.GetFiles(fullPath))
         {
             var fileName = Path.GetFileName(file);
+
+            if (fileName == ".gitkeep")
+                continue;
+
             yield return new TestCaseData(file).SetName($"FileParses({fileName})");
         }
     }

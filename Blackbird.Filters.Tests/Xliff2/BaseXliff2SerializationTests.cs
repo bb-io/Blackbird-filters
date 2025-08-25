@@ -1,11 +1,7 @@
-﻿using Blackbird.Filters.Coders;
-using Blackbird.Filters.Tests.CustomAssertions;
+﻿using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Xliff.Xliff2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Blackbird.Filters.Tests.Xliff2;
 
@@ -139,5 +135,31 @@ public class BaseXliff2SerializationTests : TestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
+    }
+
+    [Test]
+    public void OriginalDataBeforeSegments()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff2/Files/originalDataBeforeSegments.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff2Serializer.Deserialize(xliff);
+        var returned = Xliff2Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        // Assert
+        var doc = XDocument.Parse(returned);
+        XNamespace ns = "urn:oasis:names:tc:xliff:document:2.2";
+        var units = doc.Descendants(ns + "unit");
+        foreach (var unit in units)
+        {
+            var children = unit.Elements().ToList();
+            var originalDataIndex = children.FindIndex(e => e.Name.LocalName == "originalData");
+            var segmentIndex = children.FindIndex(e => e.Name.LocalName == "segment");
+            Assert.That(originalDataIndex, Is.GreaterThanOrEqualTo(0), "originalData tag not found in unit");
+            Assert.That(segmentIndex, Is.GreaterThanOrEqualTo(0), "segment tag not found in unit");
+            Assert.That(originalDataIndex, Is.LessThan(segmentIndex), "originalData does not precede segment in unit");
+        }
     }
 }
