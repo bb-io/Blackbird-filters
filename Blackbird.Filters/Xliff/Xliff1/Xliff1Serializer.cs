@@ -56,8 +56,18 @@ public static class Xliff1Serializer
                 transformation.Children.Add(fileTransformation);
             }
         }
+
+        transformation.XliffOther.AddRange(xliffNode.Attributes()
+            .Where(a => a.Name != "source-language" && a.Name != "target-language" && (a.Name.NamespaceName != string.Empty && a.Name != "version")));
         
-        transformation.XliffOther.AddRange(xliffNode.Attributes().GetRemaining(["source-language", "target-language", "version", "xmlns"]));
+        var xliffOtherElements = xliffNode.Elements()
+            .Where(e => e.Name.Namespace != BlackbirdNs && e.Name.Namespace != XliffNs)
+            .Select(CloneWithNamespace)
+            .Where(e => e != null)
+            .Cast<XElement>()
+            .ToList();
+        transformation.XliffOther.AddRange(xliffOtherElements);
+        
         return transformation;
     }
     
@@ -297,13 +307,28 @@ public static class Xliff1Serializer
                 }
             }
             
-            fileElement.Add(header);
+            if(header.Elements().Any())
+            {
+                fileElement.Add(header);
+            }
 
             var body = new XElement(XliffNs + "body");
             SerializeGroupsAndUnits(file, body);
             fileElement.Add(body);
 
             return fileElement;
+        }
+        
+        if (!transformation.Children.OfType<Transformation>().Any())
+        {
+            root.Add(SerializeFile(transformation));
+        }
+        else
+        {
+            foreach (var file in transformation.Children.OfType<Transformation>())
+            {
+                root.Add(SerializeFile(file));
+            }
         }
 
         try
@@ -312,7 +337,7 @@ public static class Xliff1Serializer
             {
                 if (otherObj is XAttribute attr)
                 {
-                    if (!attr.Value.Contains("urn:oasis:names:tc:xliff:document") && attr.Name.LocalName != "version")
+                    if (!attr.Value.Contains("urn:oasis:names:tc:xliff:document") && (attr.Name.LocalName != "version" || !string.IsNullOrEmpty(attr.Name.NamespaceName)))
                     {
                         root.SetAttributeValue(attr.Name, attr.Value);
                     }
@@ -329,18 +354,6 @@ public static class Xliff1Serializer
         }
         catch (InvalidOperationException e) when (e.Message.Contains("Duplicate attribute."))
         { }
-
-        if (!transformation.Children.OfType<Transformation>().Any())
-        {
-            root.Add(SerializeFile(transformation));
-        }
-        else
-        {
-            foreach (var file in transformation.Children.OfType<Transformation>())
-            {
-                root.Add(SerializeFile(file));
-            }
-        }
     }
 
     private static IEnumerable<XElement> SerializeNotes(List<Note> notes)

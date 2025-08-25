@@ -650,8 +650,11 @@ public static class Xliff2Serializer
                             }
                             else if (part is StartTag startTag)
                             {
+                                var startId = GetUniqueId(startTag.Id);
+                                startTag.Id = startId;
+
                                 var element = new XElement(ns + "sc");
-                                element.Set("id", GetUniqueId(startTag.Id));
+                                element.Set("id", startId);
                                 AddDataRefToElement(element, startTag, "dataRef");
                                 AddSubflowsToElement(element, startTag, "subFlows");
                                 element.Set("equiv", startTag.Equivalent);
@@ -662,6 +665,7 @@ public static class Xliff2Serializer
                             else if (part is EndTag endTag)
                             {
                                 if (endTag.StartTag is not null && endTag.StartTag.WellFormed) continue;
+
                                 var element = new XElement(ns + "ec");
                                 element.Set("id", endTag.Id);
                                 AddDataRefToElement(element, endTag, "dataRef");
@@ -733,6 +737,8 @@ public static class Xliff2Serializer
                 }
 
                 var root = new XElement(ns + "unit");
+                var segmentElements = unit.Segments.Select(SerializeSegment).ToList();
+
                 unit.Id = GetUniqueUnitId(unit.Id);
                 root.Set("id", unit.Id);
                 root.Set("name", unit.Name);
@@ -742,8 +748,8 @@ public static class Xliff2Serializer
                 root.SetDirection("trgDir", unit.TargetDirection);
                 root.Add(SerializeNotes(unit.Notes));
                 root.Add(SerializeMetadata(unit.MetaData));
-                root.Add(unit.Segments.Select(SerializeSegment));
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
+                root.Add(segmentElements);
                 root.Add(unit.Other);
 
                 return root;
