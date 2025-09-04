@@ -1,10 +1,8 @@
 ﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Extensions;
-using Blackbird.Filters.Transformations;
 using HtmlAgilityPack;
 using System.Net.Mime;
-using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Coders;
@@ -147,22 +145,24 @@ public static class HtmlContentCoder
         catch { return false; }
     }
 
-    internal static List<TextUnit> ExtractTextUnits(HtmlNode node)
+    internal static List<TextUnit> ExtractTextUnits(HtmlNode node, string? key = null)
     {
         var units = new List<TextUnit>();
 
         if (node.IsIgnoredElement()) return units;
 
+        key ??= GetKey(node);
+
         foreach (var attribute in node.GetTranslatableAttributes()) 
         {
-            units.Add(BuildUnit(attribute));
+            units.Add(BuildUnit(attribute, key));
         }
 
         if (node.NodeType == HtmlNodeType.Text)
         {
             if (!string.IsNullOrWhiteSpace(node.InnerText))
             {
-                units.AddRange(BuildUnits(node));
+                units.AddRange(BuildUnits(node, key));
             }
             return units;
         }
@@ -171,21 +171,22 @@ public static class HtmlContentCoder
 
         if (!string.IsNullOrWhiteSpace(node.InnerText) && node.ChildNodes.All(x => x.IsInlineElement() || x.NodeType != HtmlNodeType.Element))
         {
-            units.AddRange(BuildUnits(node));
+            units.AddRange(BuildUnits(node, key));
             return units;
         }
 
         foreach (var child in node.ChildNodes)
         {
-            units.AddRange(ExtractTextUnits(child));
+            units.AddRange(ExtractTextUnits(child, key));
         }
 
         return units;
     }
 
-    internal static List<TextUnit> BuildUnits(HtmlNode node)
+    internal static List<TextUnit> BuildUnits(HtmlNode node, string? key = null)
     {
-        var unit = new TextUnit(node.XPath, MediaTypeNames.Text.Html);
+        key ??= GetKey(node);
+        var unit = new TextUnit(node.XPath, MediaTypeNames.Text.Html) { Key = key};        
 
         if (node.NodeType == HtmlNodeType.Text)
         {
@@ -193,7 +194,7 @@ public static class HtmlContentCoder
         }
         else
         {
-            unit.Parts = BuildTextParts(node.ChildNodes);
+            unit.Parts = BuildTextParts(node.ChildNodes, key);
         }
 
         if (unit.Parts.Count > 0) 
@@ -211,7 +212,7 @@ public static class HtmlContentCoder
         return units;
     }
 
-    internal static List<TextPart> BuildTextParts(HtmlNodeCollection nodes)
+    internal static List<TextPart> BuildTextParts(HtmlNodeCollection nodes, string? key = null)
     {
         var parts = new List<TextPart>();
         foreach (var child in nodes)
@@ -225,7 +226,7 @@ public static class HtmlContentCoder
                 var subUnits = new List<TextUnit>();
                 foreach (var attribute in child.GetTranslatableAttributes())
                 {
-                    subUnits.Add(BuildUnit(attribute));
+                    subUnits.Add(BuildUnit(attribute, key));
                 }
 
                 if (child.ChildNodes.Count() == 0)
@@ -239,7 +240,7 @@ public static class HtmlContentCoder
                     var endTag = new EndCode { Value = end, StartCode = startTag, UnitReferences = subUnits };
                     startTag.EndCode = endTag;
                     parts.Add(startTag);
-                    parts.AddRange(BuildTextParts(child.ChildNodes));
+                    parts.AddRange(BuildTextParts(child.ChildNodes, key));
                     parts.Add(endTag);
                 }
             }
@@ -247,7 +248,7 @@ public static class HtmlContentCoder
         return parts;
     }
 
-    private static TextUnit BuildUnit(HtmlAttribute attribute) => new(attribute.XPath, MediaTypeNames.Text.Plain) { Parts = [new TextPart { Value = attribute.Value }] };
+    private static TextUnit BuildUnit(HtmlAttribute attribute, string? key = null) => new(attribute.XPath, MediaTypeNames.Text.Plain) { Key = key, Parts = [new TextPart { Value = attribute.Value }] };
 
     private static (string StartTag, string Content, string EndTag) ParseHtmlParts(string html)
     {
@@ -282,6 +283,16 @@ public static class HtmlContentCoder
     private static bool IsIgnoredElement(this HtmlNode node)
     {
         return IgnoredElements.Contains(node.Name);
+    }
+
+    private static string? GetKey(this HtmlNode node)
+    {
+        if (node.Attributes.Contains("data-blackbird-key"))
+        {
+            return node.Attributes["data-blackbird-key"].Value;
+        }
+
+        return null;
     }
 
     private static List<HtmlAttribute> GetTranslatableAttributes(this HtmlNode node)

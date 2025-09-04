@@ -405,8 +405,17 @@ public static class Xliff2Serializer
                 return group;
             }
 
-            transformation.Children.AddRange(node.Elements(ns + "group").Select(DeserializeGroup));
-            transformation.Children.AddRange(node.Elements(ns + "unit").Select(DeserializeUnit));
+            foreach(var n in node.Elements())
+            {
+                if (n.Name == ns + "group")
+                {
+                    transformation.Children.Add(DeserializeGroup(n));
+                }
+                if (n.Name == ns + "unit")
+                {
+                    transformation.Children.Add(DeserializeUnit(n));
+                }
+            }
 
             // Fix unit references
             foreach (var (tag, ids) in unitReferences)
@@ -555,7 +564,7 @@ public static class Xliff2Serializer
                 var GetUniqueId = UniqueIdGenerator();
                 XElement SerializeSegment(Segment segment)
                 {
-                    XElement SerializeParts(List<TextPart> parts, string elementName, List<TextPart> idTagsToMatch = null)
+                    XElement SerializeParts(List<TextPart> parts, string elementName, List<TextPart>? idTagsToMatch = null)
                     {
                         void SetCommonInlineArguments(XElement element, InlineTag tag)
                         {
@@ -871,8 +880,18 @@ public static class Xliff2Serializer
             root.Add(SerializeMetadata(metadata));
             root.Add(transformation.Other);
             root.Add(SerializeNotes(notes));
-            root.Add(transformation.Children.OfType<Group>().Select(SerializeGroup));
-            root.Add(transformation.Children.OfType<Unit>().Select(SerializeUnit));
+
+            foreach(var child in transformation.Children)
+            {
+                if (child is Group group)
+                {
+                    root.Add(SerializeGroup(group));
+                }
+                if (child is Unit unit)
+                {
+                    root.Add(SerializeUnit(unit));
+                }
+            }
 
             return root;
         }

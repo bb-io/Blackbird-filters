@@ -13,24 +13,25 @@ public static class XmlAssert
         var childNodes = node.ChildNodes;
         for (int i = 0; i < childNodes.Count; i++)
         {
-            XmlNode child = childNodes[i];
+            XmlNode? child = childNodes[i];
 
             // If it's a CDATA section, replace it with a regular text node
-            if (child.NodeType == XmlNodeType.CDATA)
+            if (child?.NodeType == XmlNodeType.CDATA)
             {
-                XmlText newText = node.OwnerDocument.CreateTextNode(child.Value);
-                node.ReplaceChild(newText, child);
+                XmlText? newText = node?.OwnerDocument?.CreateTextNode(child.Value);
+                if (newText is null) continue;
+                node?.ReplaceChild(newText, child);
             }
-            else if (child.HasChildNodes)
+            else if (child is not null && child.HasChildNodes)
             {
                 NormalizeCDataInNode(child); // Recursive call
             }
         }
     }
 
-    private static void RemoveEmptyTargets(XmlNode node)
+    private static void RemoveEmptyTargets(XmlNode? node)
     {
-        if (node.NodeType == XmlNodeType.Element)
+        if (node?.NodeType == XmlNodeType.Element)
         {
             foreach (XmlNode child in node.ChildNodes.Cast<XmlNode>().ToList())
             {

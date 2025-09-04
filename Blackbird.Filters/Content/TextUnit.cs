@@ -22,6 +22,13 @@ public class TextUnit(string reference, string? originalMediaType)
     public string? OriginalMediaType { get; set; } = originalMediaType;
 
     /// <summary>
+    /// Keys are used for change detection. Only changes among text units of the same key are considered. 
+    /// Units within the same content can have the same keys. But keys should refer to unique content pieces in the document 
+    /// or even the content environment.
+    /// </summary>
+    public string? Key { get; set; }
+
+    /// <summary>
     /// Get the plain text without any tags.
     /// </summary>
     /// <returns>The plain text without any tags</returns>
@@ -51,7 +58,7 @@ public class TextUnit(string reference, string? originalMediaType)
             {
                 var doc = new HtmlDocument();
                 doc.LoadHtml(content);
-                Parts = HtmlContentCoder.BuildTextParts(doc.DocumentNode.ChildNodes);
+                Parts = HtmlContentCoder.BuildTextParts(doc.DocumentNode.ChildNodes, Key);
             } catch (Exception)
             {
                 Parts = [new() { Value = content }];

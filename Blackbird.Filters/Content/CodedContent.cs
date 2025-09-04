@@ -59,10 +59,11 @@ public class CodedContent
 
         var unitReferences = new Dictionary<InlineTag, List<TextUnit>>();
         var unitsDictionary = new Dictionary<TextUnit, Unit>();
+        var groupsDictionary = new Dictionary<string, Group>();
 
-        foreach(var textUnit in TextUnits)
+        Unit CreateUnit(TextUnit textUnit, string? id = null)
         {
-            var unit = new Unit() { Name = textUnit.Reference };
+            var unit = new Unit() { Name = textUnit.Reference, Id = id };
             unitsDictionary[textUnit] = unit;
             var parts = new List<TextPart>();
 
@@ -98,11 +99,41 @@ public class CodedContent
                         parts.Add(new TextPart() { Value = part.Value });
                         break;
                 }
-               
             }
 
             unit.Segments = [new Segment(OriginalMediaType) { Source = parts, Ignorable = parts.All(x => string.IsNullOrWhiteSpace(x.Value)) }];
-            transformation.Children.Add(unit);
+            return unit;
+        }
+
+        foreach(var textUnit in TextUnits)
+        {
+            var unit = CreateUnit(textUnit);
+            if (textUnit.Key is null)
+            {
+                transformation.Children.Add(unit);
+            }
+            else
+            {
+                if (TextUnits.Where(x => x.Key == textUnit.Key).Count() == 1)
+                {
+                    unit.Id = textUnit.Key;
+                    transformation.Children.Add(unit);
+                }
+                else
+                {
+                    if (groupsDictionary.ContainsKey(textUnit.Key))
+                    {
+                        groupsDictionary[textUnit.Key].Children.Add(unit);
+                    } 
+                    else
+                    {
+                        var group = new Group { Id = textUnit.Key };
+                        group.Children.Add(unit);
+                        groupsDictionary[textUnit.Key] = group;
+                        transformation.Children.Add(group);
+                    }
+                }
+            }            
         }
 
         foreach (var unitRefrence in unitReferences)

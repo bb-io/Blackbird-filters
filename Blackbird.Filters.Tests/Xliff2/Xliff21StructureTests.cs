@@ -24,7 +24,7 @@ public class Xliff21StructureTests : TestBase
         var doc = XmlAssert.NormalizedDocument(xliff21);
         var root = doc.DocumentElement;
 
-        Assert.That(root.LocalName, Is.EqualTo("xliff"));
+        Assert.That(root?.LocalName, Is.EqualTo("xliff"));
         Assert.That(
             root.ChildNodes.Cast<XmlNode>().All(n =>
                 n.NodeType == XmlNodeType.Element && n.LocalName == "file"),

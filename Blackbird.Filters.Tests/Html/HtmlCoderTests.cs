@@ -164,9 +164,18 @@ public class HtmlCoderTests : TestBase
     }
 
     [Test]
-    public void Full_example()
+    public void Full_example_with_whitespace()
     {
         var result = Process("Html/Files/contentful.html");
+
+        foreach(var segment in result.Transformation.GetSegments())
+        {
+            Assert.That(segment.GetTarget(), Does.Not.Contain("\r"));
+            Assert.That(segment.GetTarget(), Does.Not.Contain("\n"));
+
+            Assert.That(segment.GetSource(), Does.Not.Contain("\r"));
+            Assert.That(segment.GetSource(), Does.Not.Contain("\n"));
+        }
 
         HtmlAssert.AreEqual(result.Original, result.SourceString);
     }
@@ -189,6 +198,21 @@ public class HtmlCoderTests : TestBase
         Assert.IsNotEmpty(plaintext);
         Console.OutputEncoding = Encoding.UTF8;
         Console.WriteLine(plaintext);
+    }
+
+    [Test]
+    public void Groups()
+    {
+        var result = Process("Html/Files/groups.html");
+
+        var groups = result.Transformation.Children.OfType<Group>();
+        var units = result.Transformation.Children.OfType<Unit>();
+        Assert.That(units.First().Id, Is.EqualTo("5746dLKTkEZjOQX21HX2KI-title"));
+        Assert.That(groups.Count(), Is.EqualTo(2));
+        Assert.That(groups.First().Children.Count(), Is.EqualTo(2));
+        Assert.That(groups.Last().Children.Count(), Is.EqualTo(2));
+
+        HtmlAssert.AreEqual(result.Original, result.SourceString);
     }
 
 }
