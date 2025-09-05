@@ -207,7 +207,7 @@ public class HtmlCoderTests : TestBase
 
         var groups = result.Transformation.Children.OfType<Group>();
         var units = result.Transformation.Children.OfType<Unit>();
-        Assert.That(units.First().Id, Is.EqualTo("5746dLKTkEZjOQX21HX2KI-title"));
+        Assert.That(units.First().Key, Is.EqualTo("5746dLKTkEZjOQX21HX2KI-title"));
         Assert.That(groups.Count(), Is.EqualTo(2));
         Assert.That(groups.First().Children.Count(), Is.EqualTo(2));
         Assert.That(groups.Last().Children.Count(), Is.EqualTo(2));

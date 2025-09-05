@@ -1,11 +1,13 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Constants;
 using Blackbird.Filters.Content;
+using Blackbird.Filters.Extensions;
+using Blackbird.Filters.Xliff.Xliff1;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
-using Blackbird.Filters.Xliff.Xliff1;
 
 namespace Blackbird.Filters.Transformations;
 public class Transformation(string? sourceLanguage, string? targetLanguage) : Node
@@ -47,25 +49,6 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     {
         get => GetBlackbirdMetadata(Meta.Types.TargetUniqueContentId);
         set => SetBlackbirdMetadata(Meta.Types.TargetUniqueContentId, value);
-    }
-
-    private string? GetBlackbirdMetadata(string type)
-    {
-        return MetaData.FirstOrDefault(x => x.Category.Contains(Meta.Categories.Blackbird) && x.Type == type)?.Value;
-    }
-
-    private void SetBlackbirdMetadata(string type, string? value)
-    {
-        var existing = MetaData.FirstOrDefault(x => x.Category.Contains(Meta.Categories.Blackbird) && x.Type == type);
-        if (value is null && existing is not null)
-        {
-            MetaData.Remove(existing);
-        }
-
-        if (value is not null)
-        {
-            MetaData.Add(new Metadata(type, value) { Category = [Meta.Categories.Blackbird] });
-        }
     }
 
     public IEnumerable<Unit> GetUnits()
@@ -138,6 +121,13 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         return codedContent;
     }
 
+    public static bool IsBilingual(string content)
+    {
+        return Xliff2Serializer.IsXliff2(content) || Xliff1Serializer.IsXliff1(content);
+    }
+
+    public static async Task<bool> IsBilingual(Stream content) => IsBilingual(await content.ReadString());
+
     public static Transformation Parse(string content, string fileName)
     {
         if (Xliff2Serializer.IsXliff2(content))
@@ -157,17 +147,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         return CodedContent.Parse(content, fileName).CreateTransformation();
     }
 
-    public static async Task<Transformation> Parse(Stream content, string fileName)
-    {
-        byte[] bytes;
-        await using (MemoryStream resultFileStream = new())
-        {
-            await content.CopyToAsync(resultFileStream);
-            bytes = resultFileStream.ToArray();
-        }
-        
-        return Parse(Encoding.UTF8.GetString(bytes), fileName);
-    }
+    public static async Task<Transformation> Parse(Stream content, string fileName) => Parse(await content.ReadString(), fileName);
 
     public string Serialize()
     {

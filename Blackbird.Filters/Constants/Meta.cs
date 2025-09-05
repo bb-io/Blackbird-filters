@@ -13,6 +13,7 @@ public static class Meta
         public const string OriginalName = "original-name";
         public const string SourceUniqueContentId = "source-ucid";
         public const string TargetUniqueContentId = "target-ucid";
+        public const string Key = "key";
     }
     
 }

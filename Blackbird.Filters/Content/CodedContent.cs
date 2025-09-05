@@ -1,10 +1,11 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content.Tags;
+using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Tags;
+using Blackbird.Filters.Xliff.Xliff1;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
-using Blackbird.Filters.Xliff.Xliff1;
 
 namespace Blackbird.Filters.Content;
 public class CodedContent
@@ -116,7 +117,7 @@ public class CodedContent
             {
                 if (TextUnits.Where(x => x.Key == textUnit.Key).Count() == 1)
                 {
-                    unit.Id = textUnit.Key;
+                    unit.Key = textUnit.Key;
                     transformation.Children.Add(unit);
                 }
                 else
@@ -127,7 +128,7 @@ public class CodedContent
                     } 
                     else
                     {
-                        var group = new Group { Id = textUnit.Key };
+                        var group = new Group { Key = textUnit.Key };
                         group.Children.Add(unit);
                         groupsDictionary[textUnit.Key] = group;
                         transformation.Children.Add(group);
@@ -168,6 +169,13 @@ public class CodedContent
         throw new NotImplementedException($"The serializer for ${OriginalMediaType} is not implemented");
     }
 
+    public static bool IsMonolingual(string content)
+    {
+        return HtmlContentCoder.IsHtml(content) || PlaintextContentCoder.IsPlaintext(content);
+    }
+
+    public static async Task<bool> IsMonolingual(Stream content) => IsMonolingual(await content.ReadString());
+
     public static CodedContent Parse(string content, string fileName)
     {
         if (HtmlContentCoder.IsHtml(content))
@@ -203,4 +211,6 @@ public class CodedContent
             throw new Exception("This file format is not supported by this library.");
         }
     }
+
+    public static async Task<CodedContent> Parse(Stream content, string fileName) => Parse(await content.ReadString(), fileName);
 }
