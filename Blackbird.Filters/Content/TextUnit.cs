@@ -1,5 +1,6 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Interfaces;
 using Blackbird.Filters.Transformations;
 using HtmlAgilityPack;
 using System.Net.Mime;
@@ -7,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Content;
 
-public class TextUnit(string reference, string? originalMediaType)
+public class TextUnit(string reference, string? originalMediaType) : ITextContainer
 {
     /// <summary>
     /// The reference to the location of this text unit in the original file depending on the original format.
@@ -69,5 +70,15 @@ public class TextUnit(string reference, string? originalMediaType)
         {
             Parts = [new() { Value = content }];
         }
+    }
+
+    public string GetTarget()
+    {
+        return GetCodedText();
+    }
+
+    public string? GetSource()
+    {
+        return null;
     }
 }

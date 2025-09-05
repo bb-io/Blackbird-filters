@@ -2,14 +2,14 @@
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Interfaces;
 using Blackbird.Filters.Transformations.Tags;
 using HtmlAgilityPack;
 using System.Net.Mime;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
-public class Segment()
+public class Segment() : ITextContainer
 {
     internal Segment(string? originalMediaType) : this()
     {
@@ -105,5 +105,4 @@ public class Segment()
         }
         return parts;
     }
-
 }
