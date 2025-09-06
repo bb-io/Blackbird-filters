@@ -1042,4 +1042,27 @@ public static class Xliff2Serializer
             return false;
         }
     }
+
+    public static bool TryGetXliffVersion(string content, out string version)
+    {
+        version = string.Empty;
+        try
+        {
+            var xliffNode = GetRootNode(content);
+            if (xliffNode == null)
+                return false;
+
+            var v = xliffNode.Get("version");
+            if (string.IsNullOrEmpty(v))
+                return false;
+
+            version = v;
+            return true;
+        }
+        catch (Exception)
+        {
+            version = string.Empty;
+            return false;
+        }
+    }
 }

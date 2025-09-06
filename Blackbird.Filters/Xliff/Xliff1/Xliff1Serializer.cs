@@ -100,6 +100,29 @@ public static class Xliff1Serializer
         }
     }
 
+    public static bool TryGetXliffVersion(string content, out string version)
+    {
+        version = string.Empty;
+        try
+        {
+            var xliffNode = Xliff1XmlExtensions.GetRootNode(content);
+            if (xliffNode == null)
+                return false;
+
+            var v = xliffNode.Get("version");
+            if (string.IsNullOrEmpty(v))
+                return false;
+
+            version = v;
+            return true;
+        }
+        catch (Exception)
+        {
+            version = string.Empty;
+            return false;
+        }
+    }
+
     private static XElement? CloneWithNamespace(XObject? xobj)
     {
         if (xobj == null)

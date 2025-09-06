@@ -67,6 +67,24 @@ public class Xliff12ValidTestSuiteTests : TestBase
         Assert.That(units[0].Notes[0].Text, Is.EqualTo("Simple greeting"));
     }
 
+    [TestCase]
+    public void Basic_GetVersion()
+    {
+        // Arrange & Act
+        var filePath = $"Xliff1/Files/basic.xliff";
+        var fileContent = File.ReadAllText(filePath, Encoding.UTF8);
+
+        // Act
+        var result = Xliff1Serializer.TryGetXliffVersion(fileContent, out var version);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result, Is.True);
+            Assert.That(version, Is.EqualTo("1.2"));
+        });
+    }
+
     [Test]
     public void Segmented()
     {
