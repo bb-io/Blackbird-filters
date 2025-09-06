@@ -1021,26 +1021,12 @@ public static class Xliff2Serializer
 
     public static bool IsXliff2(string content)
     {
-        try
+        if (TryGetXliffVersion(content, out var version))
         {
-            var xliffNode = GetRootNode(content);
-            if (xliffNode == null)
-            {
-                return false;
-            }
-
-            var version = xliffNode.Get("version");
-            if (string.IsNullOrEmpty(version))
-            {
-                return false;
-            }
-
             return version.StartsWith("2.");
         }
-        catch (Exception)
-        {
-            return false;
-        }
+
+        return false;
     }
 
     public static bool TryGetXliffVersion(string content, out string version)
@@ -1050,6 +1036,9 @@ public static class Xliff2Serializer
         {
             var xliffNode = GetRootNode(content);
             if (xliffNode == null)
+                return false;
+
+            if (xliffNode.Name.LocalName != "xliff")
                 return false;
 
             var v = xliffNode.Get("version");
