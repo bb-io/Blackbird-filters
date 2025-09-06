@@ -73,29 +73,36 @@ public static class Xliff1Serializer
     
     public static bool IsXliff1(string content)
     {
+        if (TryGetXliffVersion(content, out var version))
+        {
+            return version.StartsWith("1.");
+        }
+
+        return false;
+    }
+
+    public static bool TryGetXliffVersion(string content, out string version)
+    {
+        version = string.Empty;
         try
         {
             var xliffNode = Xliff1XmlExtensions.GetRootNode(content);
             if (xliffNode == null)
-            {
                 return false;
-            }
 
-            if (xliffNode.Name.Namespace != XliffNs || xliffNode.Name.LocalName != "xliff")
-            {
+            if (xliffNode.Name.LocalName != "xliff")
                 return false;
-            }
 
-            var version = xliffNode.Get("version");
-            if (string.IsNullOrEmpty(version))
-            {
+            var v = xliffNode.Get("version");
+            if (string.IsNullOrEmpty(v))
                 return false;
-            }
 
-            return version.StartsWith("1.");
+            version = v;
+            return true;
         }
         catch (Exception)
         {
+            version = string.Empty;
             return false;
         }
     }
