@@ -42,6 +42,49 @@ public class BaseXliff2SerializationTests : TestBase
         Assert.That(content.GetUnits().FirstOrDefault()!.Notes.Count, Is.EqualTo(1));
     }
 
+    [TestCase]
+    public void Basic_IsXliff2()
+    {
+        // Arrange & Act
+        var filePath = $"Xliff2/Files/basic.xliff";
+        var fileContent = File.ReadAllText(filePath, Encoding.UTF8);
+
+        // Act
+        var result = Xliff2Serializer.IsXliff2(fileContent);
+
+        // Assert
+        Assert.That(result, Is.True);
+    }
+
+    [TestCase("<html version=\"4.01\"></html>")]
+    [TestCase("<xliff version=\"1.2\"></xliff>")]
+    public void Basic_IsXliff2_ForInvalidContent(string fileContent)
+    {
+        // Act
+        var result = Xliff2Serializer.IsXliff2(fileContent);
+
+        // Assert
+        Assert.That(result, Is.False);
+    }
+
+    [TestCase]
+    public void Basic_GetVersion()
+    {
+        // Arrange & Act
+        var filePath = $"Xliff2/Files/basic.xliff";
+        var fileContent = File.ReadAllText(filePath, Encoding.UTF8);
+
+        // Act
+        var result = Xliff2Serializer.TryGetXliffVersion(fileContent, out var version);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result, Is.True);
+            Assert.That(version, Is.EqualTo("2.2"));
+        });
+    }
+
     [Test]
     public void Complex()
     {
