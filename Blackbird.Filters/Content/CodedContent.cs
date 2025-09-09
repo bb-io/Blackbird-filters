@@ -169,24 +169,9 @@ public class CodedContent
         throw new NotImplementedException($"The serializer for ${OriginalMediaType} is not implemented");
     }
 
-    public static bool IsMonolingual(string content)
-    {
-        return HtmlContentCoder.IsHtml(content) || PlaintextContentCoder.IsPlaintext(content);
-    }
-
-    public static async Task<bool> IsMonolingual(Stream content) => IsMonolingual(await content.ReadString());
-
     public static CodedContent Parse(string content, string fileName)
     {
-        if (HtmlContentCoder.IsHtml(content))
-        {
-            return HtmlContentCoder.Deserialize(content, fileName);
-        }
-        else if (PlaintextContentCoder.IsPlaintext(content))
-        {
-            return PlaintextContentCoder.Deserialize(content, fileName);
-        }
-        else if (Xliff2Serializer.IsXliff2(content))
+        if (Xliff2Serializer.IsXliff2(content))
         {
             var result = Xliff2Serializer.Deserialize(content).Target();
             if (result.TextUnits.All(x => string.IsNullOrEmpty(x.GetPlainText())))
@@ -205,6 +190,14 @@ public class CodedContent
             }
             
             return result;
+        }
+        else if (HtmlContentCoder.IsHtml(content))
+        {
+            return HtmlContentCoder.Deserialize(content, fileName);
+        }
+        else if (PlaintextContentCoder.IsPlaintext(content))
+        {
+            return PlaintextContentCoder.Deserialize(content, fileName);
         }
         else
         {
