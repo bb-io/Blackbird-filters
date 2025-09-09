@@ -5,6 +5,7 @@ using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
+using Blackbird.Filters.Transformations.Modules;
 using System.Data;
 using System.Globalization;
 using System.Text;
@@ -18,12 +19,8 @@ public static class Xliff2Serializer
 
     public static Transformation Deserialize(string fileContent)
     {
-        var xliffNode = GetRootNode(fileContent);
-
-        if (xliffNode == null)
-        {
-            throw new Exception("No root node found in XLIFF content.");
-        }
+        var xliffNode = GetRootNode(fileContent)
+            ?? throw new Exception("No root node found in XLIFF content.");
 
         var ns = xliffNode.GetDefaultNamespace();
         var sourceLanguage = xliffNode.Get("srcLang");
@@ -82,6 +79,33 @@ public static class Xliff2Serializer
             return metadata.Where(x => !x.Global).ToList();
         }
 
+        ItsLocQuality? DeserializeLocQuality(XElement node)
+        {
+            ArgumentNullException.ThrowIfNull(node);
+
+            var its = ItsLocQuality.ItsXNamespace;
+
+            static double? GetNullableDouble(XAttribute? attr) =>
+                double.TryParse(attr?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var result)
+                    ? result
+                    : null;
+
+            static int? GetNullableInt(XAttribute? attr) =>
+                int.TryParse(attr?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var result)
+                    ? result
+                    : null;
+
+            var score = GetNullableDouble(node.Attribute(its + "locQualityRatingScore"));
+            var threshold = GetNullableDouble(node.Attribute(its + "locQualityRatingScoreThreshold"));
+            var vote = GetNullableInt(node.Attribute(its + "locQualityRatingVote"));
+            var voteThreshold = GetNullableInt(node.Attribute(its + "locQualityRatingVoteThreshold"));
+            var profileRef = node.Attribute(its + "locQualityRatingProfileRef")?.Value;
+
+            return (score, threshold, vote, voteThreshold, profileRef) is (null, null, null, null, null)
+                ? null
+                : new(score, threshold, vote, voteThreshold, profileRef);
+        }
+
         Transformation DeserializeTransformation(XElement node)
         {
             whiteSpaceHandling = node.GetWhiteSpaceHandling(whiteSpaceHandling);
@@ -97,7 +121,8 @@ public static class Xliff2Serializer
                 TargetDirection = node.GetDirection("trgDir"),
                 Notes = DeserializeNotes(node.Element(ns + "notes")),
                 MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
-                OriginalReference = node.Element(ns + "skeleton")?.Get("href")
+                OriginalReference = node.Element(ns + "skeleton")?.Get("href"),
+                ItsLocQuality = DeserializeLocQuality(node),
             };
 
             transformation.Other.AddRange(node.Elements().GetRemaining([ns + "skeleton", ns + "group", ns + "unit", ns + "notes", MetaNs + "metadata"]));
@@ -123,6 +148,7 @@ public static class Xliff2Serializer
                     TargetDirection = node.GetDirection("trgDir"),
                     Notes = DeserializeNotes(node.Element(ns + "notes")),
                     MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
+                    ItsLocQuality = DeserializeLocQuality(node),
                 };
 
                 unit.Other.AddRange(node.Elements().GetRemaining([ns + "originalData", ns + "notes", ns + "segment", ns + "ignorable", MetaNs + "metadata"]));
@@ -397,6 +423,7 @@ public static class Xliff2Serializer
                     TargetDirection = node.GetDirection("trgDir"),
                     Notes = DeserializeNotes(node.Element(ns + "notes")),
                     MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
+                    ItsLocQuality = DeserializeLocQuality(node),
                 };
                 group.Other.AddRange(node.Elements().GetRemaining([ns + "notes", ns + "group", ns + "unit", MetaNs + "metadata"]));
                 group.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir"]));
@@ -455,6 +482,7 @@ public static class Xliff2Serializer
     {
         XNamespace ns = $"urn:oasis:names:tc:xliff:document:{version.Serialize()}";
         bool metaUsed = false;
+        bool itsUsed = false;
 
         XElement? SerializeNotes(List<Note> notes, bool global = false)
         {
@@ -921,6 +949,11 @@ public static class Xliff2Serializer
         if (metaUsed && root.Attribute(XNamespace.Xmlns + "mda") == null)
         {
             root.Add(new XAttribute(XNamespace.Xmlns + "mda", MetaNs));
+        }
+
+        if (itsUsed && root.Attribute(XNamespace.Xmlns + "its") == null)
+        {
+            root.Add(new XAttribute(XNamespace.Xmlns + "its", ItsLocQuality.ItsXNamespace));
         }
 
         var doc = new XDocument(root);

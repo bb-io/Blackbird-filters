@@ -2,6 +2,7 @@
 using Blackbird.Filters.Constants;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Extensions;
+using Blackbird.Filters.Transformations.Modules;
 using Blackbird.Filters.Xliff.Xliff1;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
@@ -32,6 +33,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public string? ExternalReference { get; set; }
     public List<Node> Children { get; set; } = [];
     public List<XObject> XliffOther { get; set; } = [];
+    public ItsLocQuality? ItsLocQuality { get; set; }
 
     private string? _xliffFileName;
     /// <summary>

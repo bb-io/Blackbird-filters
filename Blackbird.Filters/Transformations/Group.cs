@@ -1,8 +1,11 @@
-﻿namespace Blackbird.Filters.Transformations;
+﻿using Blackbird.Filters.Transformations.Modules;
+
+namespace Blackbird.Filters.Transformations;
 
 public class Group : UnitGrouping
 {
     public List<UnitGrouping> Children { get; set; } = [];
+    public ItsLocQuality? ItsLocQuality { get; set; }
 
     public IEnumerable<Unit> GetUnits()
     {
