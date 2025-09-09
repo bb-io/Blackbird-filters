@@ -28,6 +28,7 @@ public class Xliff2ValidTestSuiteTests : TestBase
     [TestCase("withCDataSections")]
     [TestCase("withCommentAnnotations")]
     [TestCase("withGlossary")]
+    [TestCase("withLocQualityRating")]
     [TestCase("withMatches")]
     [TestCase("withModulesAttributesInEc")]
     [TestCase("withNotes")]

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.2" xmlns:its="http://www.w3.org/2005/11/its" version="2.2" srcLang="en" trgLang="fr">
+	<file id="f1"
+			its:locQualityRatingScore="98.0" its:locQualityRatingScoreThreshold="99"
+			its:locQualityRatingVote="16" its:locQualityRatingVoteThreshold="10"
+			its:locQualityRatingProfileRef="http://example.org/qaModel/v13">
+		<notes>
+			<note id="n1">note for file.</note>
+		</notes>
+		<group id="g1"
+			its:locQualityRatingScore="90" its:locQualityRatingScoreThreshold="95.0"
+			its:locQualityRatingVote="12" its:locQualityRatingVoteThreshold="5"
+			its:locQualityRatingProfileRef="http://example.org/qaModel/v13">
+			<notes>
+				<note id="n1">note for group</note>
+			</notes>
+			<unit id="u1"
+				its:locQualityRatingScore="74.9" its:locQualityRatingScoreThreshold="75"
+				its:locQualityRatingVote="0" its:locQualityRatingVoteThreshold="5">				
+				<notes>
+					<note id="n1">note for unit</note>
+				</notes>
+				<segment id="s1">
+					<source>
+						<pc id="1">
+							Hello World!
+						</pc>
+					</source>
+					<target>
+						<pc id="1">
+							Bonjour le Monde!
+						</pc>
+					</target>
+				</segment>
+			</unit>
+		</group>
+		<unit id="u2"
+			  its:locQualityRatingScore="0.0" its:locQualityRatingScoreThreshold="75.0"
+			  its:locQualityRatingVote="999" its:locQualityRatingVoteThreshold="100"
+			  its:locQualityRatingProfileRef="http://example.org/qaModel/v13">
+			<notes>
+				<note id="n1">note for unit</note>
+			</notes>
+			<segment id="s1">
+				<source>
+					Hello World!
+				</source>
+				<target>
+					Bonjour le Monde!
+				</target>
+			</segment>
+		</unit>
+	</file>
+</xliff>

@@ -32,6 +32,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public string? ExternalReference { get; set; }
     public List<Node> Children { get; set; } = [];
     public List<XObject> XliffOther { get; set; } = [];
+    public Quality Quality { get; set; } = new Quality();
 
     private string? _xliffFileName;
     /// <summary>

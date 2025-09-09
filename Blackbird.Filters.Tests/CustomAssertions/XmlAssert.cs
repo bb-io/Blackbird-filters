@@ -1,5 +1,6 @@
 ﻿using Org.XmlUnit.Builder;
 using Org.XmlUnit.Diff;
+using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -25,6 +26,27 @@ public static class XmlAssert
             else if (child is not null && child.HasChildNodes)
             {
                 NormalizeCDataInNode(child); // Recursive call
+            }
+        }
+    }
+
+    private static void NormalizeNumericAttributes(XmlNode? node)
+    {
+        if (node?.NodeType == XmlNodeType.Element)
+        {
+            var element = (XmlElement)node;
+            foreach (XmlAttribute attr in element.Attributes)
+            {
+                if (double.TryParse(attr.Value, out var number))
+                {
+                    // Normalize to "G" format: removes redundant ".0"
+                    attr.Value = number.ToString("G", CultureInfo.InvariantCulture);
+                }
+            }
+
+            foreach (XmlNode child in node.ChildNodes)
+            {
+                NormalizeNumericAttributes(child);
             }
         }
     }
@@ -59,6 +81,7 @@ public static class XmlAssert
 
         RemoveEmptyTargets(doc.DocumentElement);
         NormalizeCDataInNode(doc);
+        NormalizeNumericAttributes(doc.DocumentElement);
         return doc;
     }
 
