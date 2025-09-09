@@ -1,5 +1,6 @@
 ﻿using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -35,6 +36,22 @@ public static class Xliff2XmlExtensions
         if (value.HasValue)
         {
             element.SetAttributeValue(name, value.Value ? "yes" : "no");
+        }
+    }
+
+    public static double? GetDouble(this XElement element, XName name, Optionality optional = Optionality.Optional)
+    {
+        var value = element.Get(name, optional);
+        return double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var result)
+            ? result
+            : null;
+    }
+
+    public static void SetDouble(this XElement element, XName name, double? value)
+    {
+        if (value.HasValue)
+        {
+            element.SetAttributeValue(name, value.Value);
         }
     }
 

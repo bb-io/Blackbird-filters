@@ -5,9 +5,7 @@ using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
-using Blackbird.Filters.Transformations.Modules;
 using System.Data;
-using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -16,6 +14,7 @@ namespace Blackbird.Filters.Xliff.Xliff2;
 public static class Xliff2Serializer
 {
     private static readonly XNamespace MetaNs = "urn:oasis:names:tc:xliff:metadata:2.0";
+    public static readonly XNamespace ItsNs = "http://www.w3.org/2005/11/its";
 
     public static Transformation Deserialize(string fileContent)
     {
@@ -79,31 +78,18 @@ public static class Xliff2Serializer
             return metadata.Where(x => !x.Global).ToList();
         }
 
-        ItsLocQuality? DeserializeLocQuality(XElement node)
+        Quality DeserializeLocQuality(XElement node)
         {
             ArgumentNullException.ThrowIfNull(node);
 
-            var its = ItsLocQuality.ItsXNamespace;
-
-            static double? GetNullableDouble(XAttribute? attr) =>
-                double.TryParse(attr?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var result)
-                    ? result
-                    : null;
-
-            static int? GetNullableInt(XAttribute? attr) =>
-                int.TryParse(attr?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var result)
-                    ? result
-                    : null;
-
-            var score = GetNullableDouble(node.Attribute(its + "locQualityRatingScore"));
-            var threshold = GetNullableDouble(node.Attribute(its + "locQualityRatingScoreThreshold"));
-            var vote = GetNullableInt(node.Attribute(its + "locQualityRatingVote"));
-            var voteThreshold = GetNullableInt(node.Attribute(its + "locQualityRatingVoteThreshold"));
-            var profileRef = node.Attribute(its + "locQualityRatingProfileRef")?.Value;
-
-            return (score, threshold, vote, voteThreshold, profileRef) is (null, null, null, null, null)
-                ? null
-                : new(score, threshold, vote, voteThreshold, profileRef);
+            return new Quality()
+            {
+                Score = node.GetDouble(ItsNs + "locQualityRatingScore"),
+                ScoreThreshold = node.GetDouble(ItsNs + "locQualityRatingScoreThreshold"),
+                Votes = node.GetInt(ItsNs + "locQualityRatingVote"),
+                VoteThreshold = node.GetInt(ItsNs + "locQualityRatingVoteThreshold"),
+                ProfileReference = node.Get(ItsNs + "locQualityRatingProfileRef")
+            };
         }
 
         Transformation DeserializeTransformation(XElement node)
@@ -122,11 +108,28 @@ public static class Xliff2Serializer
                 Notes = DeserializeNotes(node.Element(ns + "notes")),
                 MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                 OriginalReference = node.Element(ns + "skeleton")?.Get("href"),
-                ItsLocQuality = DeserializeLocQuality(node),
+                Quality = DeserializeLocQuality(node),
             };
 
-            transformation.Other.AddRange(node.Elements().GetRemaining([ns + "skeleton", ns + "group", ns + "unit", ns + "notes", MetaNs + "metadata"]));
-            transformation.Other.AddRange(node.Attributes().GetRemaining(["id", "original", "canResegment", "translate", "srcDir", "trgDir"]));
+            transformation.Other.AddRange(node.Elements().GetRemaining([
+                ns + "skeleton",
+                ns + "group",
+                ns + "unit", 
+                ns + "notes", 
+                MetaNs + "metadata"]));
+            transformation.Other.AddRange(node.Attributes().GetRemaining([
+                "id", 
+                "original", 
+                "canResegment", 
+                "translate", 
+                "srcDir", 
+                "trgDir", 
+                ItsNs + "locQualityRatingScore", 
+                ItsNs + "locQualityRatingScoreThreshold", 
+                ItsNs + "locQualityRatingVote", 
+                ItsNs + "locQualityRatingVoteThreshold", 
+                ItsNs + "locQualityRatingProfileRef",
+                ]));
 
             var skeleton = node.Element(ns + "skeleton");
             if (skeleton != null && skeleton.Nodes().Any())
@@ -148,11 +151,28 @@ public static class Xliff2Serializer
                     TargetDirection = node.GetDirection("trgDir"),
                     Notes = DeserializeNotes(node.Element(ns + "notes")),
                     MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
-                    ItsLocQuality = DeserializeLocQuality(node),
+                    Quality = DeserializeLocQuality(node),
                 };
 
-                unit.Other.AddRange(node.Elements().GetRemaining([ns + "originalData", ns + "notes", ns + "segment", ns + "ignorable", MetaNs + "metadata"]));
-                unit.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir"]));
+                unit.Other.AddRange(node.Elements().GetRemaining([
+                    ns + "originalData", 
+                    ns + "notes", 
+                    ns + "segment", 
+                    ns + "ignorable", 
+                    MetaNs + "metadata"]));
+                unit.Other.AddRange(node.Attributes().GetRemaining([
+                    "id", 
+                    "name", 
+                    "canResegment", 
+                    "translate", 
+                    "srcDir", 
+                    "trgDir",
+                    ItsNs + "locQualityRatingScore",
+                    ItsNs + "locQualityRatingScoreThreshold",
+                    ItsNs + "locQualityRatingVote",
+                    ItsNs + "locQualityRatingVoteThreshold",
+                    ItsNs + "locQualityRatingProfileRef",
+                    ]));
 
                 Dictionary<string, XElement> data = node.Element(ns + "originalData")?.Elements()?.ToDictionary(x => x.Get("id", Optionality.Required)!, x => x) ?? [];
 
@@ -423,10 +443,25 @@ public static class Xliff2Serializer
                     TargetDirection = node.GetDirection("trgDir"),
                     Notes = DeserializeNotes(node.Element(ns + "notes")),
                     MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
-                    ItsLocQuality = DeserializeLocQuality(node),
+                    Quality = DeserializeLocQuality(node),
                 };
-                group.Other.AddRange(node.Elements().GetRemaining([ns + "notes", ns + "group", ns + "unit", MetaNs + "metadata"]));
-                group.Other.AddRange(node.Attributes().GetRemaining(["id", "name", "canResegment", "translate", "srcDir", "trgDir"]));
+                group.Other.AddRange(node.Elements().GetRemaining([
+                    ns + "notes", 
+                    ns + "group",
+                    ns + "unit", 
+                    MetaNs + "metadata"]));
+                group.Other.AddRange(node.Attributes().GetRemaining([
+                    "id", 
+                    "name", 
+                    "canResegment", 
+                    "translate", 
+                    "srcDir", 
+                    "trgDir",
+                    ItsNs + "locQualityRatingScore",
+                    ItsNs + "locQualityRatingScoreThreshold",
+                    ItsNs + "locQualityRatingVote",
+                    ItsNs + "locQualityRatingVoteThreshold",
+                    ItsNs + "locQualityRatingProfileRef"]));
                 group.Children.AddRange(node.Elements(ns + "group").Select(DeserializeGroup));
                 group.Children.AddRange(node.Elements(ns + "unit").Select(DeserializeUnit));
                 return group;
@@ -501,6 +536,19 @@ public static class Xliff2Serializer
                 root.Add(noteRoot);
             }
             return root;
+        }
+
+        void SerializeQuality(XElement element, Quality quality)
+        {
+            if (quality.Score.HasValue || quality.ScoreThreshold.HasValue || quality.Votes.HasValue || quality.VoteThreshold.HasValue || quality.ProfileReference is not null)
+            {
+                itsUsed = true;
+            }
+            element.SetDouble(ItsNs + "locQualityRatingScore", quality.Score);
+            element.SetDouble(ItsNs + "locQualityRatingScoreThreshold", quality.ScoreThreshold);
+            element.SetInt(ItsNs + "locQualityRatingVote", quality.Votes);
+            element.SetInt(ItsNs + "locQualityRatingVoteThreshold", quality.VoteThreshold);
+            element.Set(ItsNs + "locQualityRatingProfileRef", quality.ProfileReference);
         }
 
         XElement? SerializeMetadata(List<Metadata> metadata, bool global = false)
@@ -854,6 +902,7 @@ public static class Xliff2Serializer
                 root.Add(SerializeMetadata(unit.MetaData));
                 root.Add(unit.Other);
                 root.Add(SerializeNotes(unit.Notes));
+                SerializeQuality(root, unit.Quality);
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
                 root.Add(segmentElements);
                 return root;
@@ -874,6 +923,7 @@ public static class Xliff2Serializer
                 root.Add(SerializeNotes(group.Notes));
                 root.Add(group.Children.OfType<Group>().Select(SerializeGroup));
                 root.Add(group.Children.OfType<Unit>().Select(SerializeUnit));
+                SerializeQuality(root, group.Quality);
                 return root;
             }
 
@@ -908,8 +958,9 @@ public static class Xliff2Serializer
             root.Add(SerializeMetadata(metadata));
             root.Add(transformation.Other);
             root.Add(SerializeNotes(notes));
+            SerializeQuality(root, transformation.Quality);
 
-            foreach(var child in transformation.Children)
+            foreach (var child in transformation.Children)
             {
                 if (child is Group group)
                 {
@@ -953,7 +1004,7 @@ public static class Xliff2Serializer
 
         if (itsUsed && root.Attribute(XNamespace.Xmlns + "its") == null)
         {
-            root.Add(new XAttribute(XNamespace.Xmlns + "its", ItsLocQuality.ItsXNamespace));
+            root.Add(new XAttribute(XNamespace.Xmlns + "its", ItsNs));
         }
 
         var doc = new XDocument(root);
