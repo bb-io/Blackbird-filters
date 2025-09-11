@@ -43,8 +43,7 @@ public class CodedContent
     public string? Language { get; set; }
 
     /// <summary>
-    /// A unique identifier to the content in the real world, this can be a content ID, or content ID + organizational information. 
-    /// It can also include the language code, as long as it is unique across content and languages across users.
+    /// A unique identifier to the content in the real world, f.e. the ID of the content in a CMS.
     /// </summary>
     public string? UniqueContentId { get; set; }
 

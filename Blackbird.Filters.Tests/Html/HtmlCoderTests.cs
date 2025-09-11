@@ -164,6 +164,18 @@ public class HtmlCoderTests : TestBase
     }
 
     [Test]
+    public void Lang_and_ucid()
+    {
+        var result = Process("Html/Files/contentful.html");
+
+        Assert.That(result.Source.Language, Is.EqualTo("en"));
+        Assert.That(result.Source.UniqueContentId, Is.EqualTo("5746dLKTkEZjOQX21HX2KI"));
+
+        Assert.That(result.Transformation.SourceLanguage, Is.EqualTo("en"));
+        Assert.That(result.Transformation.UniqueSourceContentId, Is.EqualTo("5746dLKTkEZjOQX21HX2KI"));
+    }
+
+    [Test]
     public void Full_example_with_whitespace()
     {
         var result = Process("Html/Files/contentful.html");
