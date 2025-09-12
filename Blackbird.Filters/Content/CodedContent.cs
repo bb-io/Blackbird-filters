@@ -200,7 +200,7 @@ public class CodedContent
         }
         else
         {
-            throw new Exception("This file format is not supported by this library.");
+            throw new NotImplementedException("This file format is not supported yet.");
         }
     }
 

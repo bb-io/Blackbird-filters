@@ -58,7 +58,7 @@ public static class HtmlContentCoder
     /// </summary>
     /// <param name="content">An HTML coded content representation</param>
     /// <returns></returns>
-    /// <exception cref="Exception">When the representation has malformed location references to the original HTML file.</exception>
+    /// <exception cref="ArgumentException">When the representation has malformed location references to the original HTML file.</exception>
     public static string Serialize(CodedContent content)
     {
         var doc = new HtmlDocument();
@@ -73,7 +73,7 @@ public static class HtmlContentCoder
         {
             if (unit.Reference is null) continue;
             var node = doc.DocumentNode.SelectSingleNode(unit.Reference.Replace("/#text", "/text()"));
-            if (node is null) throw new Exception($"Malformed unit location reference. Node not found in the raw HTML document. ({unit.Reference})");
+            if (node is null) throw new InvalidOperationException($"Malformed unit location reference. Node not found in the raw HTML document. ({unit.Reference})");
 
             Match match = Regex.Match(unit.Reference, @"@([a-zA-Z_][\w\-]*)");
             if (match.Success)

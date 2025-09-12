@@ -34,7 +34,7 @@ public static class Xliff1Serializer
         var xliffNode = Xliff1XmlExtensions.GetRootNode(fileContent);
         if (xliffNode == null)
         {
-            throw new Exception("No root node found in XLIFF content.");
+            throw new NullReferenceException("No root node found in XLIFF content.");
         }
 
         var sourceLanguage = xliffNode.Elements(XliffNs + "file").FirstOrDefault()?.Get("source-language");

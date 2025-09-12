@@ -90,7 +90,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
 
     public CodedContent Source()
     {
-        if (Original is null) throw new Exception("Cannot convert to content, no original data found");
+        if (Original is null) throw new NullReferenceException("Cannot convert to content, no original data found");
         var codedContent = new CodedContent(OriginalName ?? OriginalReference ?? "transformation.txt", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         codedContent.Language = SourceLanguage;
         codedContent.UniqueContentId = UniqueSourceContentId;
@@ -107,7 +107,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
 
     public CodedContent Target()
     {
-        if (Original is null) throw new Exception("Cannot convert to content, no original data found");
+        if (Original is null) throw new NullReferenceException("Cannot convert to content, no original data found");
         var codedContent = new CodedContent(OriginalName ?? OriginalReference ?? "transformation.txt", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         codedContent.Language = TargetLanguage;
         codedContent.UniqueContentId = UniqueTargetContentId;

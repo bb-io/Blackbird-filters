@@ -19,7 +19,7 @@ public static class Xliff2Serializer
     public static Transformation Deserialize(string fileContent)
     {
         var xliffNode = GetRootNode(fileContent)
-            ?? throw new Exception("No root node found in XLIFF content.");
+            ?? throw new NullReferenceException("No root node found in XLIFF content.");
 
         var ns = xliffNode.GetDefaultNamespace();
         var sourceLanguage = xliffNode.Get("srcLang");
@@ -184,7 +184,7 @@ public static class Xliff2Serializer
 
                     if (sourceNode == null)
                     {
-                        throw new Exception($"Invalid XLIFF. {node.Name.LocalName} {node.BaseUri} does not have a source.");
+                        throw new ArgumentException($"Invalid XLIFF. {node.Name.LocalName} {node.BaseUri} does not have a source.");
                     }
 
                     List<TextPart> DeserializeLine(XElement node, WhiteSpaceHandling whiteSpaceHandling)
@@ -780,7 +780,7 @@ public static class Xliff2Serializer
 
                             if (part is StartTag wellFormedTag && wellFormedTag.WellFormed)
                             {
-                                if (wellFormedTag.EndTag is null) throw new Exception("Malformed data. Expected endtag for well formed start tag");
+                                if (wellFormedTag.EndTag is null) throw new InvalidOperationException("Malformed data. Expected endtag for well formed start tag");
                                 var children = GetChildrenOfStartTag(parts, wellFormedTag);
                                 var element = SerializeParts(children, "pc");
                                 var id = GetUniqueId(wellFormedTag.Id ?? FindMatchingTagId(wellFormedTag));

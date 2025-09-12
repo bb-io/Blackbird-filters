@@ -12,7 +12,7 @@ public static class Xliff2XmlExtensions
         var value = element.Attribute(name)?.Value;
         if (value == null && optional == Optionality.Required)
         {
-            throw new Exception($"The {name.LocalName} attribute is required but not found in {element.Name}");
+            throw new NullReferenceException($"The {name.LocalName} attribute is required but not found in {element.Name}");
         }
         return value;
     }
