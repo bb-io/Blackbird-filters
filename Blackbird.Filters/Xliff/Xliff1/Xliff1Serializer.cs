@@ -903,7 +903,8 @@ public static class Xliff1Serializer
                 {
                     var type = meta.Get("type");
                     var value = meta.Get(Meta.Types.OriginalName);
-                    var category = meta.Get(BlackbirdNs + "category")?.Split(',').ToList() ?? new List<string>();
+                    var category = meta.Get(BlackbirdNs + "category")?.Split(',').ToList() ?? [];
+                    if (type is null || value is null) continue;
                     metadataCollection.Add(new Metadata(type, value)
                     {
                         Category = category
