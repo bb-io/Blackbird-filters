@@ -6,7 +6,6 @@ public abstract class UnitGrouping : Node
 {
     public string? Name { get; set; }
     public string? Type { get; set; }
-    public Quality Quality { get; set; } = new Quality();
 
     public string? Key
     {

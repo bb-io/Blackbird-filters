@@ -1,12 +1,9 @@
-﻿using Blackbird.Filters.Coders;
-using Blackbird.Filters.Constants;
+﻿using Blackbird.Filters.Constants;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Xliff.Xliff1;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
@@ -32,7 +29,6 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     public string? ExternalReference { get; set; }
     public List<Node> Children { get; set; } = [];
     public List<XObject> XliffOther { get; set; } = [];
-    public Quality Quality { get; set; } = new Quality();
 
     private string? _xliffFileName;
     /// <summary>
@@ -73,17 +69,6 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
                 {
                     yield return subUnit;
                 }
-            }
-        }
-    }
-
-    public IEnumerable<Segment> GetSegments()
-    {
-        foreach(var unit in GetUnits())
-        {
-            foreach(var segment in unit.Segments)
-            {
-                yield return segment;
             }
         }
     }

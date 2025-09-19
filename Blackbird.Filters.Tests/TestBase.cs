@@ -73,10 +73,16 @@ public abstract class TestBase
     protected string PseudoTranslateXliff(string xliff, string fileName)
     {
         var transformation = Transformation.Parse(xliff, fileName);
-        foreach (var segment in transformation.GetSegments().Where(x => !x.IsIgnorbale))
+        foreach (var unit in transformation.GetUnits())
         {
-            segment.SetTarget(segment.GetSource() + "TRANSLATED");
-            segment.State = SegmentState.Translated;
+            foreach(var segment in unit.Segments.Where(x => !x.IsIgnorbale && x.IsInitial))
+            {
+                segment.SetTarget(segment.GetSource() + "TRANSLATED");
+                segment.State = SegmentState.Translated;
+            }
+
+            unit.Provenance.Translation.Tool = "Pseudo";
+            unit.Provenance.Translation.ToolReference = "www.example.com/pseudo";
         }
         return transformation.Serialize();
     }

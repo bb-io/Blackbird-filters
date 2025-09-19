@@ -180,14 +180,15 @@ public class HtmlCoderTests : TestBase
     {
         var result = Process("Html/Files/contentful.html");
 
-        foreach(var segment in result.Transformation.GetSegments())
+        foreach(var unit in result.Transformation.GetUnits())
         {
-            Assert.That(segment.GetTarget(), Does.Not.Contain("\r"));
-            Assert.That(segment.GetTarget(), Does.Not.Contain("\n"));
+            Assert.That(unit.GetTarget(), Does.Not.Contain("\r"));
+            Assert.That(unit.GetTarget(), Does.Not.Contain("\n"));
 
-            Assert.That(segment.GetSource(), Does.Not.Contain("\r"));
-            Assert.That(segment.GetSource(), Does.Not.Contain("\n"));
+            Assert.That(unit.GetSource(), Does.Not.Contain("\r"));
+            Assert.That(unit.GetSource(), Does.Not.Contain("\n"));
         }
+
 
         HtmlAssert.AreEqual(result.Original, result.SourceString);
     }

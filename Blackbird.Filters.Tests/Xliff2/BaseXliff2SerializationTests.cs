@@ -1,4 +1,6 @@
-﻿using Blackbird.Filters.Tests.CustomAssertions;
+﻿using Blackbird.Filters.Enums;
+using Blackbird.Filters.Shared;
+using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Text;
 using System.Xml.Linq;
@@ -114,8 +116,8 @@ public class BaseXliff2SerializationTests : TestBase
 
         // Assert
         XmlAssert.AreEqual(xliff, returned);
-        Assert.That(content.GetSegments().All(x => !x.GetSource().Contains("\n")), "Unit contains newlines");
-        Assert.That(content.GetSegments().All(x => x.GetSource()[0] != ' '), "First character is a space");
+        Assert.That(content.GetUnits().SelectMany(x => x.Segments).All(x => !x.GetSource().Contains("\n")), "Unit contains newlines");
+        Assert.That(content.GetUnits().SelectMany(x => x.Segments).All(x => x.GetSource()[0] != ' '), "First character is a space");
     }
 
     [Test]
@@ -202,6 +204,87 @@ public class BaseXliff2SerializationTests : TestBase
             Assert.That(originalDataIndex, Is.GreaterThanOrEqualTo(0), "originalData tag not found in unit");
             Assert.That(segmentIndex, Is.GreaterThanOrEqualTo(0), "segment tag not found in unit");
             Assert.That(originalDataIndex, Is.LessThan(segmentIndex), "originalData does not precede segment in unit");
+        }
+    }
+
+    [Test]
+    public void Provenance()
+    {
+        var provenanceRecord = new ProvenanceRecord()
+        {
+            Person = "Bob",
+            PersonReference = "www.example.com/bob",
+            Organization = "Bob Inc.",
+            OrganizationReference = "www.example.com/bobinc",
+            Tool = "Bob's tool",
+            ToolReference = "www.example.com/bobstool",
+        };
+
+        // Arrange
+        var xliff = File.ReadAllText("Xliff2/Files/basic.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff2Serializer.Deserialize(xliff);
+
+        foreach(var unit in content.GetUnits())
+        {
+            foreach(var segment in unit.Segments)
+            {
+                segment.SetTarget(segment.GetSource() + " - TRANSLATED");
+                segment.State = SegmentState.Translated;
+            }
+            unit.Provenance.Translation = provenanceRecord;
+        }
+
+        var returned = Xliff2Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        var secondContent = Xliff2Serializer.Deserialize(returned);
+
+        foreach(var unit in secondContent.GetUnits())
+        {
+            Assert.That(unit.Provenance.Translation, Is.EqualTo(provenanceRecord));
+            unit.Provenance.Review = provenanceRecord;
+        }
+
+        var secondReturned = Xliff2Serializer.Serialize(secondContent);
+        DisplayXml(secondReturned);
+
+        var thirdContent = Xliff2Serializer.Deserialize(secondReturned);
+
+        foreach (var unit in secondContent.GetUnits())
+        {
+            Assert.That(unit.Provenance.Translation, Is.EqualTo(provenanceRecord));
+            Assert.That(unit.Provenance.Review, Is.EqualTo(provenanceRecord));
+        }
+    }
+
+    [Test]
+    public void Quality()
+    {
+        // Arrange
+        var xliff = File.ReadAllText("Xliff2/Files/basic.xliff", Encoding.UTF8);
+
+        // Act
+        var content = Xliff2Serializer.Deserialize(xliff);
+
+        foreach (var unit in content.GetUnits())
+        {
+            foreach (var segment in unit.Segments)
+            {
+                segment.State = SegmentState.Reviewed;
+            }
+            unit.Quality.Score = 0.7;
+        }
+
+        var returned = Xliff2Serializer.Serialize(content);
+        DisplayXml(returned);
+
+        var secondContent = Xliff2Serializer.Deserialize(returned);
+
+        foreach (var unit in secondContent.GetUnits())
+        {
+            Assert.That(unit.Quality.Score, Is.EqualTo(0.7));
         }
     }
 }

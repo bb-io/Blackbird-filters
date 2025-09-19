@@ -2,6 +2,7 @@
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Extensions;
+using Blackbird.Filters.Shared;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
@@ -15,6 +16,31 @@ public static class Xliff2Serializer
 {
     private static readonly XNamespace MetaNs = "urn:oasis:names:tc:xliff:metadata:2.0";
     public static readonly XNamespace ItsNs = "http://www.w3.org/2005/11/its";
+
+    private static readonly List<XName> CommonNodeLevelAttributes = [
+        "id",
+        "canResegment",
+        "translate",
+        "srcDir",
+        "trgDir",
+        ItsNs + "locQualityRatingScore",
+        ItsNs + "locQualityRatingScoreThreshold",
+        ItsNs + "locQualityRatingVote",
+        ItsNs + "locQualityRatingVoteThreshold",
+        ItsNs + "locQualityRatingProfileRef",
+        ItsNs + "person",
+        ItsNs + "personRef",
+        ItsNs + "org",
+        ItsNs + "orgRef",
+        ItsNs + "tool",
+        ItsNs + "toolRef",
+        ItsNs + "revPerson",
+        ItsNs + "revPersonRef",
+        ItsNs + "revOrg",
+        ItsNs + "revOrgRef",
+        ItsNs + "revTool",
+        ItsNs + "revToolRef",
+    ];
 
     public static Transformation Deserialize(string fileContent)
     {
@@ -92,6 +118,33 @@ public static class Xliff2Serializer
             };
         }
 
+        Provenance DeserializeProvenance(XElement node)
+        {
+            ArgumentNullException.ThrowIfNull(node);
+
+            var translation = new ProvenanceRecord
+            {
+                Person = node.Get(ItsNs + "person"),
+                PersonReference = node.Get(ItsNs + "personRef"),
+                Organization = node.Get(ItsNs + "org"),
+                OrganizationReference = node.Get(ItsNs + "orgRef"),
+                Tool = node.Get(ItsNs + "tool"),
+                ToolReference = node.Get(ItsNs + "toolRef"),
+            };
+
+            var review = new ProvenanceRecord
+            {
+                Person = node.Get(ItsNs + "revPerson"),
+                PersonReference = node.Get(ItsNs + "revPersonRef"),
+                Organization = node.Get(ItsNs + "revOrg"),
+                OrganizationReference = node.Get(ItsNs + "revOrgRef"),
+                Tool = node.Get(ItsNs + "revTool"),
+                ToolReference = node.Get(ItsNs + "revToolRef"),
+            };
+
+            return new Provenance { Translation = translation, Review = review };
+        }
+
         Transformation DeserializeTransformation(XElement node)
         {
             whiteSpaceHandling = node.GetWhiteSpaceHandling(whiteSpaceHandling);
@@ -109,6 +162,7 @@ public static class Xliff2Serializer
                 MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                 OriginalReference = node.Element(ns + "skeleton")?.Get("href"),
                 Quality = DeserializeLocQuality(node),
+                Provenance = DeserializeProvenance(node),
             };
 
             transformation.Other.AddRange(node.Elements().GetRemaining([
@@ -117,19 +171,7 @@ public static class Xliff2Serializer
                 ns + "unit", 
                 ns + "notes", 
                 MetaNs + "metadata"]));
-            transformation.Other.AddRange(node.Attributes().GetRemaining([
-                "id", 
-                "original", 
-                "canResegment", 
-                "translate", 
-                "srcDir", 
-                "trgDir", 
-                ItsNs + "locQualityRatingScore", 
-                ItsNs + "locQualityRatingScoreThreshold", 
-                ItsNs + "locQualityRatingVote", 
-                ItsNs + "locQualityRatingVoteThreshold", 
-                ItsNs + "locQualityRatingProfileRef",
-                ]));
+            transformation.Other.AddRange(node.Attributes().GetRemaining([ ..CommonNodeLevelAttributes, "original" ]));
 
             var skeleton = node.Element(ns + "skeleton");
             if (skeleton != null && skeleton.Nodes().Any())
@@ -152,6 +194,7 @@ public static class Xliff2Serializer
                     Notes = DeserializeNotes(node.Element(ns + "notes")),
                     MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                     Quality = DeserializeLocQuality(node),
+                    Provenance = DeserializeProvenance(node),
                 };
 
                 unit.Other.AddRange(node.Elements().GetRemaining([
@@ -160,19 +203,7 @@ public static class Xliff2Serializer
                     ns + "segment", 
                     ns + "ignorable", 
                     MetaNs + "metadata"]));
-                unit.Other.AddRange(node.Attributes().GetRemaining([
-                    "id", 
-                    "name", 
-                    "canResegment", 
-                    "translate", 
-                    "srcDir", 
-                    "trgDir",
-                    ItsNs + "locQualityRatingScore",
-                    ItsNs + "locQualityRatingScoreThreshold",
-                    ItsNs + "locQualityRatingVote",
-                    ItsNs + "locQualityRatingVoteThreshold",
-                    ItsNs + "locQualityRatingProfileRef",
-                    ]));
+                unit.Other.AddRange(node.Attributes().GetRemaining([.. CommonNodeLevelAttributes, "name"]));
 
                 Dictionary<string, XElement> data = node.Element(ns + "originalData")?.Elements()?.ToDictionary(x => x.Get("id", Optionality.Required)!, x => x) ?? [];
 
@@ -444,24 +475,14 @@ public static class Xliff2Serializer
                     Notes = DeserializeNotes(node.Element(ns + "notes")),
                     MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                     Quality = DeserializeLocQuality(node),
+                    Provenance = DeserializeProvenance(node),
                 };
                 group.Other.AddRange(node.Elements().GetRemaining([
                     ns + "notes", 
                     ns + "group",
                     ns + "unit", 
                     MetaNs + "metadata"]));
-                group.Other.AddRange(node.Attributes().GetRemaining([
-                    "id", 
-                    "name", 
-                    "canResegment", 
-                    "translate", 
-                    "srcDir", 
-                    "trgDir",
-                    ItsNs + "locQualityRatingScore",
-                    ItsNs + "locQualityRatingScoreThreshold",
-                    ItsNs + "locQualityRatingVote",
-                    ItsNs + "locQualityRatingVoteThreshold",
-                    ItsNs + "locQualityRatingProfileRef"]));
+                group.Other.AddRange(node.Attributes().GetRemaining([.. CommonNodeLevelAttributes, "name"]));
                 group.Children.AddRange(node.Elements(ns + "group").Select(DeserializeGroup));
                 group.Children.AddRange(node.Elements(ns + "unit").Select(DeserializeUnit));
                 return group;
@@ -540,7 +561,7 @@ public static class Xliff2Serializer
 
         void SerializeQuality(XElement element, Quality quality)
         {
-            if (quality.Score.HasValue || quality.ScoreThreshold.HasValue || quality.Votes.HasValue || quality.VoteThreshold.HasValue || quality.ProfileReference is not null)
+            if (!quality.IsEmpty())
             {
                 itsUsed = true;
             }
@@ -549,6 +570,28 @@ public static class Xliff2Serializer
             element.SetInt(ItsNs + "locQualityRatingVote", quality.Votes);
             element.SetInt(ItsNs + "locQualityRatingVoteThreshold", quality.VoteThreshold);
             element.Set(ItsNs + "locQualityRatingProfileRef", quality.ProfileReference);
+        }
+
+        void SerializeProvenance(XElement element, Provenance provenance) 
+        { 
+            if (!provenance.IsEmpty())
+            {
+                itsUsed = true;
+            }
+
+            element.Set(ItsNs + "person", provenance.Translation.Person);
+            element.Set(ItsNs + "personRef", provenance.Translation.PersonReference);
+            element.Set(ItsNs + "org", provenance.Translation.Organization);
+            element.Set(ItsNs + "orgRef", provenance.Translation.OrganizationReference);
+            element.Set(ItsNs + "tool", provenance.Translation.Tool);
+            element.Set(ItsNs + "toolRef", provenance.Translation.ToolReference);
+
+            element.Set(ItsNs + "revPerson", provenance.Review.Person);
+            element.Set(ItsNs + "revPersonRef", provenance.Review.PersonReference);
+            element.Set(ItsNs + "revOrg", provenance.Review.Organization);
+            element.Set(ItsNs + "revOrgRef", provenance.Review.OrganizationReference);
+            element.Set(ItsNs + "revTool", provenance.Review.Tool);
+            element.Set(ItsNs + "revToolRef", provenance.Review.ToolReference);
         }
 
         XElement? SerializeMetadata(List<Metadata> metadata, bool global = false)
@@ -903,6 +946,7 @@ public static class Xliff2Serializer
                 root.Add(unit.Other);
                 root.Add(SerializeNotes(unit.Notes));
                 SerializeQuality(root, unit.Quality);
+                SerializeProvenance(root, unit.Provenance);
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
                 root.Add(segmentElements);
                 return root;
@@ -924,6 +968,7 @@ public static class Xliff2Serializer
                 root.Add(group.Children.OfType<Group>().Select(SerializeGroup));
                 root.Add(group.Children.OfType<Unit>().Select(SerializeUnit));
                 SerializeQuality(root, group.Quality);
+                SerializeProvenance(root, group.Provenance);
                 return root;
             }
 
@@ -959,6 +1004,7 @@ public static class Xliff2Serializer
             root.Add(transformation.Other);
             root.Add(SerializeNotes(notes));
             SerializeQuality(root, transformation.Quality);
+            SerializeProvenance(root, transformation.Provenance);
 
             foreach (var child in transformation.Children)
             {
