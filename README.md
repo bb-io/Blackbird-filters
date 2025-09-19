@@ -6,7 +6,7 @@ Blackbird.Filters is a .NET library for processing and transforming content betw
 
 ![1750852119651](image/readme/1750852119651.png)
 
-## Main Classes
+## Classes and concepts
 
 The library is organized around two main components:
 
@@ -21,14 +21,34 @@ The library is organized around two main components:
 
 ### Transformation
 
-`Transformation` represents a transformation of content from one language to another:
+`Transformation` represents a transformation of content from one language to another. Some methods and properties include:
 
 - **GetUnits**: Gets all units recursively
-- **GetSegments**: Gets all segments recursively
 - **Source**: Gets the source as coded content
 - **Target**: Gets the target as coded content
 - **Parse**: Static method to parse content from a string or stream. The string or stream can contain XLIFF or HTML content, both will be deserialized using the appropriate serializer. If no appropriate deserializer is found it will throw an exception
 - **Serialize**: Serializes the transformation in the default way: using XLIFF 2.2
+
+`Unit` the unit is the smallest indivisible unit of language that contains processing information like metadata, notes, quality scores, provenance, etc.
+- **Segments**: the segments of this unit.
+- **GetSource** and **GetTarget**: get the source and target as a single string. Useful when content only needs to be reviewed/analyzed. Loop through the segments instead if the target needs to be updated.
+
+`Segment` is the subdivision of units that language processing tools can make. The target text can only be updated on this level due to this subdivision. Blackbird itself will never segment down from units and will thus produce one segment per unit. However, other tools can. See processing.
+
+## Recommended use
+
+When processing transformations, one can use and update the following:
+
+- Use notes from `transformation.Notes`. Use these notes as extra context (f.e. for LLM operations), it can include style guides and other rules in human readable text.
+- Loop through `transformation.GetUnits()` to get the classes processing information can be attached to. For batching see the code examples section.
+- For translation/editing, loop through `unit.Segments` and process each segment individually. Optionally filter by the segment state and whether it is ignorable. Get the source with `segment.GetSource()` and use it to update the target with `segment.SetTarget()`.
+    - When updating a segment. Update the `segment.State` to either `SegmentState.Translated` or `SegmentState.Reviewed`.
+- For analysis/scoring, simply call `unit.GetSource()` and `unit.GetTarget()`.
+    - Add scoring by setting the `unit.Quality.Score` or other fields on the `Quality` object.
+- Add Provenance information to the `unit.Provenance.Translation` or `unit.Provenance.Review` object.
+    - The `Person`, `Organization` and `Tool` field need human readable inputs (if known). The `PersonReference`, `OrganizationReference` and `ToolReference` fields ideally contain URLs so they can be displayed.
+
+> Segments hold individual source/target pairs, but most metadata is stored on a unit level. Therefore it is recommended to loop through units (see example) and process these separately.
 
 ## Code examples
 
@@ -39,13 +59,20 @@ The library is organized around two main components:
         // File content can be either HTML or XLIFF (more formats to follow soon)
         var transformation = Transformation.Parse(fileContent);
 
-        foreach(var segment in transformation.GetSegments()) // You can also add .batch() to batch segments
+        foreach (var unit in transformation.GetUnits())
         {
-            // Implement API calls here
-            segment.SetTarget(segment.GetSource() + " - Translated!"); 
+            foreach(var segment in unit.Segments.Where(x => !x.IsIgnorbale && x.IsInitial))
+            {
+                // Implement API calls here
+                segment.SetTarget(segment.GetSource() + "TRANSLATED");
 
-            // More state manipulations can be performed here
-            segment.State = SegmentState.Translated; 
+                // More state manipulations can be performed here
+                segment.State = SegmentState.Translated;
+            }
+
+            // Unit level data should be updated here
+            unit.Provenance.Translation.Tool = "Pseudo";
+            unit.Provenance.Translation.ToolReference = "www.example.com/pseudo";
         }
 
         // To continue and pass it as a transformation
@@ -68,14 +95,13 @@ The library is organized around two main components:
         var client = new ModernMtClient(Credentials);
         var stream = await fileManagementClient.DownloadAsync(input.File);
         var content = await Transformation.Parse(stream);
-        var segmentTranslations = content
-            .GetSegments() // Iterate through all segments inside the content
-            .Where(x => !x.IsIgnorbale && x.IsInitial) // Filter for segments that actually need to be translated
-            .Batch(100) // Set an appropriate batch size depending on what the API can handle
+        var translations = content
+            .GetUnits() // Get all the units across files and groups
+            .Batch(100, x => x => !x.IsIgnorbale && x.IsInitial) // Set an appropriate batch size depending on what the API can handle. Optionally (but recommended) filter for segments that actually need to be translated
             .Process(batch => client.Translate( // Apply the API translation method, takes a single batch
                 input.SourceLanguage, 
                 input.TargetLanguage, 
-                batch.Select(x => x.GetSource()).ToList(),
+                batch.Select(x => x.Segment.GetSource()).ToList(), // You have acces to both x.Unit and x.Segment. Unit is only for reference if you need unit data during translation
                 input.Hints?.Select(long.Parse).ToArray(), 
                 input.Context, 
                 input.CreateOptions())
@@ -83,12 +109,19 @@ The library is organized around two main components:
 
 
         var billedCharacters = 0;
-        // Loop over each segment result. .Process() returns a tuple containing the original segment paired with each translation
-        foreach(var (segment, translation) in segmentTranslations) 
+        // Loop over each unit result. .Process() returns all processed units together with each specific (Segment, Result) pair for you to update the segments and units.
+        foreach(var (unit, results) in translations)
         {
-            segment.SetTarget(translation.TranslationText); // Update the target
-            segment.State = SegmentState.Translated; // Update other variabels
-            billedCharacters += translation.BilledCharacters; // Update other counters relevant to the output depending on the app
+            foreach(var (segment, translation) in results)
+            {
+                segment.SetTarget(translation.TranslationText); // Update the target
+                segment.State = Enums.SegmentState.Translated; // Update other variables
+                billedCharacters += translation.BilledCharacters; // Update other counters relevant to the output depending on the app
+            }
+
+            // Update unit level information
+            unit.Provenance.Translation.Tool = "ModernMT";
+            unit.Provenance.Translation.ToolReference = "https://www.modernmt.com/";
         }
     }
 ```
@@ -97,36 +130,48 @@ The library is organized around two main components:
 ```cs
     private async Task<FileResponse> HandleInteroperableTransformation(Transformation content, ContentTranslationRequest input)
     {
-          // [...Some option setup code here]
+        // [...Some option setup code here]
 
-         // You'll probably want to separate the translation method for readability and proper typing.
-         async Task<IEnumerable<TextResult>> BatchTranslate(IEnumerable<Segment> batch)
-         {
-            return await ErrorHandler.ExecuteWithErrorHandlingAsync(async () =>
-                     await Client.TranslateTextAsync(batch.Select(x => x.GetSource()), content.SourceLanguage, input.TargetLanguage, options));
-         }
+        // You'll probably want to separate the translation method for readability and proper typing.
+        async Task<IEnumerable<TextResult>> BatchTranslate(IEnumerable<(Unit Unit, Segment Segment)> batch)
+        {
+        return await ErrorHandler.ExecuteWithErrorHandlingAsync(async () =>
+                    await Client.TranslateTextAsync(batch.Select(x => x.Segment.GetSource()), content.SourceLanguage, input.TargetLanguage, options));
+        }
 
-         // The rest should be the same
-         var segmentTranslations = await content
-            .GetSegments()
-            .Where(x => !x.IsIgnorbale && x.IsInitial)
-            .Batch(100).Process(BatchTranslate);
+        // The rest should be the same
+        var translations = await content.GetUnits().Batch(100, x => !x.IsIgnorbale && x.IsInitial).Process(BatchTranslate);
 
-         var sourceLanguages = new List<string>();
-         foreach (var (segment, translation) in segmentTranslations)
-         {
+        var sourceLanguages = new List<string>();
+        foreach (var (segment, translation) in segmentTranslations)
+        {
             segment.SetTarget(translation.Text);
             segment.State = SegmentState.Translated;
             if (!string.IsNullOrEmpty(translation.DetectedSourceLanguageCode))
             {
-                  sourceLanguages.Add(translation.DetectedSourceLanguageCode.ToLower());
+                    sourceLanguages.Add(translation.DetectedSourceLanguageCode.ToLower());
             }
-         }
+        }
+
+        foreach(var (unit, results) in translations)
+        {
+            foreach(var (segment, result) in results)
+            {
+                segment.SetTarget(result.Text);
+                segment.State = SegmentState.Translated;
+
+                if (!string.IsNullOrEmpty(result.DetectedSourceLanguageCode))
+                {
+                        sourceLanguages.Add(result.DetectedSourceLanguageCode.ToLower());
+                }
+            }
+            unit.Provenance.Translation.Tool = "DeepL";
+            unit.Provenance.Translation.ToolReference = "https://www.deepl.com/"
+        }
     }
 ```
 
 ## Serializers & Content coders:
-
 
 ### HtmlContentCoder
 

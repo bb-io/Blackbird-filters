@@ -46,9 +46,12 @@ public class FileHeapTest : TestBase
 
         var transformation = Transformation.Parse(serialized, Path.GetFileName(filePath));
 
-        foreach(var segment in transformation.GetSegments())
+        foreach(var unit in transformation.GetUnits())
         {
-            segment.SetTarget(segment.GetSource() + " - modified");
+            foreach(var segment in unit.Segments)
+            {
+                segment.SetTarget(segment.GetSource() + " - modified");
+            }
         }
 
         var returned = transformation.Serialize();

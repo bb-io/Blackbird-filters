@@ -215,7 +215,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
         // Additional assertions to verify state handling
         Assert.That(content, Is.Not.Null);
         
-        var segments = content!.GetSegments().ToList();
+        var segments = content!.GetUnits().SelectMany(x => x.Segments).ToList();
         Assert.That(segments.Count, Is.EqualTo(1));
         
         var segment = segments[0];
@@ -233,7 +233,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
         // Additional assertions to verify state handling with segmentation
         Assert.That(content, Is.Not.Null);
         
-        var segments = content!.GetSegments().ToList();
+        var segments = content!.GetUnits().SelectMany(x => x.Segments).ToList();
         Assert.That(segments.Count, Is.EqualTo(2));
         
         // Check if both segments have the correct state
@@ -249,7 +249,7 @@ public class Xliff12ValidTestSuiteTests : TestBase
         // Additional assertions to verify state handling with segmentation
         Assert.That(content, Is.Not.Null);
         
-        var segments = content!.GetSegments().ToList();
+        var segments = content!.GetUnits().SelectMany(x => x.Segments).ToList();
         Assert.That(segments.Count, Is.EqualTo(2));
         
         // Check if both segments have the correct state

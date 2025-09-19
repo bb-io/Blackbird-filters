@@ -1,5 +1,6 @@
 ﻿using Blackbird.Filters.Constants;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Shared;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
@@ -14,6 +15,8 @@ public abstract class Node
     public List<Note> Notes { get; set; } = [];
     public List<XObject> Other { get; set; } = [];
     public List<Metadata> MetaData { get; set; } = [];
+    public Quality Quality { get; set; } = new Quality();
+    public Provenance Provenance { get; set; } = new Provenance();
 
     protected string? GetBlackbirdMetadata(string type)
     {

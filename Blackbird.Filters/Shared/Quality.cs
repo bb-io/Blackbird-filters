@@ -1,4 +1,4 @@
-﻿namespace Blackbird.Filters.Transformations;
+﻿namespace Blackbird.Filters.Shared;
 
 /// <summary>
 /// Expresses results of localization quality assessment in the form of aggregated ratings, either as scores or as voting results.
@@ -16,4 +16,9 @@ public class Quality
     public int? Votes { get; set; }
     public int? VoteThreshold { get; set; }
     public string? ProfileReference { get; set; }
+
+    internal bool IsEmpty()
+    {
+        return !Score.HasValue && !ScoreThreshold.HasValue && !Votes.HasValue && !VoteThreshold.HasValue && ProfileReference is null;
+    }
 }

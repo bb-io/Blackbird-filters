@@ -35,7 +35,7 @@ public class ConversionTests : TestBase
 
         DisplayXml(finalXliff);
 
-        var firstTarget = returned.GetSegments().First().Target;
+        var firstTarget = returned.GetUnits().SelectMany(x => x.Segments).First().Target;
         var firstInlineTag = firstTarget.OfType<StartTag>().ToList()[0];
         var secondInlineTag = firstTarget.OfType<StartTag>().ToList()[1];
 
@@ -57,7 +57,7 @@ public class ConversionTests : TestBase
 
         DisplayXml(finalXliff);
 
-        var firstTarget = returned.GetSegments().First().Target;
+        var firstTarget = returned.GetUnits().SelectMany(x => x.Segments).First().Target;
         var firstInlineTag = firstTarget.OfType<StartTag>().ToList()[0];
         var secondInlineTag = firstTarget.OfType<StartTag>().ToList()[1];
 
