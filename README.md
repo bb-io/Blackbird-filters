@@ -143,16 +143,6 @@ When processing transformations, one can use and update the following:
         var translations = await content.GetUnits().Batch(100, x => !x.IsIgnorbale && x.IsInitial).Process(BatchTranslate);
 
         var sourceLanguages = new List<string>();
-        foreach (var (segment, translation) in segmentTranslations)
-        {
-            segment.SetTarget(translation.Text);
-            segment.State = SegmentState.Translated;
-            if (!string.IsNullOrEmpty(translation.DetectedSourceLanguageCode))
-            {
-                    sourceLanguages.Add(translation.DetectedSourceLanguageCode.ToLower());
-            }
-        }
-
         foreach(var (unit, results) in translations)
         {
             foreach(var (segment, result) in results)
@@ -162,7 +152,7 @@ When processing transformations, one can use and update the following:
 
                 if (!string.IsNullOrEmpty(result.DetectedSourceLanguageCode))
                 {
-                        sourceLanguages.Add(result.DetectedSourceLanguageCode.ToLower());
+                    sourceLanguages.Add(result.DetectedSourceLanguageCode.ToLower());
                 }
             }
             unit.Provenance.Translation.Tool = "DeepL";
