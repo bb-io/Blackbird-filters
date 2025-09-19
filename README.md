@@ -156,7 +156,7 @@ When processing transformations, one can use and update the following:
                 }
             }
             unit.Provenance.Translation.Tool = "DeepL";
-            unit.Provenance.Translation.ToolReference = "https://www.deepl.com/"
+            unit.Provenance.Translation.ToolReference = "https://www.deepl.com/";
         }
     }
 ```
