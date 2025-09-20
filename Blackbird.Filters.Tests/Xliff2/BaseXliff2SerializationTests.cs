@@ -1,6 +1,10 @@
-﻿using Blackbird.Filters.Enums;
+﻿using Blackbird.Filters.Content;
+using Blackbird.Filters.Content.Tags;
+using Blackbird.Filters.Enums;
 using Blackbird.Filters.Shared;
 using Blackbird.Filters.Tests.CustomAssertions;
+using Blackbird.Filters.Transformations;
+using Blackbird.Filters.Transformations.Tags;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Text;
 using System.Xml.Linq;
@@ -285,6 +289,46 @@ public class BaseXliff2SerializationTests : TestBase
         foreach (var unit in secondContent.GetUnits())
         {
             Assert.That(unit.Quality.Score, Is.EqualTo(0.7));
+        }
+    }
+
+    [Test]
+    public void Format_style()
+    {
+        // Arrange
+        var original = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
+
+        var transformation = Transformation.Parse(original, "contentful.html");
+
+        var serialized = Xliff2Serializer.Serialize(transformation);
+        DisplayXml(serialized);
+        var deserialized = Xliff2Serializer.Deserialize(serialized);
+
+        foreach (var unit in deserialized.GetUnits())
+        {
+            if (unit.Name is not null && !unit.Name.Contains("alt"))
+            {
+                Assert.That(unit.FormatStyle.Tag, Is.Not.Null);
+            }
+
+            foreach (var segment in unit.Segments)
+            {
+                foreach (var inlineTag in segment.Source.OfType<InlineTag>())
+                {
+                    if (inlineTag is EndTag) continue;
+                    Assert.That(inlineTag.FormatStyle.Tag, Is.Not.Null);
+                    if (inlineTag.FormatStyle.Tag == HtmlTag.Image)
+                    {
+                        Assert.That(inlineTag.FormatStyle.Attributes, Contains.Key("src"));
+                    }
+                    else if (inlineTag.FormatStyle.Tag == HtmlTag.Anchor)
+                    {
+                        Assert.That(inlineTag.FormatStyle.Attributes, Contains.Key("href"));
+                    }
+                }
+            }
+
+            
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Blackbird.Filters.Coders;
+using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Interfaces;
+using Blackbird.Filters.Shared;
 using Blackbird.Filters.Transformations;
 using HtmlAgilityPack;
 using System.Net.Mime;
-using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Content;
 
@@ -30,6 +31,11 @@ public class TextUnit(string reference, string? originalMediaType) : ITextContai
     public string? Key { get; set; }
 
     /// <summary>
+    /// Represents information for if this unit were to be rendered on a screen. Includes the HTML tag and potential attributes.
+    /// </summary>
+    public FormatStyle FormatStyle { get; set; } = new FormatStyle();
+
+    /// <summary>
     /// Get the plain text without any tags.
     /// </summary>
     /// <returns>The plain text without any tags</returns>
@@ -39,12 +45,51 @@ public class TextUnit(string reference, string? originalMediaType) : ITextContai
     }
 
     /// <summary>
-    /// Get the text including tags
+    /// Get a rendered HTML of the text. This uses the format style module in order to create a visual representation for browsers. It is not to be processed.
+    /// </summary>
+    /// <returns>An HTML formatted string</returns>
+    public string GetRenderedText()
+    {
+        return FormatStyle.ToHtml(string.Join(string.Empty, Parts.Select(x => x.Render())));
+    }
+
+    /// <summary>
+    /// Get the full text including tags
     /// </summary>
     /// <returns>The text including tags</returns>
     public string GetCodedText()
     {
         return string.Join(string.Empty, Parts.Select(x => x.Value));
+    }
+
+    /// <summary>
+    /// Get normalized text that can be used for semantic comparison.
+    /// </summary>
+    /// <returns>Normalized text</returns>
+    public string GetNormalizedText()
+    {
+        var codedText = GetCodedText();
+        if (string.IsNullOrEmpty(codedText)) return codedText ?? string.Empty;
+        if (OriginalMediaType == MediaTypeNames.Text.Html)
+        {
+            try
+            {
+                var doc = new HtmlDocument { OptionWriteEmptyNodes = true };
+                doc.LoadHtml(codedText);
+                foreach (var node in doc.DocumentNode.Descendants().Where(n => n.NodeType == HtmlNodeType.Element))
+                {
+                    node.Attributes.RemoveAll();
+                }
+
+                return doc.DocumentNode.InnerHtml;
+            }
+            catch (Exception)
+            {
+                return codedText;
+            }
+        }
+
+        return codedText;
     }
 
     /// <summary>

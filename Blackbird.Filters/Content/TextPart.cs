@@ -1,4 +1,6 @@
-﻿namespace Blackbird.Filters.Content;
+﻿using Blackbird.Filters.Interfaces;
+
+namespace Blackbird.Filters.Content;
 
 public class TextPart
 {
@@ -6,4 +8,6 @@ public class TextPart
     /// The plain text representation of this text part.
     /// </summary>
     public string Value { get; set; } = string.Empty;
+
+    public virtual string Render() => Value;
 }

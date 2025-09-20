@@ -1,5 +1,6 @@
 ﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Shared;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
@@ -22,4 +23,7 @@ public class InlineTag : TextPart
     public bool? Isolated { get; set; }
     public List<Unit> UnitReferences { get; set; } = [];
     public List<XAttribute> Other { get; set; } = [];
+    public FormatStyle FormatStyle { get; set; } = new FormatStyle();
+
+    public override string Render() => $"<{FormatStyle.GetPartialTag()}/>";
 }

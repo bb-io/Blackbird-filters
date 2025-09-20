@@ -1,5 +1,6 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content;
+using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Transformations;
@@ -182,11 +183,11 @@ public class HtmlCoderTests : TestBase
 
         foreach(var unit in result.Transformation.GetUnits())
         {
-            Assert.That(unit.GetTarget(), Does.Not.Contain("\r"));
-            Assert.That(unit.GetTarget(), Does.Not.Contain("\n"));
+            Assert.That(unit.GetTarget().GetCodedText(), Does.Not.Contain("\r"));
+            Assert.That(unit.GetTarget().GetCodedText(), Does.Not.Contain("\n"));
 
-            Assert.That(unit.GetSource(), Does.Not.Contain("\r"));
-            Assert.That(unit.GetSource(), Does.Not.Contain("\n"));
+            Assert.That(unit.GetSource().GetCodedText(), Does.Not.Contain("\r"));
+            Assert.That(unit.GetSource().GetCodedText(), Does.Not.Contain("\n"));
         }
 
 
@@ -226,6 +227,37 @@ public class HtmlCoderTests : TestBase
         Assert.That(groups.Last().Children.Count(), Is.EqualTo(2));
 
         HtmlAssert.AreEqual(result.Original, result.SourceString);
+    }
+
+    [Test]
+    public void Format_style()
+    {
+        var original = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
+        var coded = HtmlContentCoder.Deserialize(original, "contentful.html");
+
+        Display(coded);
+
+        foreach(var unit in coded.TextUnits)
+        {
+            if (!unit.Reference.Contains("alt"))
+            {
+                Assert.That(unit.FormatStyle.Tag, Is.Not.Null);
+            }
+            
+            foreach(var inlineTag in unit.Parts.OfType<InlineCode>())
+            {
+                if (inlineTag is EndCode) continue;
+                Assert.That(inlineTag.FormatStyle.Tag, Is.Not.Null);
+                if (inlineTag.FormatStyle.Tag == HtmlTag.Image)
+                {
+                    Assert.That(inlineTag.FormatStyle.Attributes, Contains.Key("src"));
+                }
+                else if (inlineTag.FormatStyle.Tag == HtmlTag.Anchor)
+                {
+                    Assert.That(inlineTag.FormatStyle.Attributes, Contains.Key("href"));
+                }
+            }
+        }
     }
 
 }
