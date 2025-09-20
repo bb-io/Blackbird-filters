@@ -14,19 +14,15 @@ public class UnitBuilderTests : TestBase
     {
         // Arrange
         var original = "Plain text";
-        var doc = new HtmlDocument();
-        doc.LoadHtml(original);
+        var unit = GetUnitFromString(original);
+        var html = unit.GetCodedText();
 
-        // Act
-        var units = HtmlContentCoder.BuildUnits(doc.DocumentNode);
-        var html = units.FirstOrDefault()!.GetCodedText();
-
-        Display(units);
-        Display(html);
+        Display(unit);
+        Display(html); ;
 
         // Assert
         Assert.That(html, Is.EqualTo(original));
-        Assert.That(units.FirstOrDefault()!.Parts.Count(), Is.EqualTo(1));
+        Assert.That(unit.Parts.Count(), Is.EqualTo(1));
     }
 
     [Test]
@@ -34,19 +30,15 @@ public class UnitBuilderTests : TestBase
     {
         // Arrange
         var original = "Sentence one.<br>Sentence two.";
-        var doc = new HtmlDocument();
-        doc.LoadHtml(original);
+        var unit = GetUnitFromString(original);
+        var html = unit.GetCodedText();
 
-        // Act
-        var units = HtmlContentCoder.BuildUnits(doc.DocumentNode);
-        var html = units.FirstOrDefault()!.GetCodedText();
-
-        Display(units);
-        Display(html);
+        Display(unit);
+        Display(html); ;
 
         // Assert
         Assert.That(html, Is.EqualTo(original));
-        Assert.That(units.FirstOrDefault()!.Parts.Count(), Is.EqualTo(3));
+        Assert.That(unit.Parts.Count(), Is.EqualTo(3));
     }
 
     [Test]
@@ -54,18 +46,14 @@ public class UnitBuilderTests : TestBase
     {
         // Arrange
         var original = "Hello <b>world</b>";
-        var doc = new HtmlDocument();
-        doc.LoadHtml(original);
+        var unit = GetUnitFromString(original);
+        var html = unit.GetCodedText();
 
-        // Act
-        var units = HtmlContentCoder.BuildUnits(doc.DocumentNode);
-        var html = units.FirstOrDefault()!.GetCodedText();
-
-        Display(units);
-        Display(html);
+        Display(unit);
+        Display(html); ;
 
         // Assert
-        Assert.That(units.FirstOrDefault()!.Parts.Count(), Is.EqualTo(4));
+        Assert.That(unit.Parts.Count(), Is.EqualTo(4));
         Assert.That(html, Is.EqualTo(original));
     }
 
@@ -74,19 +62,15 @@ public class UnitBuilderTests : TestBase
     {
         // Arrange
         var original = "<i>Hello</i><b>world</b>";
-        var doc = new HtmlDocument();
-        doc.LoadHtml(original);
+        var unit = GetUnitFromString(original);
+        var html = unit.GetCodedText();
 
-        // Act
-        var units = HtmlContentCoder.BuildUnits(doc.DocumentNode);
-        var html = units.FirstOrDefault()!.GetCodedText();
-
-        Display(units);
-        Display(html);
+        Display(unit);
+        Display(html); ;
 
         // Assert
         Assert.That(html, Is.EqualTo(original));
-        Assert.That(units.FirstOrDefault()!.Parts.Count(), Is.EqualTo(6));
+        Assert.That(unit.Parts.Count(), Is.EqualTo(6));
     }
 
     [Test]
@@ -94,18 +78,34 @@ public class UnitBuilderTests : TestBase
     {
         // Arrange
         var original = "Hey,<i>Hello<b>world</b>and the rest</i>";
-        var doc = new HtmlDocument();
-        doc.LoadHtml(original);
+        var unit = GetUnitFromString(original);
+        var html = unit.GetCodedText();
 
-        // Act
-        var units = HtmlContentCoder.BuildUnits(doc.DocumentNode);
-        var html = units.FirstOrDefault()!.GetCodedText();
-
-        Display(units);
+        Display(unit);
         Display(html); ;
 
         // Assert
         Assert.That(html, Is.EqualTo(original));
-        Assert.That(units.FirstOrDefault()!.Parts.Count(), Is.EqualTo(8));
+        Assert.That(unit.Parts.Count(), Is.EqualTo(8));
+    }
+
+    [Test]
+    public void Normalized_equivalence()
+    {
+        var version1 = GetUnitFromString("<p class=\"text center\">Hello <a href=\"http://www.example.com\">world</a></p>");
+        var version2 = GetUnitFromString("<p class=\"text p-1 m-2\">Hello <a href=\"http://www.another-example.com\">world</a></p>");
+
+        Display(version1.GetNormalizedText());
+        Display(version2.GetNormalizedText());
+
+        Assert.That(version1.GetNormalizedText(), Is.EqualTo(version2.GetNormalizedText()));
+    }
+
+    private TextUnit GetUnitFromString(string original)
+    {
+        var doc = new HtmlDocument();
+        doc.LoadHtml(original);
+        var units = HtmlContentCoder.BuildUnits(doc.DocumentNode);
+        return units.First();
     }
 }

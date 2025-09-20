@@ -79,14 +79,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         var codedContent = new CodedContent(OriginalName ?? OriginalReference ?? "transformation.txt", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         codedContent.Language = SourceLanguage;
         codedContent.UniqueContentId = UniqueSourceContentId;
-        foreach (var unit in GetUnits().Where(x => x.Name is not null))
-        {
-            var textUnit = new TextUnit(unit.Name!, OriginalMediaType)
-            {
-                Parts = unit.Segments.SelectMany(x => x.Source).ToList()
-            };
-            codedContent.TextUnits.Add(textUnit);
-        }
+        codedContent.TextUnits = [.. GetUnits().Where(x => x.Name is not null).Select(x => x.GetSource(OriginalMediaType))];
         return codedContent;
     }
 
@@ -96,14 +89,7 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         var codedContent = new CodedContent(OriginalName ?? OriginalReference ?? "transformation.txt", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         codedContent.Language = TargetLanguage;
         codedContent.UniqueContentId = UniqueTargetContentId;
-        foreach (var unit in GetUnits().Where(x => x.Name is not null))
-        {
-            var textUnit = new TextUnit(unit.Name!, OriginalMediaType)
-            {
-                Parts = unit.Segments.SelectMany(x => x.Target).ToList()
-            };
-            codedContent.TextUnits.Add(textUnit);
-        }
+        codedContent.TextUnits = [.. GetUnits().Where(x => x.Name is not null).Select(x => x.GetTarget(OriginalMediaType))];
         return codedContent;
     }
 

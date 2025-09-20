@@ -1,6 +1,10 @@
 ﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Content.Tags;
+using Blackbird.Filters.Enums;
 using Blackbird.Filters.Extensions;
+using Blackbird.Filters.Shared;
+using Blackbird.Filters.Transformations;
+using Blackbird.Filters.Transformations.Tags;
 using HtmlAgilityPack;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
@@ -186,7 +190,8 @@ public static class HtmlContentCoder
     internal static List<TextUnit> BuildUnits(HtmlNode node, string? key = null)
     {
         key ??= GetKey(node);
-        var unit = new TextUnit(node.XPath, MediaTypeNames.Text.Html) { Key = key};        
+        var unit = new TextUnit(node.XPath, MediaTypeNames.Text.Html) { Key = key };
+        unit.FormatStyle = GetFormatStyle(node);
 
         if (node.NodeType == HtmlNodeType.Text)
         {
@@ -231,13 +236,17 @@ public static class HtmlContentCoder
 
                 if (child.ChildNodes.Count() == 0)
                 {
-                    parts.Add(new InlineCode { Value = child.OuterHtml, UnitReferences = subUnits });
+                    var code = new InlineCode { Value = child.OuterHtml, UnitReferences = subUnits };
+                    code.FormatStyle = GetFormatStyle(child);
+                    parts.Add(code);
                 }
                 else
                 {
                     var (start, _, end) = ParseHtmlParts(child.OuterHtml);
                     var startTag = new StartCode { Value = start, UnitReferences = subUnits };
                     var endTag = new EndCode { Value = end, StartCode = startTag, UnitReferences = subUnits };
+                    startTag.FormatStyle = GetFormatStyle(child);
+                    endTag.FormatStyle.Tag = startTag.FormatStyle.Tag;
                     startTag.EndCode = endTag;
                     parts.Add(startTag);
                     parts.AddRange(BuildTextParts(child.ChildNodes, key));
@@ -250,6 +259,18 @@ public static class HtmlContentCoder
 
     private static TextUnit BuildUnit(HtmlAttribute attribute, string? key = null) => new(attribute.XPath, MediaTypeNames.Text.Plain) { Key = key, Parts = [new TextPart { Value = attribute.Value }] };
 
+    private static FormatStyle GetFormatStyle(HtmlNode node)
+    {
+        var result = new FormatStyle();
+        if (HtmlTagExtensions.TryParseTag(node.Name, out var parsed))
+        {
+            result.Tag = parsed;
+            result.Attributes = node.Attributes.Where(x => !x.Name.StartsWith("data-")).ToDictionary(x => x.Name, x => x.Value);
+        }
+
+        return result;
+    }
+    
     private static (string StartTag, string Content, string EndTag) ParseHtmlParts(string html)
     {
         if (string.IsNullOrWhiteSpace(html))

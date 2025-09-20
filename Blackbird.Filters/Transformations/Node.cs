@@ -17,6 +17,7 @@ public abstract class Node
     public List<Metadata> MetaData { get; set; } = [];
     public Quality Quality { get; set; } = new Quality();
     public Provenance Provenance { get; set; } = new Provenance();
+    public FormatStyle FormatStyle { get; set; } = new FormatStyle();
 
     protected string? GetBlackbirdMetadata(string type)
     {

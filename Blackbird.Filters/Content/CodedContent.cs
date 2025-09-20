@@ -63,7 +63,7 @@ public class CodedContent
 
         Unit CreateUnit(TextUnit textUnit, string? id = null)
         {
-            var unit = new Unit() { Name = textUnit.Reference, Id = id };
+            var unit = new Unit() { Name = textUnit.Reference, Id = id, FormatStyle = textUnit.FormatStyle };
             unitsDictionary[textUnit] = unit;
             var parts = new List<TextPart>();
 
@@ -74,13 +74,13 @@ public class CodedContent
                 switch (part)
                 {
                     case StartCode sc:
-                        var startTag = new StartTag() { Value = sc.Value };
+                        var startTag = new StartTag() { Value = sc.Value, FormatStyle = sc.FormatStyle };
                         dictionary.Add(sc, startTag);
                         unitReferences[startTag] = sc.UnitReferences;
                         parts.Add(startTag);
                         break;
                     case EndCode ec:
-                        var endTag = new EndTag() { Value = ec.Value };
+                        var endTag = new EndTag() { Value = ec.Value, FormatStyle = ec.FormatStyle };
                         if (ec.StartCode != null)
                         {
                             var coupledStartTag = dictionary[ec.StartCode];
@@ -91,7 +91,7 @@ public class CodedContent
                         parts.Add(endTag);
                         break;
                     case InlineCode inline:
-                        var inlineTag = new InlineTag() { Value = inline.Value };
+                        var inlineTag = new InlineTag() { Value = inline.Value, FormatStyle = inline.FormatStyle };
                         unitReferences[inlineTag] = inline.UnitReferences;
                         parts.Add(inlineTag);
                         break;

@@ -1,5 +1,5 @@
 ﻿using AngleSharp.Diffing;
-using System.Xml.Linq;
+using HtmlAgilityPack;
 
 namespace Blackbird.Filters.Tests.CustomAssertions;
 public static class HtmlAssert
@@ -22,5 +22,26 @@ public static class HtmlAssert
         {
             Assert.Fail(message ?? $"Html documents are equal!");
         }
+    }
+
+    public static bool LooksLikeHtmlNode(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input)) return false;
+
+        var doc = new HtmlDocument
+        {
+            OptionCheckSyntax = true,
+            OptionFixNestedTags = true
+        };
+
+        doc.LoadHtml(input);
+
+        if (doc.ParseErrors != null && doc.ParseErrors.Any())
+            return false;
+
+        // Must produce at least one element node (not just text).
+        return doc.DocumentNode
+                  .Descendants()
+                  .Any(n => n.NodeType == HtmlNodeType.Element);
     }
 }

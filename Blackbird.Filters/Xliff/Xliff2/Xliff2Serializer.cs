@@ -14,8 +14,9 @@ using System.Xml.Linq;
 namespace Blackbird.Filters.Xliff.Xliff2;
 public static class Xliff2Serializer
 {
-    private static readonly XNamespace MetaNs = "urn:oasis:names:tc:xliff:metadata:2.0";
+    public static readonly XNamespace MetaNs = "urn:oasis:names:tc:xliff:metadata:2.0";
     public static readonly XNamespace ItsNs = "http://www.w3.org/2005/11/its";
+    public static readonly XNamespace FormatStyleNs = "urn:oasis:names:tc:xliff:fs:2.0";
 
     private static readonly List<XName> CommonNodeLevelAttributes = [
         "id",
@@ -40,6 +41,8 @@ public static class Xliff2Serializer
         ItsNs + "revOrgRef",
         ItsNs + "revTool",
         ItsNs + "revToolRef",
+        FormatStyleNs + "fs",
+        FormatStyleNs + "subFs",
     ];
 
     public static Transformation Deserialize(string fileContent)
@@ -118,6 +121,20 @@ public static class Xliff2Serializer
             };
         }
 
+        FormatStyle DeserializeFormatStyle(XElement node)
+        {
+            var style = new FormatStyle();
+            var fs = node.Get(FormatStyleNs + "fs");
+            var subFs = node.Get(FormatStyleNs + "subFs");
+            if (HtmlTagExtensions.TryParseTag(fs, out var parsed))
+            {
+                style.Tag = parsed;
+                style.Attributes = SubFsHelper.ParseSubFsString(subFs);
+            }
+            return style;
+
+        }
+
         Provenance DeserializeProvenance(XElement node)
         {
             ArgumentNullException.ThrowIfNull(node);
@@ -163,6 +180,7 @@ public static class Xliff2Serializer
                 OriginalReference = node.Element(ns + "skeleton")?.Get("href"),
                 Quality = DeserializeLocQuality(node),
                 Provenance = DeserializeProvenance(node),
+                FormatStyle = DeserializeFormatStyle(node),
             };
 
             transformation.Other.AddRange(node.Elements().GetRemaining([
@@ -195,6 +213,7 @@ public static class Xliff2Serializer
                     MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                     Quality = DeserializeLocQuality(node),
                     Provenance = DeserializeProvenance(node),
+                    FormatStyle = DeserializeFormatStyle(node),
                 };
 
                 unit.Other.AddRange(node.Elements().GetRemaining([
@@ -271,6 +290,7 @@ public static class Xliff2Serializer
                             tag.SubType = element.Get("subType");
                             tag.Type = element.GetInlineType("type");
                             tag.Isolated = element.GetBool("isolated");
+                            tag.FormatStyle = DeserializeFormatStyle(element);
                             tag.Other.AddRange(element.Attributes().GetRemaining([
                                 "id",
                                 "canCopy",
@@ -294,7 +314,10 @@ public static class Xliff2Serializer
                                 "equiv",
                                 "dataRef",
                                 "subFlows",
-                                "startRef"]));
+                                "startRef",
+                                FormatStyleNs + "fs",
+                                FormatStyleNs + "subFs"
+                                ]));
                         }
 
                         var parts = new List<TextPart>();
@@ -476,6 +499,7 @@ public static class Xliff2Serializer
                     MetaData = DeserializeMetadata(node.Element(MetaNs + "metadata")),
                     Quality = DeserializeLocQuality(node),
                     Provenance = DeserializeProvenance(node),
+                    FormatStyle = DeserializeFormatStyle(node),
                 };
                 group.Other.AddRange(node.Elements().GetRemaining([
                     ns + "notes", 
@@ -539,6 +563,7 @@ public static class Xliff2Serializer
         XNamespace ns = $"urn:oasis:names:tc:xliff:document:{version.Serialize()}";
         bool metaUsed = false;
         bool itsUsed = false;
+        bool fsUsed = false;
 
         XElement? SerializeNotes(List<Note> notes, bool global = false)
         {
@@ -592,6 +617,14 @@ public static class Xliff2Serializer
             element.Set(ItsNs + "revOrgRef", provenance.Review.OrganizationReference);
             element.Set(ItsNs + "revTool", provenance.Review.Tool);
             element.Set(ItsNs + "revToolRef", provenance.Review.ToolReference);
+        }
+
+        void SerializeFormatStyle(XElement element, FormatStyle style)
+        {
+            if (!style.Tag.HasValue) return;
+            fsUsed = true;
+            element.Set(FormatStyleNs + "fs", style.Tag.Value.ToTag());
+            element.Set(FormatStyleNs + "subFs", SubFsHelper.ToSubFsString(style.Attributes));
         }
 
         XElement? SerializeMetadata(List<Metadata> metadata, bool global = false)
@@ -697,6 +730,7 @@ public static class Xliff2Serializer
                             element.SetInlineType("type", tag.Type);
                             element.SetBool("isolated", tag.Isolated);
                             element.Add(tag.Other);
+                            SerializeFormatStyle(element, tag.FormatStyle);
                         }
 
                         void SetCommonAnnotationArguments(XElement element, AnnotationStart annotationStart)
@@ -947,6 +981,7 @@ public static class Xliff2Serializer
                 root.Add(SerializeNotes(unit.Notes));
                 SerializeQuality(root, unit.Quality);
                 SerializeProvenance(root, unit.Provenance);
+                SerializeFormatStyle(root, unit.FormatStyle);
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
                 root.Add(segmentElements);
                 return root;
@@ -969,6 +1004,7 @@ public static class Xliff2Serializer
                 root.Add(group.Children.OfType<Unit>().Select(SerializeUnit));
                 SerializeQuality(root, group.Quality);
                 SerializeProvenance(root, group.Provenance);
+                SerializeFormatStyle(root, group.FormatStyle);
                 return root;
             }
 
@@ -1005,6 +1041,7 @@ public static class Xliff2Serializer
             root.Add(SerializeNotes(notes));
             SerializeQuality(root, transformation.Quality);
             SerializeProvenance(root, transformation.Provenance);
+            SerializeFormatStyle(root, transformation.FormatStyle);
 
             foreach (var child in transformation.Children)
             {
@@ -1051,6 +1088,11 @@ public static class Xliff2Serializer
         if (itsUsed && root.Attribute(XNamespace.Xmlns + "its") == null)
         {
             root.Add(new XAttribute(XNamespace.Xmlns + "its", ItsNs));
+        }
+
+        if (fsUsed && root.Attribute(XNamespace.Xmlns + "fs") == null)
+        {
+            root.Add(new XAttribute(XNamespace.Xmlns + "fs", FormatStyleNs));
         }
 
         var doc = new XDocument(root);
