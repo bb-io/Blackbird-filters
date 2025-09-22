@@ -56,7 +56,7 @@ public abstract class TestBase
         DisplayXml(serialized);
         Console.WriteLine("------");
 
-        if (HtmlContentCoder.IsHtml(targetString))
+        if (new HtmlContentCoder().CanProcessContent(targetString))
         {
             DisplayHtml(targetString);
         } 

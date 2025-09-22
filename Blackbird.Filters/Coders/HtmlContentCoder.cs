@@ -2,22 +2,23 @@
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Extensions;
+using Blackbird.Filters.Interfaces;
 using Blackbird.Filters.Shared;
-using Blackbird.Filters.Transformations;
-using Blackbird.Filters.Transformations.Tags;
 using HtmlAgilityPack;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 
 namespace Blackbird.Filters.Coders;
-public static class HtmlContentCoder
+public class HtmlContentCoder : IContentCoder
 {
+    public IEnumerable<string> SupportedMediaTypes => [MediaTypeNames.Text.Html];
+
     /// <summary>
     /// Turn any Html content into coded content.
     /// </summary>
     /// <param name="content">The HTML string</param>
     /// <returns></returns>
-    public static CodedContent Deserialize(string content, string fileName)
+    public CodedContent Deserialize(string content, string fileName)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(content);
@@ -33,7 +34,7 @@ public static class HtmlContentCoder
         return codedContent;
     }
 
-    private static string? GetHtmlLangAttribute(HtmlDocument document)
+    private string? GetHtmlLangAttribute(HtmlDocument document)
     {
         var htmlNode = document.DocumentNode.SelectSingleNode("//html");
 
@@ -45,7 +46,7 @@ public static class HtmlContentCoder
         return null;
     }
 
-    private static string? GetBlackbirdUcid(HtmlDocument document)
+    private string? GetBlackbirdUcid(HtmlDocument document)
     {
         var metaNode = document.DocumentNode.SelectSingleNode("//meta[@name='blackbird-ucid']");
 
@@ -63,7 +64,7 @@ public static class HtmlContentCoder
     /// <param name="content">An HTML coded content representation</param>
     /// <returns></returns>
     /// <exception cref="ArgumentException">When the representation has malformed location references to the original HTML file.</exception>
-    public static string Serialize(CodedContent content)
+    public string Serialize(CodedContent content)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(content.Original);
@@ -93,7 +94,7 @@ public static class HtmlContentCoder
         return doc.DocumentNode.OuterHtml;
     }
 
-    private static void SetOrUpdateBlackbirdUcid(HtmlDocument document, string ucidValue)
+    private void SetOrUpdateBlackbirdUcid(HtmlDocument document, string ucidValue)
     {
         var headNode = document.DocumentNode.SelectSingleNode("//head");
         if (headNode == null)
@@ -129,7 +130,7 @@ public static class HtmlContentCoder
     /// </summary>
     /// <param name="content">The supposed HTMl content string</param>
     /// <returns>True if this is HTML. False otherwise.</returns>
-    public static bool IsHtml(string content)
+    public bool CanProcessContent(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
             return false;
@@ -149,13 +150,13 @@ public static class HtmlContentCoder
         catch { return false; }
     }
 
-    internal static List<TextUnit> ExtractTextUnits(HtmlNode node, string? key = null)
+    internal List<TextUnit> ExtractTextUnits(HtmlNode node, string? key = null)
     {
         var units = new List<TextUnit>();
 
         if (node.IsIgnoredElement()) return units;
 
-        key ??= GetKey(node);
+        key ??= node.GetKey();
 
         foreach (var attribute in node.GetTranslatableAttributes()) 
         {
@@ -187,10 +188,10 @@ public static class HtmlContentCoder
         return units;
     }
 
-    internal static List<TextUnit> BuildUnits(HtmlNode node, string? key = null)
+    internal List<TextUnit> BuildUnits(HtmlNode node, string? key = null)
     {
-        key ??= GetKey(node);
-        var unit = new TextUnit(node.XPath, MediaTypeNames.Text.Html) { Key = key };
+        key ??= node.GetKey();
+        var unit = new TextUnit(node.XPath, this) { Key = key };
         unit.FormatStyle = GetFormatStyle(node);
 
         if (node.NodeType == HtmlNodeType.Text)
@@ -217,7 +218,7 @@ public static class HtmlContentCoder
         return units;
     }
 
-    internal static List<TextPart> BuildTextParts(HtmlNodeCollection nodes, string? key = null)
+    internal List<TextPart> BuildTextParts(HtmlNodeCollection nodes, string? key = null)
     {
         var parts = new List<TextPart>();
         foreach (var child in nodes)
@@ -257,9 +258,9 @@ public static class HtmlContentCoder
         return parts;
     }
 
-    private static TextUnit BuildUnit(HtmlAttribute attribute, string? key = null) => new(attribute.XPath, MediaTypeNames.Text.Plain) { Key = key, Parts = [new TextPart { Value = attribute.Value }] };
+    private TextUnit BuildUnit(HtmlAttribute attribute, string? key = null) => new(attribute.XPath, new PlaintextContentCoder()) { Key = key, Parts = [new TextPart { Value = attribute.Value }] };
 
-    private static FormatStyle GetFormatStyle(HtmlNode node)
+    private FormatStyle GetFormatStyle(HtmlNode node)
     {
         var result = new FormatStyle();
         if (HtmlTagExtensions.TryParseTag(node.Name, out var parsed))
@@ -271,7 +272,7 @@ public static class HtmlContentCoder
         return result;
     }
     
-    private static (string StartTag, string Content, string EndTag) ParseHtmlParts(string html)
+    private (string StartTag, string Content, string EndTag) ParseHtmlParts(string html)
     {
         if (string.IsNullOrWhiteSpace(html))
             return (string.Empty, string.Empty, string.Empty);
@@ -290,43 +291,29 @@ public static class HtmlContentCoder
         return (string.Empty, string.Empty, string.Empty);
     }
 
-    // https://www.w3schools.com/htmL/html_blocks.asp
-    // https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2
-    private static List<string> InlineElements = ["a", "abbr", "area", "audio", "acronym", "b", "bdi", "bdo", "big", "br", "button", "canvas", "cite", "code", "data", "datalist", "del", "dfn", "em", "embed", "i", "iframe", "img", "input", "ins", "kbd", "label", "map", "object", "output", "picture", "progress", "q", "s", "samp", "script", "select", "slot", "small", "span", "strong", "sub", "sup", "svg", "textarea", "time", "u", "tt", "var"];
-    private static List<string> IgnoredElements = ["script", "style"];
-    private static List<string> TranslatableAttributes = ["alt", "title", "content", "placeholder"];
-
-    private static bool IsInlineElement(this HtmlNode node)
+    public List<TextPart> DeserializeSegment(string segment)
     {
-        return InlineElements.Contains(node.Name);
-    }
-
-    private static bool IsIgnoredElement(this HtmlNode node)
-    {
-        return IgnoredElements.Contains(node.Name);
-    }
-
-    private static string? GetKey(this HtmlNode node)
-    {
-        if (node.Attributes.Contains("data-blackbird-key"))
+        try
         {
-            return node.Attributes["data-blackbird-key"].Value;
+            var doc = new HtmlDocument();
+            doc.LoadHtml(segment);
+            return BuildTextParts(doc.DocumentNode.ChildNodes);
+        }
+        catch (Exception)
+        {
+            return [new() { Value = segment }];
+        }
+    }
+
+    public string NormalizeSegment(string segment)
+    {
+        var doc = new HtmlDocument { OptionWriteEmptyNodes = true };
+        doc.LoadHtml(segment);
+        foreach (var node in doc.DocumentNode.Descendants().Where(n => n.NodeType == HtmlNodeType.Element))
+        {
+            node.Attributes.RemoveAll();
         }
 
-        return null;
-    }
-
-    private static List<HtmlAttribute> GetTranslatableAttributes(this HtmlNode node)
-    {
-        var attributes = new List<HtmlAttribute>();
-        foreach (var attribute in TranslatableAttributes)
-        {
-            if (node.Attributes.Contains(attribute))
-            {
-                if (node.Attributes.Contains("name") && node.Attributes["name"].Value.Contains("blackbird")) continue;
-                attributes.Add(node.Attributes[attribute]);
-            }
-        }
-        return attributes;
+        return doc.DocumentNode.InnerHtml;
     }
 }

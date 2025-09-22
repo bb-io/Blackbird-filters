@@ -15,14 +15,15 @@ public class HtmlCoderTests : TestBase
     public void Is_html()
     {
         // Arrange
+        var htmlCoder = new HtmlContentCoder();
         var html = "<html><head></head><body></body></html>";
         var notHtml = "<xml><root>Test</root></xml>";
         var notHtml2 = "Plain string";
 
         // Act
-        var result = HtmlContentCoder.IsHtml(html);
-        var result2 = HtmlContentCoder.IsHtml(notHtml);
-        var result3 = HtmlContentCoder.IsHtml(notHtml2);
+        var result = htmlCoder.CanProcessContent(html);
+        var result2 = htmlCoder.CanProcessContent(notHtml);
+        var result3 = htmlCoder.CanProcessContent(notHtml2);
 
         // Assert
         Assert.IsTrue(result);
@@ -205,8 +206,9 @@ public class HtmlCoderTests : TestBase
     [Test]
     public void To_plaintext()
     {
+        var coder = new HtmlContentCoder();
         var original = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
-        var coded = HtmlContentCoder.Deserialize(original, "contentful.html");
+        var coded = coder.Deserialize(original, "contentful.html");
 
         var plaintext = coded.GetPlaintext();
         Assert.IsNotEmpty(plaintext);
@@ -233,7 +235,7 @@ public class HtmlCoderTests : TestBase
     public void Format_style()
     {
         var original = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
-        var coded = HtmlContentCoder.Deserialize(original, "contentful.html");
+        var coded = new HtmlContentCoder().Deserialize(original, "contentful.html");
 
         Display(coded);
 

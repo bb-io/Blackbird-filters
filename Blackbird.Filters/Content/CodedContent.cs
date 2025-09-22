@@ -49,6 +49,7 @@ public class CodedContent
 
     public Transformation CreateTransformation(string? targetLanguage = null)
     {
+        var contentCoder = ContentCoderFactory.FromMediaType(OriginalMediaType);
         var transformation = new Transformation(Language, targetLanguage) 
         { 
             Original = Original, 
@@ -63,7 +64,7 @@ public class CodedContent
 
         Unit CreateUnit(TextUnit textUnit, string? id = null)
         {
-            var unit = new Unit() { Name = textUnit.Reference, Id = id, FormatStyle = textUnit.FormatStyle };
+            var unit = new Unit(contentCoder) { Name = textUnit.Reference, Id = id, FormatStyle = textUnit.FormatStyle };
             unitsDictionary[textUnit] = unit;
             var parts = new List<TextPart>();
 
@@ -101,7 +102,7 @@ public class CodedContent
                 }
             }
 
-            unit.Segments = [new Segment(OriginalMediaType) { Source = parts, Ignorable = parts.All(x => string.IsNullOrWhiteSpace(x.Value)) }];
+            unit.Segments = [new Segment(contentCoder) { Source = parts, Ignorable = parts.All(x => string.IsNullOrWhiteSpace(x.Value)) }];
             return unit;
         }
 
@@ -155,17 +156,7 @@ public class CodedContent
 
     public string Serialize()
     {
-        if (OriginalMediaType == MediaTypeNames.Text.Html)
-        {
-            return HtmlContentCoder.Serialize(this);
-        }
-
-        if (OriginalMediaType == MediaTypeNames.Text.Plain)
-        {
-            return PlaintextContentCoder.Serialize(this);
-        }
-
-        throw new NotImplementedException($"The serializer for ${OriginalMediaType} is not implemented");
+        return ContentCoderFactory.FromMediaType(OriginalMediaType).Serialize(this);
     }
 
     public static CodedContent Parse(string content, string fileName)
@@ -190,18 +181,8 @@ public class CodedContent
             
             return result;
         }
-        else if (HtmlContentCoder.IsHtml(content))
-        {
-            return HtmlContentCoder.Deserialize(content, fileName);
-        }
-        else if (PlaintextContentCoder.IsPlaintext(content))
-        {
-            return PlaintextContentCoder.Deserialize(content, fileName);
-        }
-        else
-        {
-            throw new NotImplementedException("This file format is not supported yet.");
-        }
+
+        return ContentCoderFactory.FromContent(content).Deserialize(content, fileName);
     }
 
     public static async Task<CodedContent> Parse(Stream content, string fileName) => Parse(await content.ReadString(), fileName);

@@ -1,12 +1,13 @@
-﻿using Blackbird.Filters.Content;
+﻿using Blackbird.Filters.Coders;
+using Blackbird.Filters.Constants;
+using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Annotation;
 using Blackbird.Filters.Transformations.Tags;
+using Blackbird.Filters.Xliff.Xliff2;
 using System.Text;
 using System.Xml.Linq;
-using Blackbird.Filters.Constants;
-using Blackbird.Filters.Xliff.Xliff2;
 
 namespace Blackbird.Filters.Xliff.Xliff1;
 
@@ -940,6 +941,7 @@ public static class Xliff1Serializer
 
     private static void ProcessBodyContent(XElement body, Node parent, Transformation rootTransformation)
     {
+        var contentCoder = string.IsNullOrEmpty(rootTransformation.OriginalMediaType) ? new PlaintextContentCoder() : ContentCoderFactory.FromMediaType(rootTransformation.OriginalMediaType);
         foreach (var element in body.Elements())
         {
             if (element.Name == XliffNs + "group")
@@ -985,7 +987,7 @@ public static class Xliff1Serializer
             }
             else if (element.Name == XliffNs + "trans-unit")
             {
-                var unit = new Unit
+                var unit = new Unit(contentCoder)
                 {
                     Id = element.Get("id"),
                     Name = element.Get("resname"),
@@ -1026,7 +1028,7 @@ public static class Xliff1Serializer
                 {
                     foreach (var mrkElement in segSource.Elements(XliffNs + "mrk").Where(m => m.Get("mtype") == "seg"))
                     {
-                        var segment = new Segment
+                        var segment = new Segment(contentCoder)
                         {
                             Id = mrkElement.Get("mid"),
                             Source = ExtractTextParts(mrkElement),
@@ -1079,7 +1081,7 @@ public static class Xliff1Serializer
                 }
                 else
                 {
-                    var segment = new Segment
+                    var segment = new Segment(contentCoder)
                     {
                         Id = element.Get("id"),
                         Source = source != null ? ExtractTextParts(source) : new List<TextPart>(),

@@ -1,22 +1,13 @@
-﻿using Blackbird.Filters.Coders;
-using Blackbird.Filters.Content;
-using Blackbird.Filters.Content.Tags;
+﻿using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Interfaces;
-using Blackbird.Filters.Transformations.Tags;
-using HtmlAgilityPack;
-using System.Net.Mime;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
-public class Segment() : ITextContainer
+public class Segment(IContentCoder coder) : ITextContainer
 {
-    internal Segment(string? originalMediaType) : this()
-    {
-        OriginalMediaType = originalMediaType;
-    }
-
+    public IContentCoder ContentCoder { get; set; } = coder;
     public List<TextPart> Source { get; set; } = [];
     public List<TextPart> Target { get; set; } = [];
     public string? Id { get; internal set; }
@@ -58,15 +49,6 @@ public class Segment() : ITextContainer
     /// <returns>The text including tags</returns>
     public void SetTarget(string content)
     {
-        if (OriginalMediaType == MediaTypeNames.Text.Html)
-        {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(content);
-            Target = HtmlContentCoder.BuildTextParts(doc.DocumentNode.ChildNodes).ConvertToInlineTags();
-        }
-        else
-        {
-            Target = [new() { Value = content }];
-        }
+        Target = ContentCoder.DeserializeSegment(content).ConvertToInlineTags();        
     }
 }

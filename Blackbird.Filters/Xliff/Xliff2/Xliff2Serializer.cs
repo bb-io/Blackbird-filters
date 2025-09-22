@@ -1,4 +1,5 @@
-﻿using Blackbird.Filters.Constants;
+﻿using Blackbird.Filters.Coders;
+using Blackbird.Filters.Constants;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Extensions;
@@ -183,6 +184,8 @@ public static class Xliff2Serializer
                 FormatStyle = DeserializeFormatStyle(node),
             };
 
+            var contentCoder = string.IsNullOrEmpty(transformation.OriginalMediaType) ? new PlaintextContentCoder() : ContentCoderFactory.FromMediaType(transformation.OriginalMediaType);
+
             transformation.Other.AddRange(node.Elements().GetRemaining([
                 ns + "skeleton",
                 ns + "group",
@@ -201,7 +204,7 @@ public static class Xliff2Serializer
             Unit DeserializeUnit(XElement node)
             {
                 whiteSpaceHandling = node.GetWhiteSpaceHandling(whiteSpaceHandling);
-                var unit = new Unit
+                var unit = new Unit(contentCoder)
                 {
                     Id = node.Get("id", Optionality.Required),
                     Name = node.Get("name"),
@@ -455,7 +458,7 @@ public static class Xliff2Serializer
                         return parts;
                     }
 
-                    var segment = new Segment()
+                    var segment = new Segment(contentCoder)
                     {
                         Id = node.Get("id"),
                         Source = DeserializeLine(sourceNode, sourceNode.GetWhiteSpaceHandling(whiteSpaceHandling)),

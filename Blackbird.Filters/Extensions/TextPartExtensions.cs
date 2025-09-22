@@ -16,12 +16,12 @@ public static class TextPartExtensions
             switch (part)
             {
                 case StartCode sc:
-                    var startTag = new StartTag() { Value = sc.Value };
+                    var startTag = new StartTag() { Value = sc.Value, FormatStyle = sc.FormatStyle };
                     dictionary.Add(sc, startTag);
                     parts.Add(startTag);
                     break;
                 case EndCode ec:
-                    var endTag = new EndTag() { Value = ec.Value };
+                    var endTag = new EndTag() { Value = ec.Value, FormatStyle = ec.FormatStyle };
                     if (ec.StartCode != null)
                     {
                         var coupledStartTag = dictionary[ec.StartCode];
@@ -31,14 +31,13 @@ public static class TextPartExtensions
                     parts.Add(endTag);
                     break;
                 case InlineCode inline:
-                    var inlineTag = new InlineTag() { Value = inline.Value };
+                    var inlineTag = new InlineTag() { Value = inline.Value, FormatStyle = inline.FormatStyle };
                     parts.Add(inlineTag);
                     break;
                 default:
                     parts.Add(new TextPart() { Value = part.Value });
                     break;
             }
-
         }
         return parts;
     }
