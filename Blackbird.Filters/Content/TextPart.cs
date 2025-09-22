@@ -1,6 +1,4 @@
-﻿using Blackbird.Filters.Interfaces;
-
-namespace Blackbird.Filters.Content;
+﻿namespace Blackbird.Filters.Content;
 
 public class TextPart
 {

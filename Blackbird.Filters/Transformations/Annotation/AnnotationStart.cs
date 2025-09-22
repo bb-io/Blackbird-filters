@@ -1,9 +1,8 @@
-﻿using Blackbird.Filters.Content;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations.Annotation;
 
-public class AnnotationStart(bool wellFormed = false) : TextPart
+public class AnnotationStart(bool wellFormed = false) : LineElement
 {
     public string? Id { get; set; }
     public bool? Translate { get; set; }
@@ -13,4 +12,6 @@ public class AnnotationStart(bool wellFormed = false) : TextPart
     public string? AttributeValue { get; set; }
     public AnnotationEnd? EndAnnotationReference { get; set; }
     public List<XAttribute> Other { get; set; } = [];
+
+    public override string Render() => string.Empty;
 }

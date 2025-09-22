@@ -4,7 +4,7 @@ using Blackbird.Filters.Transformations;
 
 namespace Blackbird.Filters.Content;
 
-public class TextUnit(string reference, IContentCoder coder) : ITextContainer
+public class TextUnit(string reference, IContentCoder coder)
 {
     /// <summary>
     /// The reference to the location of this text unit in the original file depending on the original format.
@@ -39,7 +39,7 @@ public class TextUnit(string reference, IContentCoder coder) : ITextContainer
     /// <returns>The plain text without any tags</returns>
     public string GetPlainText()
     {
-        return string.Join(string.Empty, Parts.Where(x => x is not InlineCode && x is not InlineTag).Select(x => x.Value));
+        return string.Join(string.Empty, Parts.Where(x => x is not InlineCode).Select(x => x.Value));
     }
 
     /// <summary>
@@ -78,15 +78,5 @@ public class TextUnit(string reference, IContentCoder coder) : ITextContainer
     public void SetCodedText(string content)
     {
         Parts = ContentCoder.DeserializeSegment(content);
-    }
-
-    public string GetTarget()
-    {
-        return GetCodedText();
-    }
-
-    public string? GetSource()
-    {
-        return null;
     }
 }
