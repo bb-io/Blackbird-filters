@@ -4,7 +4,7 @@ public class Group : UnitGrouping
 {
     public List<UnitGrouping> Children { get; set; } = [];
 
-    public IEnumerable<Unit> GetUnits()
+    public override IEnumerable<Unit> GetUnits()
     {
         foreach (var child in Children) 
         {

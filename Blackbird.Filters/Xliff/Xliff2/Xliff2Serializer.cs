@@ -240,7 +240,7 @@ public static class Xliff2Serializer
                         throw new ArgumentException($"Invalid XLIFF. {node.Name.LocalName} {node.BaseUri} does not have a source.");
                     }
 
-                    List<TextPart> DeserializeLine(XElement node, WhiteSpaceHandling whiteSpaceHandling)
+                    List<LineElement> DeserializeLine(XElement node, WhiteSpaceHandling whiteSpaceHandling)
                     {
                         string SerializeCp(XElement element)
                         {
@@ -323,7 +323,7 @@ public static class Xliff2Serializer
                                 ]));
                         }
 
-                        var parts = new List<TextPart>();
+                        var parts = new List<LineElement>();
                         whiteSpaceHandling = node.GetWhiteSpaceHandling(whiteSpaceHandling);
                         foreach (var lineNode in node.Nodes())
                         {
@@ -331,7 +331,7 @@ public static class Xliff2Serializer
                             {
                                 var value = textNode.Value;
                                 if (whiteSpaceHandling != WhiteSpaceHandling.Preserve && lineNode.NodeType != XmlNodeType.CDATA) value = value.RemoveIdeFormatting();
-                                parts.Add(new TextPart { Value = value });
+                                parts.Add(new LineElement { Value = value });
                                 continue;
                             }
 
@@ -340,7 +340,7 @@ public static class Xliff2Serializer
 
                             if (element.Name == ns + "cp")
                             {
-                                parts.Add(new TextPart { Value = SerializeCp(element) });
+                                parts.Add(new LineElement { Value = SerializeCp(element) });
                                 continue;
                             }
                             else if (element.Name == ns + "mrk" || element.Name == ns + "sm")
@@ -468,7 +468,6 @@ public static class Xliff2Serializer
                         SubState = node.Get("subState"),
                         Ignorable = node.Name == ns + "ignorable",
                         SourceAttributes = sourceNode.Attributes().ToList(),
-                        OriginalMediaType = transformation.OriginalMediaType,
                     };
 
                     if (targetNode != null)
@@ -719,7 +718,7 @@ public static class Xliff2Serializer
                 var GetUniqueId = UniqueIdGenerator();
                 XElement SerializeSegment(Segment segment)
                 {
-                    XElement SerializeParts(List<TextPart> parts, string elementName, List<TextPart>? idTagsToMatch = null)
+                    XElement SerializeParts(List<LineElement> parts, string elementName, List<LineElement>? idTagsToMatch = null)
                     {
                         void SetCommonInlineArguments(XElement element, InlineTag tag)
                         {
@@ -792,7 +791,7 @@ public static class Xliff2Serializer
                             { "ph", 0 },
                         };
 
-                        string? FindMatchingTagId(TextPart part)
+                        string? FindMatchingTagId(LineElement part)
                         {
                             T? FindTagGivenPassedReferences<T>(List<T> tags, string type)
                             {
@@ -846,7 +845,7 @@ public static class Xliff2Serializer
                         }
 
                         var root = new XElement(ns + elementName);
-                        TextPart? skipUntil = null;
+                        LineElement? skipUntil = null;
                         foreach (var part in parts)
                         {
                             if (skipUntil != null)
@@ -1102,9 +1101,9 @@ public static class Xliff2Serializer
         return doc.ToString();
     }
 
-    private static List<TextPart> GetChildrenOfStartTag(List<TextPart> parts, StartTag startTag)
+    private static List<LineElement> GetChildrenOfStartTag(List<LineElement> parts, StartTag startTag)
     {
-        var newList = new List<TextPart>();
+        var newList = new List<LineElement>();
         var collect = false;
         foreach (var part in parts)
         {
@@ -1126,9 +1125,9 @@ public static class Xliff2Serializer
         return newList;
     }
 
-    private static List<TextPart> GetChildrenOfStartAnnotation(List<TextPart> parts, AnnotationStart startAnnotation)
+    private static List<LineElement> GetChildrenOfStartAnnotation(List<LineElement> parts, AnnotationStart startAnnotation)
     {
-        var newList = new List<TextPart>();
+        var newList = new List<LineElement>();
         var collect = false;
         foreach (var part in parts)
         {

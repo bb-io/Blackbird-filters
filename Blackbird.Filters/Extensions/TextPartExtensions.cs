@@ -6,9 +6,9 @@ using Blackbird.Filters.Transformations.Tags;
 namespace Blackbird.Filters.Extensions;
 public static class TextPartExtensions
 {
-    public static List<TextPart> ConvertToInlineTags(this List<TextPart> codedParts)
+    public static List<LineElement> ConvertToInlineTags(this List<TextPart> codedParts)
     {
-        var parts = new List<TextPart>();
+        var parts = new List<LineElement>();
         var dictionary = new Dictionary<StartCode, StartTag>();
 
         foreach (var part in codedParts)
@@ -35,7 +35,7 @@ public static class TextPartExtensions
                     parts.Add(inlineTag);
                     break;
                 default:
-                    parts.Add(new TextPart() { Value = part.Value });
+                    parts.Add(new LineElement() { Value = part.Value });
                     break;
             }
         }

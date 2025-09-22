@@ -1,15 +1,14 @@
-﻿using Blackbird.Filters.Content;
-using Blackbird.Filters.Enums;
+﻿using Blackbird.Filters.Enums;
 using Blackbird.Filters.Extensions;
 using Blackbird.Filters.Interfaces;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
-public class Segment(IContentCoder coder) : ITextContainer
+public class Segment(IContentCoder coder)
 {
     public IContentCoder ContentCoder { get; set; } = coder;
-    public List<TextPart> Source { get; set; } = [];
-    public List<TextPart> Target { get; set; } = [];
+    public List<LineElement> Source { get; set; } = [];
+    public List<LineElement> Target { get; set; } = [];
     public string? Id { get; internal set; }
     public bool? CanResegment { get; set; }
     public SegmentState? State { get; set; }
@@ -20,7 +19,6 @@ public class Segment(IContentCoder coder) : ITextContainer
     public WhiteSpaceHandling TargetWhiteSpaceHandling { get; set; } = WhiteSpaceHandling.Default;
     public List<XAttribute> SourceAttributes { get; set; } = [];
     public List<XAttribute> TargetAttributes { get; set; } = [];
-    internal string? OriginalMediaType { get; set; }
 
     public bool IsIgnorbale => Ignorable.HasValue && Ignorable.Value;
     public bool IsInitial => State.HasValue ? State.Value == SegmentState.Initial : true;

@@ -641,7 +641,7 @@ public static class Xliff1Serializer
         }
     }
 
-    private static XElement SerializeTextParts(List<TextPart> parts, string elementName, IEnumerable<XAttribute>? attributes = null)
+    private static XElement SerializeTextParts(List<LineElement> parts, string elementName, IEnumerable<XAttribute>? attributes = null)
     {
         var element = new XElement(XliffNs + elementName);
         if (attributes != null)
@@ -658,7 +658,7 @@ public static class Xliff1Serializer
             }
         }
 
-        var processedParts = new HashSet<TextPart>();
+        var processedParts = new HashSet<LineElement>();
         foreach (var part in parts)
         {
             if (processedParts.Contains(part))
@@ -687,7 +687,7 @@ public static class Xliff1Serializer
                     {
                         for (int i = startIndex + 1; i < endIndex; i++)
                         {
-                            if (parts[i] is TextPart textPart && !processedParts.Contains(textPart))
+                            if (parts[i] is LineElement textPart && !processedParts.Contains(textPart))
                             {
                                 gElement.Add(textPart.Value);
                                 processedParts.Add(textPart);
@@ -785,7 +785,7 @@ public static class Xliff1Serializer
                     {
                         for (var i = startIndex + 1; i < endIndex; i++)
                         {
-                            if (parts[i] is TextPart textPart && !processedParts.Contains(textPart))
+                            if (parts[i] is LineElement textPart && !processedParts.Contains(textPart))
                             {
                                 mrkElement.Add(textPart.Value);
                                 processedParts.Add(textPart);
@@ -1033,7 +1033,6 @@ public static class Xliff1Serializer
                             Id = mrkElement.Get("mid"),
                             Source = ExtractTextParts(mrkElement),
                             Ignorable = segmentIgnorable,
-                            OriginalMediaType = rootTransformation.OriginalMediaType
                         };
 
                         if (target != null)
@@ -1084,12 +1083,11 @@ public static class Xliff1Serializer
                     var segment = new Segment(contentCoder)
                     {
                         Id = element.Get("id"),
-                        Source = source != null ? ExtractTextParts(source) : new List<TextPart>(),
-                        Target = target != null ? ExtractTextParts(target) : new List<TextPart>(),
+                        Source = source != null ? ExtractTextParts(source) : new List<LineElement>(),
+                        Target = target != null ? ExtractTextParts(target) : new List<LineElement>(),
                         SourceAttributes = source?.Attributes().ToList() ?? new List<XAttribute>(),
                         TargetAttributes = target?.Attributes().GetRemaining(["state"]).ToList() ?? new List<XAttribute>(),
                         Ignorable = segmentIgnorable,
-                        OriginalMediaType = rootTransformation.OriginalMediaType
                     };
 
                     var sourceWhiteSpaceHandling = source?.Get(XNamespace.Xml + "space");
@@ -1144,15 +1142,15 @@ public static class Xliff1Serializer
         }
     }
 
-    private static List<TextPart> ExtractTextParts(XElement element)
+    private static List<LineElement> ExtractTextParts(XElement element)
     {
-        var parts = new List<TextPart>();
+        var parts = new List<LineElement>();
         var idGenerator = UniqueIdGenerator();
         foreach (var node in element.Nodes())
         {
             if (node is XText textNode)
             {
-                parts.Add(new TextPart { Value = textNode.Value });
+                parts.Add(new LineElement { Value = textNode.Value });
             }
             else if (node is XElement childElement)
             {
@@ -1289,7 +1287,7 @@ public static class Xliff1Serializer
                 }
                 else if(!string.IsNullOrEmpty(childElement.Value))
                 {
-                    parts.Add(new TextPart { Value = childElement.Value });
+                    parts.Add(new LineElement { Value = childElement.Value });
                 }
             }
         }

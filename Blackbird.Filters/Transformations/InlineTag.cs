@@ -1,11 +1,10 @@
-﻿using Blackbird.Filters.Content;
-using Blackbird.Filters.Enums;
+﻿using Blackbird.Filters.Enums;
 using Blackbird.Filters.Shared;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
 
-public class InlineTag : TextPart
+public class InlineTag : LineElement
 {
     public string? Id { get; set; }
     public bool? CanCopy { get; set; }

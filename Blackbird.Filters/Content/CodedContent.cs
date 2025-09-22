@@ -66,7 +66,7 @@ public class CodedContent
         {
             var unit = new Unit(contentCoder) { Name = textUnit.Reference, Id = id, FormatStyle = textUnit.FormatStyle };
             unitsDictionary[textUnit] = unit;
-            var parts = new List<TextPart>();
+            var parts = new List<LineElement>();
 
             var dictionary = new Dictionary<StartCode, StartTag>();
 
@@ -97,7 +97,7 @@ public class CodedContent
                         parts.Add(inlineTag);
                         break;
                     default:
-                        parts.Add(new TextPart() { Value = part.Value });
+                        parts.Add(new LineElement() { Value = part.Value });
                         break;
                 }
             }
