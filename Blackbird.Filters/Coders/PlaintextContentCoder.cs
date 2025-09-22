@@ -1,24 +1,27 @@
 ﻿using Blackbird.Filters.Content;
+using Blackbird.Filters.Interfaces;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Blackbird.Filters.Coders;
-public class PlaintextContentCoder
+public class PlaintextContentCoder : IContentCoder
 {
+    public IEnumerable<string> SupportedMediaTypes => [MediaTypeNames.Text.Plain];
+
     /// <summary>
     /// Turn any plaintext content into coded content.
     /// </summary>
     /// <param name="content">The plaintext string</param>
     /// <returns></returns>
-    public static CodedContent Deserialize(string content, string fileName)
+    public CodedContent Deserialize(string content, string fileName)
     {
         var sentences = Regex
             .Split(content, @"\r\n|\n|\r", RegexOptions.Compiled)
             .ToList();
 
-        var codedContent = new CodedContent(fileName, Text.Plain, content)
+        var codedContent = new CodedContent(fileName, MediaTypeNames.Text.Plain, content)
         {
-            TextUnits = sentences.Select(x => new TextUnit(string.Empty, Text.Plain) { Parts = [new TextPart { Value = x}] }).ToList(),
+            TextUnits = sentences.Select(x => new TextUnit(string.Empty, this) { Parts = [new TextPart { Value = x}] }).ToList(),
         };
 
         return codedContent;
@@ -29,7 +32,7 @@ public class PlaintextContentCoder
     /// </summary>
     /// <param name="content">An plaintext coded content representation</param>
     /// <returns></returns>
-    public static string Serialize(CodedContent content)
+    public string Serialize(CodedContent content)
     {
         var newLineCharacter = GetNewLineCharacter(content.Original);
         return string.Join(newLineCharacter, content.TextUnits.Select(x => x.GetCodedText()));
@@ -49,8 +52,18 @@ public class PlaintextContentCoder
     /// </summary>
     /// <param name="content">The supposed plaintext content string</param>
     /// <returns>True if this is plaintext. False otherwise.</returns>
-    public static bool IsPlaintext(string content)
+    public bool CanProcessContent(string content)
     {
         return !content.Contains('\0') && !content.Contains('\uFFFD');
+    }
+
+    public List<TextPart> DeserializeSegment(string segment)
+    {
+        return [new() { Value = segment }];
+    }
+
+    public string NormalizeSegment(string segment)
+    {
+        return segment;
     }
 }

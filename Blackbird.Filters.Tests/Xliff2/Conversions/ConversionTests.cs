@@ -14,7 +14,7 @@ public class ConversionTests : TestBase
     {
         var givenHtml = "<i>Hello</i><b>world</b>";
 
-        var content = HtmlContentCoder.Deserialize(givenHtml, "sample.html");
+        var content = new HtmlContentCoder().Deserialize(givenHtml, "sample.html");
         var transformation = content.CreateTransformation("es");
         var xliff = Xliff2Serializer.Serialize(transformation);
 
@@ -27,7 +27,7 @@ public class ConversionTests : TestBase
     {
         var givenHtml = "<i>Hello</i><b>world</b>";
 
-        var xliff = HtmlContentCoder.Deserialize(givenHtml, "sample.html").CreateTransformation("es").Serialize();
+        var xliff = new HtmlContentCoder().Deserialize(givenHtml, "sample.html").CreateTransformation("es").Serialize();
 
         var translation = PseudoTranslateXliff(xliff, "sample.html.xlf");
         var returned = Transformation.Parse(translation, "sample.html.xlf");
@@ -49,7 +49,7 @@ public class ConversionTests : TestBase
     {
         var givenHtml = "<i>Hello</i><i>world</i>";
 
-        var xliff = HtmlContentCoder.Deserialize(givenHtml, "sample.html").CreateTransformation("es").Serialize();
+        var xliff = new HtmlContentCoder().Deserialize(givenHtml, "sample.html").CreateTransformation("es").Serialize();
 
         var translation = PseudoTranslateXliff(xliff, "sample.html.xlf");
         var returned = Transformation.Parse(translation, "sample.html.xlf");

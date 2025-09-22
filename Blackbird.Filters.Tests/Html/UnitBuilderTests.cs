@@ -105,7 +105,7 @@ public class UnitBuilderTests : TestBase
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(original);
-        var units = HtmlContentCoder.BuildUnits(doc.DocumentNode);
+        var units = new HtmlContentCoder().BuildUnits(doc.DocumentNode);
         return units.First();
     }
 }

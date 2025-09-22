@@ -1,15 +1,10 @@
-﻿using Blackbird.Filters.Coders;
-using Blackbird.Filters.Content.Tags;
-using Blackbird.Filters.Enums;
-using Blackbird.Filters.Interfaces;
+﻿using Blackbird.Filters.Interfaces;
 using Blackbird.Filters.Shared;
 using Blackbird.Filters.Transformations;
-using HtmlAgilityPack;
-using System.Net.Mime;
 
 namespace Blackbird.Filters.Content;
 
-public class TextUnit(string reference, string? originalMediaType) : ITextContainer
+public class TextUnit(string reference, IContentCoder coder) : ITextContainer
 {
     /// <summary>
     /// The reference to the location of this text unit in the original file depending on the original format.
@@ -21,7 +16,10 @@ public class TextUnit(string reference, string? originalMediaType) : ITextContai
     /// </summary>
     public List<TextPart> Parts { get; set; } = [];
 
-    public string? OriginalMediaType { get; set; } = originalMediaType;
+    /// <summary>
+    /// The coder that is responsible for serializing/deserializing this unit
+    /// </summary>
+    public IContentCoder ContentCoder { get; set; } = coder;
 
     /// <summary>
     /// Keys are used for change detection. Only changes among text units of the same key are considered. 
@@ -70,26 +68,7 @@ public class TextUnit(string reference, string? originalMediaType) : ITextContai
     {
         var codedText = GetCodedText();
         if (string.IsNullOrEmpty(codedText)) return codedText ?? string.Empty;
-        if (OriginalMediaType == MediaTypeNames.Text.Html)
-        {
-            try
-            {
-                var doc = new HtmlDocument { OptionWriteEmptyNodes = true };
-                doc.LoadHtml(codedText);
-                foreach (var node in doc.DocumentNode.Descendants().Where(n => n.NodeType == HtmlNodeType.Element))
-                {
-                    node.Attributes.RemoveAll();
-                }
-
-                return doc.DocumentNode.InnerHtml;
-            }
-            catch (Exception)
-            {
-                return codedText;
-            }
-        }
-
-        return codedText;
+        return ContentCoder.NormalizeSegment(codedText);
     }
 
     /// <summary>
@@ -98,23 +77,7 @@ public class TextUnit(string reference, string? originalMediaType) : ITextContai
     /// <param name="content">The text (can include tags)</param>
     public void SetCodedText(string content)
     {
-        if (OriginalMediaType == MediaTypeNames.Text.Html)
-        {
-            try
-            {
-                var doc = new HtmlDocument();
-                doc.LoadHtml(content);
-                Parts = HtmlContentCoder.BuildTextParts(doc.DocumentNode.ChildNodes, Key);
-            } catch (Exception)
-            {
-                Parts = [new() { Value = content }];
-            }
-
-        }
-        else
-        {
-            Parts = [new() { Value = content }];
-        }
+        Parts = ContentCoder.DeserializeSegment(content);
     }
 
     public string GetTarget()
