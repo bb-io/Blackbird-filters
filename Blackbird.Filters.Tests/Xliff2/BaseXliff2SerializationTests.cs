@@ -309,6 +309,8 @@ public class BaseXliff2SerializationTests : TestBase
             if (unit.Name is not null && !unit.Name.Contains("alt"))
             {
                 Assert.That(unit.FormatStyle.Tag, Is.Not.Null);
+                Assert.That(string.IsNullOrEmpty(unit.GetSource().GetRenderedText()), Is.False);
+                Console.WriteLine(unit.GetSource().GetRenderedText());
             }
 
             foreach (var segment in unit.Segments)

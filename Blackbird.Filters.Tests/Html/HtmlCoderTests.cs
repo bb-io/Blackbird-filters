@@ -244,6 +244,7 @@ public class HtmlCoderTests : TestBase
             if (!unit.Reference.Contains("alt"))
             {
                 Assert.That(unit.FormatStyle.Tag, Is.Not.Null);
+                Console.WriteLine(unit.GetRenderedText());
             }
             
             foreach(var inlineTag in unit.Parts.OfType<InlineCode>())
