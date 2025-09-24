@@ -116,7 +116,13 @@ public class HtmlCoderTests : TestBase
         Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
         Assert.IsTrue(result.Target.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
         Assert.IsTrue(result.Source.TextUnits.Any(x => x.FormatStyle.Tag == HtmlTag.Image && x.FormatStyle.Attributes.ContainsKey("src") && x.FormatStyle.Attributes["src"] == "img_girl.jpg"));
-        Assert.IsTrue(result.Target.TextUnits.Any(x => x.FormatStyle.Tag == HtmlTag.Image && x.FormatStyle.Attributes.ContainsKey("src") && x.FormatStyle.Attributes["src"] == "img_girl.jpg"));
+
+        var targetTextUnit = result.Target.TextUnits.FirstOrDefault(x => x.FormatStyle.Tag == HtmlTag.Image);
+        Assert.IsNotNull(targetTextUnit);        
+        Assert.IsTrue(targetTextUnit.FormatStyle.Attributes.ContainsKey("src") && targetTextUnit.FormatStyle.Attributes["src"] == "img_girl.jpg");
+        Console.WriteLine(targetTextUnit.GetRenderedText());
+        
+        Assert.That(targetTextUnit.GetRenderedText(), Is.EqualTo("<img src=\"img_girl.jpg\" alt=\"Girl with a jacketTRANSLATED\" width=\"500\" height=\"600\">"));
     }
 
     [Test]
