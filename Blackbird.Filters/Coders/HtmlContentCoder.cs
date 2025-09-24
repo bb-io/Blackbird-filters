@@ -160,7 +160,7 @@ public class HtmlContentCoder : IContentCoder
 
         foreach (var attribute in node.GetTranslatableAttributes()) 
         {
-            units.Add(BuildUnit(attribute, key));
+            units.Add(BuildUnit(attribute, node, key));
         }
 
         if (node.NodeType == HtmlNodeType.Text)
@@ -232,7 +232,7 @@ public class HtmlContentCoder : IContentCoder
                 var subUnits = new List<TextUnit>();
                 foreach (var attribute in child.GetTranslatableAttributes())
                 {
-                    subUnits.Add(BuildUnit(attribute, key));
+                    subUnits.Add(BuildUnit(attribute, child, key));
                 }
 
                 if (child.ChildNodes.Count() == 0)
@@ -258,7 +258,10 @@ public class HtmlContentCoder : IContentCoder
         return parts;
     }
 
-    private TextUnit BuildUnit(HtmlAttribute attribute, string? key = null) => new(attribute.XPath, new PlaintextContentCoder()) { Key = key, Parts = [new TextPart { Value = attribute.Value }] };
+    private TextUnit BuildUnit(HtmlAttribute attribute, HtmlNode originalNode, string? key = null)
+    {
+        return new(attribute.XPath, new PlaintextContentCoder()) { Key = key, Parts = [new TextPart { Value = attribute.Value }], FormatStyle = GetFormatStyle(originalNode) };
+    }
 
     private FormatStyle GetFormatStyle(HtmlNode node)
     {

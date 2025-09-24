@@ -114,6 +114,9 @@ public class HtmlCoderTests : TestBase
         HtmlAssert.AreEqual(result.Original, result.SourceString);
         Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
         Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.IsTrue(result.Target.TextUnits.Any(x => x.GetCodedText().Contains("Girl with a jacket", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.IsTrue(result.Source.TextUnits.Any(x => x.FormatStyle.Tag == HtmlTag.Image && x.FormatStyle.Attributes.ContainsKey("src") && x.FormatStyle.Attributes["src"] == "img_girl.jpg"));
+        Assert.IsTrue(result.Target.TextUnits.Any(x => x.FormatStyle.Tag == HtmlTag.Image && x.FormatStyle.Attributes.ContainsKey("src") && x.FormatStyle.Attributes["src"] == "img_girl.jpg"));
     }
 
     [Test]
@@ -124,6 +127,7 @@ public class HtmlCoderTests : TestBase
         HtmlAssert.AreEqual(result.Original, result.SourceString);
         Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(3));
         Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("Click here to start!", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.IsTrue(result.Target.TextUnits.Any(x => x.GetCodedText().Contains("Click here to start!", StringComparison.InvariantCultureIgnoreCase)));
     }
 
     [Test]
@@ -134,6 +138,7 @@ public class HtmlCoderTests : TestBase
         HtmlAssert.AreEqual(result.Original, result.SourceString);
         Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(4));
         Assert.IsTrue(result.Source.TextUnits.Any(x => x.GetCodedText().Contains("I'm a tooltip", StringComparison.InvariantCultureIgnoreCase)));
+        Assert.IsTrue(result.Target.TextUnits.Any(x => x.GetCodedText().Contains("I'm a tooltip", StringComparison.InvariantCultureIgnoreCase)));
     }
 
     [Test]
