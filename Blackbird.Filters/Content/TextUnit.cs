@@ -48,7 +48,7 @@ public class TextUnit(string reference, IContentCoder coder)
     /// <returns>An HTML formatted string</returns>
     public string GetRenderedText()
     {
-        return FormatStyle.ToHtml(string.Join(string.Empty, Parts.Select(x => x.Render())));
+        return FormatStyle.ToHtml(string.Join(string.Empty, Parts.Select(x => x.Render())), Reference);
     }
 
     /// <summary>
