@@ -1,6 +1,7 @@
 ﻿using Blackbird.Filters.Constants;
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Extensions;
+using Blackbird.Filters.Shared;
 using Blackbird.Filters.Xliff.Xliff1;
 using Blackbird.Filters.Xliff.Xliff2;
 using System.Net.Mime;
@@ -36,17 +37,8 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
     /// </summary>
     public string XliffFileName { get => _xliffFileName ?? ((OriginalName ?? OriginalReference ?? "transformation") + ".xlf"); set => _xliffFileName = value; }
 
-    public string? UniqueSourceContentId
-    {
-        get => GetBlackbirdMetadata(Meta.Types.SourceUniqueContentId);
-        set => SetBlackbirdMetadata(Meta.Types.SourceUniqueContentId, value);
-    }
-
-    public string? UniqueTargetContentId
-    {
-        get => GetBlackbirdMetadata(Meta.Types.TargetUniqueContentId);
-        set => SetBlackbirdMetadata(Meta.Types.TargetUniqueContentId, value);
-    }
+    public SystemReference SourceSystemReference { get; set; } = new SystemReference();
+    public SystemReference TargetSystemReference { get; set; } = new SystemReference();
 
     public IEnumerable<Unit> GetUnits()
     {
@@ -78,7 +70,8 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         if (Original is null) throw new NullReferenceException("Cannot convert to content, no original data found");
         var codedContent = new CodedContent(OriginalName ?? OriginalReference ?? "transformation.txt", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         codedContent.Language = SourceLanguage;
-        codedContent.UniqueContentId = UniqueSourceContentId;
+        codedContent.SystemReference = SourceSystemReference;
+        codedContent.Provenance = Provenance;
         codedContent.TextUnits = [.. GetUnits().Where(x => x.Name is not null).Select(x => x.GetSource())];
         return codedContent;
     }
@@ -88,7 +81,8 @@ public class Transformation(string? sourceLanguage, string? targetLanguage) : No
         if (Original is null) throw new NullReferenceException("Cannot convert to content, no original data found");
         var codedContent = new CodedContent(OriginalName ?? OriginalReference ?? "transformation.txt", OriginalMediaType ?? MediaTypeNames.Text.Plain, Original);
         codedContent.Language = TargetLanguage;
-        codedContent.UniqueContentId = UniqueTargetContentId;
+        codedContent.SystemReference = TargetSystemReference;
+        codedContent.Provenance = Provenance;
         codedContent.TextUnits = [.. GetUnits().Where(x => x.Name is not null).Select(x => x.GetTarget())];
         return codedContent;
     }

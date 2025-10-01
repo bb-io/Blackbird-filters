@@ -1,6 +1,7 @@
 ﻿using Blackbird.Filters.Coders;
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Extensions;
+using Blackbird.Filters.Shared;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Transformations.Tags;
 using Blackbird.Filters.Xliff.Xliff1;
@@ -43,9 +44,14 @@ public class CodedContent
     public string? Language { get; set; }
 
     /// <summary>
-    /// A unique identifier to the content in the real world, f.e. the ID of the content in a CMS.
+    /// A reference to where this content lives in the real world.
     /// </summary>
-    public string? UniqueContentId { get; set; }
+    public SystemReference SystemReference { get; set; } = new SystemReference();
+
+    /// <summary>
+    /// Provenance information of the content
+    /// </summary>
+    public Provenance Provenance { get; set; } = new Provenance();
 
     public Transformation CreateTransformation(string? targetLanguage = null)
     {
@@ -55,7 +61,8 @@ public class CodedContent
             Original = Original, 
             OriginalName = OriginalName, 
             OriginalMediaType = OriginalMediaType,
-            UniqueSourceContentId = UniqueContentId,
+            SourceSystemReference = SystemReference,
+            Provenance = Provenance,
         };
 
         var unitReferences = new Dictionary<InlineTag, List<TextUnit>>();

@@ -1,9 +1,4 @@
-﻿using Blackbird.Filters.Content;
-using Blackbird.Filters.Extensions;
-using Blackbird.Filters.Tests.CustomAssertions;
-using Blackbird.Filters.Transformations;
-using Blackbird.Filters.Xliff.Xliff2;
-using System.Text;
+﻿using Blackbird.Filters.Xliff.Xliff2;
 
 namespace Blackbird.Filters.Tests.Other;
 

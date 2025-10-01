@@ -194,6 +194,28 @@ public static class Xliff2Serializer
                 MetaNs + "metadata"]));
             transformation.Other.AddRange(node.Attributes().GetRemaining([ ..CommonNodeLevelAttributes, "original" ]));
 
+            string? GetAndRemoveBlackbirdMetadata(string type)
+            {
+                var meta = transformation.MetaData.FirstOrDefault(x => x.Category.Contains(Meta.Categories.Blackbird) && x.Type == type);
+                if (meta is null) return null;
+                transformation.MetaData.Remove(meta);
+                return meta.Value;
+            }
+
+            transformation.SourceSystemReference.ContentId = GetAndRemoveBlackbirdMetadata(Meta.Direction.Source + Meta.Types.ContentId);
+            transformation.SourceSystemReference.ContentName = GetAndRemoveBlackbirdMetadata(Meta.Direction.Source + Meta.Types.ContentName);
+            transformation.SourceSystemReference.AdminUrl = GetAndRemoveBlackbirdMetadata(Meta.Direction.Source + Meta.Types.AdminUrl);
+            transformation.SourceSystemReference.PublicUrl = GetAndRemoveBlackbirdMetadata(Meta.Direction.Source + Meta.Types.PublicUrl);
+            transformation.SourceSystemReference.SystemName = GetAndRemoveBlackbirdMetadata(Meta.Direction.Source + Meta.Types.SystemName);
+            transformation.SourceSystemReference.SystemRef = GetAndRemoveBlackbirdMetadata(Meta.Direction.Source + Meta.Types.SystemRef);
+
+            transformation.TargetSystemReference.ContentId = GetAndRemoveBlackbirdMetadata(Meta.Direction.Target + Meta.Types.ContentId);
+            transformation.TargetSystemReference.ContentName = GetAndRemoveBlackbirdMetadata(Meta.Direction.Target + Meta.Types.ContentName);
+            transformation.TargetSystemReference.AdminUrl = GetAndRemoveBlackbirdMetadata(Meta.Direction.Target + Meta.Types.AdminUrl);
+            transformation.TargetSystemReference.PublicUrl = GetAndRemoveBlackbirdMetadata(Meta.Direction.Target + Meta.Types.PublicUrl);
+            transformation.TargetSystemReference.SystemName = GetAndRemoveBlackbirdMetadata(Meta.Direction.Target + Meta.Types.SystemName);
+            transformation.TargetSystemReference.SystemRef = GetAndRemoveBlackbirdMetadata(Meta.Direction.Target + Meta.Types.SystemRef);
+
             var skeleton = node.Element(ns + "skeleton");
             if (skeleton != null && skeleton.Nodes().Any())
             {
@@ -1017,6 +1039,41 @@ public static class Xliff2Serializer
             var metadata = new List<Metadata>();
             notes = transformation.Notes.Where(x => !x.Global).ToList();
             metadata = transformation.MetaData.Where(x => !x.Global).ToList();
+
+            void SetBlackbirdMetadata(string type, string? value)
+            {
+                var existing = metadata.FirstOrDefault(x => x.Category.Contains(Meta.Categories.Blackbird) && x.Type == type);
+
+                if (existing is not null)
+                {
+                    if (value is null)
+                    {
+                        metadata.Remove(existing);
+                    }
+                    else
+                    {
+                        existing.Value = value;
+                    }
+                }
+                else if (value is not null)
+                {
+                    metadata.Add(new Metadata(type, value) { Category = [Meta.Categories.Blackbird] });
+                }
+            }
+
+            SetBlackbirdMetadata(Meta.Direction.Source + Meta.Types.ContentId,      transformation.SourceSystemReference.ContentId);
+            SetBlackbirdMetadata(Meta.Direction.Source + Meta.Types.ContentName,    transformation.SourceSystemReference.ContentName);
+            SetBlackbirdMetadata(Meta.Direction.Source + Meta.Types.AdminUrl,       transformation.SourceSystemReference.AdminUrl);
+            SetBlackbirdMetadata(Meta.Direction.Source + Meta.Types.PublicUrl,      transformation.SourceSystemReference.PublicUrl);
+            SetBlackbirdMetadata(Meta.Direction.Source + Meta.Types.SystemName,     transformation.SourceSystemReference.SystemName);
+            SetBlackbirdMetadata(Meta.Direction.Source + Meta.Types.SystemRef,      transformation.SourceSystemReference.SystemRef);
+
+            SetBlackbirdMetadata(Meta.Direction.Target + Meta.Types.ContentId,      transformation.TargetSystemReference.ContentId);
+            SetBlackbirdMetadata(Meta.Direction.Target + Meta.Types.ContentName,    transformation.TargetSystemReference.ContentName);
+            SetBlackbirdMetadata(Meta.Direction.Target + Meta.Types.AdminUrl,       transformation.TargetSystemReference.AdminUrl);
+            SetBlackbirdMetadata(Meta.Direction.Target + Meta.Types.PublicUrl,      transformation.TargetSystemReference.PublicUrl);
+            SetBlackbirdMetadata(Meta.Direction.Target + Meta.Types.SystemName,     transformation.TargetSystemReference.SystemName);
+            SetBlackbirdMetadata(Meta.Direction.Target + Meta.Types.SystemRef,      transformation.TargetSystemReference.SystemRef);
 
             if (version < Xliff2Version.Xliff22)            
             {

@@ -1,4 +1,5 @@
-﻿using Blackbird.Filters.Content;
+﻿using Blackbird.Filters.Constants;
+using Blackbird.Filters.Content;
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
 using Blackbird.Filters.Extensions;
@@ -29,7 +30,27 @@ public class HtmlContentCoder : IContentCoder
         };
 
         codedContent.Language = GetHtmlLangAttribute(doc);
-        codedContent.UniqueContentId = GetBlackbirdUcid(doc);
+
+        codedContent.SystemReference.ContentId = GetBlackbirdMeta(doc, Meta.Types.ContentId);
+        codedContent.SystemReference.ContentName = GetBlackbirdMeta(doc, Meta.Types.ContentName);
+        codedContent.SystemReference.AdminUrl = GetBlackbirdMeta(doc, Meta.Types.AdminUrl);
+        codedContent.SystemReference.PublicUrl = GetBlackbirdMeta(doc, Meta.Types.PublicUrl);
+        codedContent.SystemReference.SystemName = GetBlackbirdMeta(doc, Meta.Types.SystemName);
+        codedContent.SystemReference.SystemRef = GetBlackbirdMeta(doc, Meta.Types.SystemRef);
+
+        codedContent.Provenance.Translation.Person = GetBodyAttribute(doc, "its-person");
+        codedContent.Provenance.Translation.PersonReference = GetBodyAttribute(doc, "its-person-ref");
+        codedContent.Provenance.Translation.Organization = GetBodyAttribute(doc, "its-org");
+        codedContent.Provenance.Translation.OrganizationReference = GetBodyAttribute(doc, "its-org-ref");
+        codedContent.Provenance.Translation.Tool = GetBodyAttribute(doc, "its-tool");
+        codedContent.Provenance.Translation.ToolReference = GetBodyAttribute(doc, "its-tool-ref");
+
+        codedContent.Provenance.Review.Person = GetBodyAttribute(doc, "its-rev-person");
+        codedContent.Provenance.Review.PersonReference = GetBodyAttribute(doc, "its-rev-person-ref");
+        codedContent.Provenance.Review.Organization = GetBodyAttribute(doc, "its-rev-org");
+        codedContent.Provenance.Review.OrganizationReference = GetBodyAttribute(doc, "its-rev-org-ref");
+        codedContent.Provenance.Review.Tool = GetBodyAttribute(doc, "its-rev-tool");
+        codedContent.Provenance.Review.ToolReference = GetBodyAttribute(doc, "its-rev-tool-ref");
 
         return codedContent;
     }
@@ -46,9 +67,21 @@ public class HtmlContentCoder : IContentCoder
         return null;
     }
 
-    private string? GetBlackbirdUcid(HtmlDocument document)
+    private string? GetBodyAttribute(HtmlDocument document, string name)
     {
-        var metaNode = document.DocumentNode.SelectSingleNode("//meta[@name='blackbird-ucid']");
+        var bodyNode = document.DocumentNode.SelectSingleNode("//body");
+
+        if (bodyNode != null && bodyNode.Attributes[name] != null)
+        {
+            return bodyNode.Attributes[name].Value;
+        }
+
+        return null;
+    }
+
+    private string? GetBlackbirdMeta(HtmlDocument document, string name)
+    {
+        var metaNode = document.DocumentNode.SelectSingleNode($"//meta[@name='blackbird-{name}']");
 
         if (metaNode != null && metaNode.Attributes["content"] != null)
         {
@@ -69,12 +102,14 @@ public class HtmlContentCoder : IContentCoder
         var doc = new HtmlDocument();
         doc.LoadHtml(content.Original);
 
-        if (content.UniqueContentId != null)
-        {
-            SetOrUpdateBlackbirdUcid(doc, content.UniqueContentId);
-        }
+        SetOrUpdateBlackbirdMeta(doc, Meta.Types.ContentId, content.SystemReference.ContentId);
+        SetOrUpdateBlackbirdMeta(doc, Meta.Types.ContentName, content.SystemReference.ContentName);
+        SetOrUpdateBlackbirdMeta(doc, Meta.Types.AdminUrl, content.SystemReference.AdminUrl);
+        SetOrUpdateBlackbirdMeta(doc, Meta.Types.PublicUrl, content.SystemReference.PublicUrl);
+        SetOrUpdateBlackbirdMeta(doc, Meta.Types.SystemName, content.SystemReference.SystemName);
+        SetOrUpdateBlackbirdMeta(doc, Meta.Types.SystemRef, content.SystemReference.SystemRef);
 
-        foreach(var unit in content.TextUnits)
+        foreach (var unit in content.TextUnits)
         {
             if (unit.Reference is null) continue;
             var node = doc.DocumentNode.SelectSingleNode(unit.Reference.Replace("/#text", "/text()"));
@@ -94,8 +129,10 @@ public class HtmlContentCoder : IContentCoder
         return doc.DocumentNode.OuterHtml;
     }
 
-    private void SetOrUpdateBlackbirdUcid(HtmlDocument document, string ucidValue)
+    private void SetOrUpdateBlackbirdMeta(HtmlDocument document, string name, string? value)
     {
+        if (value is null) return;
+
         var headNode = document.DocumentNode.SelectSingleNode("//head");
         if (headNode == null)
         {
@@ -108,18 +145,18 @@ public class HtmlContentCoder : IContentCoder
                 document.DocumentNode.AppendChild(headNode);
         }
 
-        var metaNode = headNode.SelectSingleNode("meta[@name='blackbird-ucid']");
+        var metaNode = headNode.SelectSingleNode($"meta[@name='blackbird-{name}']");
         if (metaNode != null)
         {
             // Update existing
-            metaNode.SetAttributeValue("content", ucidValue);
+            metaNode.SetAttributeValue("content", value);
         }
         else
         {
             // Create new
             var newMeta = document.CreateElement("meta");
-            newMeta.SetAttributeValue("name", "blackbird-ucid");
-            newMeta.SetAttributeValue("content", ucidValue);
+            newMeta.SetAttributeValue("name", $"blackbird-{name}");
+            newMeta.SetAttributeValue("content", value);
             headNode.AppendChild(newMeta);
         }
     }
