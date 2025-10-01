@@ -2,6 +2,7 @@
 using Blackbird.Filters.Content;
 using Blackbird.Filters.Content.Tags;
 using Blackbird.Filters.Enums;
+using Blackbird.Filters.Shared;
 using Blackbird.Filters.Tests.CustomAssertions;
 using Blackbird.Filters.Transformations;
 using System.Text;
@@ -182,10 +183,10 @@ public class HtmlCoderTests : TestBase
         var result = Process("Html/Files/contentful.html");
 
         Assert.That(result.Source.Language, Is.EqualTo("en"));
-        Assert.That(result.Source.UniqueContentId, Is.EqualTo("5746dLKTkEZjOQX21HX2KI"));
+        Assert.That(result.Source.SystemReference.ContentId, Is.EqualTo("5746dLKTkEZjOQX21HX2KI"));
 
         Assert.That(result.Transformation.SourceLanguage, Is.EqualTo("en"));
-        Assert.That(result.Transformation.UniqueSourceContentId, Is.EqualTo("5746dLKTkEZjOQX21HX2KI"));
+        Assert.That(result.Transformation.SourceSystemReference.ContentId, Is.EqualTo("5746dLKTkEZjOQX21HX2KI"));
     }
 
     [Test]
@@ -272,6 +273,64 @@ public class HtmlCoderTests : TestBase
                 }
             }
         }
+    }
+
+    [Test]
+    public void System_reference()
+    {
+        static void AssertCorrectSystemReference(SystemReference reference)
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(reference.ContentId, Is.EqualTo("5746dLKTkEZjOQX21HX2KI"));
+                Assert.That(reference.ContentName, Is.EqualTo("The Loire Valley"));
+                Assert.That(reference.AdminUrl, Is.EqualTo("https://app.contentful.com/spaces/12ktqqmw656e/entries/5746dLKTkEZjOQX21HX2KI"));
+                Assert.That(reference.PublicUrl, Is.EqualTo("https://www.example.com"));
+                Assert.That(reference.SystemName, Is.EqualTo("Contentful"));
+                Assert.That(reference.SystemRef, Is.EqualTo("https://www.contentful.com"));
+            });
+        }
+
+        var original = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
+        var coded = new HtmlContentCoder().Deserialize(original, "contentful.html");
+
+        Display(coded.SystemReference);
+        AssertCorrectSystemReference(coded.SystemReference);
+
+        var transformation = coded.CreateTransformation("nl");
+        transformation.TargetSystemReference = transformation.SourceSystemReference;
+        AssertCorrectSystemReference(transformation.SourceSystemReference);
+
+        var transformation2 = Transformation.Parse(transformation.Serialize(), transformation.XliffFileName);
+
+        AssertCorrectSystemReference(transformation2.SourceSystemReference);
+        AssertCorrectSystemReference(transformation2.TargetSystemReference);
+
+        var coded2 = transformation2.Target();
+        AssertCorrectSystemReference(coded2.SystemReference);
+    }
+
+    [Test]
+    public void Provenance()
+    {
+        static void AssertCorrectProvenance(Provenance provenance)
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(provenance.Translation.ToolReference, Is.EqualTo("http://www.onlinemtex.com/2012/7/25/wsdl/"));
+                Assert.That(provenance.Translation.Organization, Is.EqualTo("acme-CAT-v2.3"));
+                Assert.That(provenance.Review.Organization, Is.EqualTo("acme-CAT-v2.3"));
+            });
+        }
+
+        var original = File.ReadAllText("Html/Files/contentful.html", Encoding.UTF8);
+        var coded = new HtmlContentCoder().Deserialize(original, "contentful.html");
+
+        Display(coded.Provenance);
+        AssertCorrectProvenance(coded.Provenance);
+
+        var transformation = coded.CreateTransformation("nl");
+        AssertCorrectProvenance(transformation.Provenance);
     }
 
 }
