@@ -1,0 +1,24 @@
+<xliff version="2.2" srcLang="en-us"
+    xmlns="urn:oasis:names:tc:xliff:document:2.2"
+    xmlns:slr="urn:oasis:names:tc:xliff:sizerestriction:2.0">
+  <file id="f1">
+    <slr:profiles generalProfile="xliff:codepoints"
+        storageProfile="xliff:utf8">
+      <slr:normalization general="nfc" storage="nfc" />
+    </slr:profiles>
+    <group id="g1" slr:storageRestriction="255" slr:sizeRestriction="90">
+      <unit id="u1" slr:sizeRestriction="60">
+        <segment>
+          <source>This is a small <pc id="1" equivStorage="7"
+              slr:sizeRestriction="25">size restriction</pc>
+              example. </source>
+        </segment>
+      </unit>
+      <unit id="u2" slr:sizeRestriction="35">
+        <segment>
+          <source>With a group structure.</source>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

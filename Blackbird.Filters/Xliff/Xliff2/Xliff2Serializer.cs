@@ -18,6 +18,7 @@ public static class Xliff2Serializer
     public static readonly XNamespace MetaNs = "urn:oasis:names:tc:xliff:metadata:2.0";
     public static readonly XNamespace ItsNs = "http://www.w3.org/2005/11/its";
     public static readonly XNamespace FormatStyleNs = "urn:oasis:names:tc:xliff:fs:2.0";
+    public static readonly XNamespace SizeRestrictionNs = "urn:oasis:names:tc:xliff:sizerestriction:2.0";
 
     private static readonly List<XName> CommonNodeLevelAttributes = [
         "id",
@@ -136,6 +137,11 @@ public static class Xliff2Serializer
 
         }
 
+        SizeRestrictions DeserializeSizeRestrictions(XElement node)
+        {
+            return SizeRestrictionHelper.Deserialize(node.Get(SizeRestrictionNs + "sizeRestriction"));
+        }
+
         Provenance DeserializeProvenance(XElement node)
         {
             ArgumentNullException.ThrowIfNull(node);
@@ -239,6 +245,7 @@ public static class Xliff2Serializer
                     Quality = DeserializeLocQuality(node),
                     Provenance = DeserializeProvenance(node),
                     FormatStyle = DeserializeFormatStyle(node),
+                    SizeRestrictions = DeserializeSizeRestrictions(node),
                 };
 
                 unit.Other.AddRange(node.Elements().GetRemaining([
@@ -247,7 +254,7 @@ public static class Xliff2Serializer
                     ns + "segment", 
                     ns + "ignorable", 
                     MetaNs + "metadata"]));
-                unit.Other.AddRange(node.Attributes().GetRemaining([.. CommonNodeLevelAttributes, "name"]));
+                unit.Other.AddRange(node.Attributes().GetRemaining([.. CommonNodeLevelAttributes, "name", SizeRestrictionNs + "sizeRestriction"]));
 
                 Dictionary<string, XElement> data = node.Element(ns + "originalData")?.Elements()?.ToDictionary(x => x.Get("id", Optionality.Required)!, x => x) ?? [];
 
@@ -588,6 +595,7 @@ public static class Xliff2Serializer
         bool metaUsed = false;
         bool itsUsed = false;
         bool fsUsed = false;
+        bool sizeRestrictionUsed = false;
 
         XElement? SerializeNotes(List<Note> notes, bool global = false)
         {
@@ -649,6 +657,14 @@ public static class Xliff2Serializer
             fsUsed = true;
             element.Set(FormatStyleNs + "fs", style.Tag.Value.ToTag());
             element.Set(FormatStyleNs + "subFs", SubFsHelper.ToSubFsString(style.Attributes));
+        }
+
+        void SerializeSizeRestriction(XElement element, SizeRestrictions sizeRestrictions)
+        {
+            var serialized = SizeRestrictionHelper.Serialize(sizeRestrictions);
+            if (serialized == null) return;
+            sizeRestrictionUsed = true;
+            element.Set(SizeRestrictionNs + "sizeRestriction", serialized);
         }
 
         XElement? SerializeMetadata(List<Metadata> metadata, bool global = false)
@@ -1006,6 +1022,7 @@ public static class Xliff2Serializer
                 SerializeQuality(root, unit.Quality);
                 SerializeProvenance(root, unit.Provenance);
                 SerializeFormatStyle(root, unit.FormatStyle);
+                SerializeSizeRestriction(root, unit.SizeRestrictions);
                 if (originalData.Count != 0) root.Add(new XElement(ns + "originalData", originalData));
                 root.Add(segmentElements);
                 return root;
@@ -1114,6 +1131,14 @@ public static class Xliff2Serializer
                 }
             }
 
+            if (sizeRestrictionUsed && !root.Elements(SizeRestrictionNs + "profiles").Any())
+            {
+                var profilesNode = new XElement(SizeRestrictionNs + "profiles");
+                profilesNode.Set("generalProfile", "xliff:codepoints");
+                profilesNode.Set("storageProfile", "");
+                root.AddFirst(profilesNode);
+            }
+
             return root;
         }
 
@@ -1152,6 +1177,12 @@ public static class Xliff2Serializer
         if (fsUsed && root.Attribute(XNamespace.Xmlns + "fs") == null)
         {
             root.Add(new XAttribute(XNamespace.Xmlns + "fs", FormatStyleNs));
+        }
+
+        if (sizeRestrictionUsed && root.Attribute(XNamespace.Xmlns + "slr") == null)
+        {
+            root.Add(new XAttribute(XNamespace.Xmlns + "slr", SizeRestrictionNs));
+
         }
 
         var doc = new XDocument(root);

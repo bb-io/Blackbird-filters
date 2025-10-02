@@ -333,4 +333,35 @@ public class HtmlCoderTests : TestBase
         AssertCorrectProvenance(transformation.Provenance);
     }
 
+    [Test]
+    public void Size_restrictions()
+    {
+        static void AssertCorrectSizeRestrictions(SizeRestrictions sizeRestrictions)
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(sizeRestrictions.MinimumSize, Is.EqualTo(10));
+                Assert.That(sizeRestrictions.MaximumSize, Is.EqualTo(60));
+            });
+        }
+
+        var original = File.ReadAllText("Html/Files/restrictions.html", Encoding.UTF8);
+        var coded = new HtmlContentCoder().Deserialize(original, "restrictions.html");
+
+        var textUnit = coded.TextUnits.First();
+
+        Display(textUnit.SizeRestrictions);
+        AssertCorrectSizeRestrictions(textUnit.SizeRestrictions);
+
+        var transformation = coded.CreateTransformation("nl");
+        var unit = transformation.GetUnits().First();
+        AssertCorrectSizeRestrictions(unit.SizeRestrictions);
+
+        var transformation2 = Transformation.Parse(transformation.Serialize(), transformation.XliffFileName);
+
+        AssertCorrectSizeRestrictions(transformation2.GetUnits().First().SizeRestrictions);
+
+        DisplayXml(transformation2.Serialize());
+    }
+
 }

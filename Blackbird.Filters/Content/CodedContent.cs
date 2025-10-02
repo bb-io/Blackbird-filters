@@ -71,7 +71,14 @@ public class CodedContent
 
         Unit CreateUnit(TextUnit textUnit, string? id = null)
         {
-            var unit = new Unit(contentCoder) { Name = textUnit.Reference, Id = id, FormatStyle = textUnit.FormatStyle };
+            var unit = new Unit(contentCoder) 
+            { 
+                Name = textUnit.Reference, 
+                Id = id, 
+                FormatStyle = textUnit.FormatStyle,
+                SizeRestrictions = textUnit.SizeRestrictions,
+            };
+
             unitsDictionary[textUnit] = unit;
             var parts = new List<LineElement>();
 
