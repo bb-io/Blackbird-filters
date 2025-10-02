@@ -34,6 +34,11 @@ public class TextUnit(string reference, IContentCoder coder)
     public FormatStyle FormatStyle { get; set; } = new FormatStyle();
 
     /// <summary>
+    /// Any size restricitons that apply to this unit
+    /// </summary>
+    public SizeRestrictions SizeRestrictions { get; set; } = new SizeRestrictions();
+
+    /// <summary>
     /// Get the plain text without any tags.
     /// </summary>
     /// <returns>The plain text without any tags</returns>

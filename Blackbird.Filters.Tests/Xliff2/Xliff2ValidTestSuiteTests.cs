@@ -32,6 +32,7 @@ public class Xliff2ValidTestSuiteTests : TestBase
     [TestCase("withMatches")]
     [TestCase("withModulesAttributesInEc")]
     [TestCase("withNotes")]
+    [TestCase("withSlr")]
     [TestCase("withNotes_complex")]
     [TestCase("withReferences")]
     [TestCase("withReorderedCodes")]

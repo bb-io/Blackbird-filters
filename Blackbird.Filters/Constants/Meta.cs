@@ -24,10 +24,12 @@ public static class Meta
         public const string PublicUrl = "public-url";
         public const string SystemName = "system-name";
         public const string SystemRef = "system-ref";
-
-        public const string SourceUniqueContentId = "source-ucid";
-        public const string TargetUniqueContentId = "target-ucid";
         public const string Key = "key";
     }
+
+    public static class Html
+    {
+        public const string SizeRestriction = "data-blackbird-size";
+    }   
     
 }

@@ -228,7 +228,12 @@ public class HtmlContentCoder : IContentCoder
     internal List<TextUnit> BuildUnits(HtmlNode node, string? key = null)
     {
         key ??= node.GetKey();
-        var unit = new TextUnit(node.XPath, this) { Key = key };
+        var unit = new TextUnit(node.XPath, this) 
+        { 
+            Key = key, 
+            SizeRestrictions = SizeRestrictionHelper.Deserialize(node.GetAttributeValue(Meta.Html.SizeRestriction, string.Empty)) 
+        };
+
         unit.FormatStyle = GetFormatStyle(node);
 
         if (node.NodeType == HtmlNodeType.Text)
