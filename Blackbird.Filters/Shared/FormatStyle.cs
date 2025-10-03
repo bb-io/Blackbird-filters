@@ -12,7 +12,7 @@ public class FormatStyle
     {
         if (!Tag.HasValue) return innerHtml;
         var doc = new HtmlDocument();
-        var node = doc.CreateElement(Tag.Value.ToTag());
+        var node = doc.CreateElement(Tag.Value == HtmlTag.Title ? HtmlTag.H1.ToTag() : Tag.Value.ToTag());
         foreach(var attribute in Attributes)
         {
             node.Attributes.Add(attribute.Key, attribute.Value);
@@ -20,7 +20,7 @@ public class FormatStyle
 
         foreach (var attribute in HtmlNodeExtensions.TranslatableAttributes)
         {
-            if (reference.Contains(attribute, StringComparison.InvariantCultureIgnoreCase))
+            if (reference.Contains(attribute, StringComparison.InvariantCultureIgnoreCase) && node.Attributes.Contains(attribute))
             {
                 node.Attributes[attribute].Value = innerHtml;
                 return node.OuterHtml;

@@ -55,4 +55,23 @@ public class RenderTests : TestBase
             HtmlAssert.LooksLikeHtmlNode(unit.GetTarget().GetRenderedText());
         }
     }
+
+    [Test]
+    public void Zendesk()
+    {
+        var original = File.ReadAllText("Xliff2/Files/zendesk.xlf", Encoding.UTF8);
+
+        var transformation = Transformation.Parse(original, "zendesk.xlf");
+
+        foreach (var unit in transformation.GetUnits())
+        {
+            foreach (var segment in unit.Segments)
+            {
+                segment.SetTarget(segment.GetSource() + " - TRANSLATED");
+            }
+            Console.WriteLine(unit.GetTarget().GetRenderedText());
+            HtmlAssert.LooksLikeHtmlNode(unit.GetTarget().GetRenderedText());
+            Assert.That(unit.GetTarget().GetRenderedText(), Does.Not.Contain("<title>"));
+        }
+    }
 }
