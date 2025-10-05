@@ -12,6 +12,9 @@ using System.Text.RegularExpressions;
 namespace Blackbird.Filters.Coders;
 public class HtmlContentCoder : IContentCoder
 {
+    public const string XPathSplitter = "~~";
+    public List<HtmlTag?> InlineSplitOn = [HtmlTag.LineBreak];
+
     public IEnumerable<string> SupportedMediaTypes => [MediaTypeNames.Text.Html];
 
     /// <summary>
@@ -109,22 +112,37 @@ public class HtmlContentCoder : IContentCoder
         SetOrUpdateBlackbirdMeta(doc, Meta.Types.SystemName, content.SystemReference.SystemName);
         SetOrUpdateBlackbirdMeta(doc, Meta.Types.SystemRef, content.SystemReference.SystemRef);
 
-        foreach (var unit in content.TextUnits)
-        {
-            if (unit.Reference is null) continue;
-            var node = doc.DocumentNode.SelectSingleNode(unit.Reference.Replace("/#text", "/text()"));
-            if (node is null) throw new InvalidOperationException($"Malformed unit location reference. Node not found in the raw HTML document. ({unit.Reference})");
 
-            Match match = Regex.Match(unit.Reference, @"@([a-zA-Z_][\w\-]*)");
-            if (match.Success)
+        var splitUnits = content.TextUnits.GroupBy(x => x.Reference.Split(XPathSplitter)[0]);
+
+        foreach(var unitGroup in splitUnits)
+        {
+            var xpath = unitGroup.Key;
+            if (xpath is null) continue;
+
+            var node = doc.DocumentNode.SelectSingleNode(xpath.Replace("/#text", "/text()"));
+            if (node is null) throw new InvalidOperationException($"Malformed unit location reference. Node not found in the raw HTML document. ({xpath})");
+
+            if (unitGroup.Count() == 1)
             {
-                node.Attributes[match.Groups[1].Value].Value = unit.GetCodedText();
+                var unit = unitGroup.First();
+                Match match = Regex.Match(xpath, @"@([a-zA-Z_][\w\-]*)");
+                if (match.Success)
+                {
+                    node.Attributes[match.Groups[1].Value].Value = unit.GetCodedText();
+                }
+                else
+                {
+                    node.InnerHtml = unit.GetCodedText();
+                }
             }
             else
             {
-                node.InnerHtml = unit.GetCodedText();
+                var codedText = string.Join(string.Empty, unitGroup.Select(x => x.GetCodedText()));
+                node.InnerHtml = codedText;
             }
         }
+
 
         return doc.DocumentNode.OuterHtml;
     }
@@ -226,7 +244,7 @@ public class HtmlContentCoder : IContentCoder
     }
 
     internal List<TextUnit> BuildUnits(HtmlNode node, string? key = null)
-    {
+    {      
         key ??= node.GetKey();
         var unit = new TextUnit(node.XPath, this) 
         { 
@@ -251,12 +269,64 @@ public class HtmlContentCoder : IContentCoder
             unit.Parts[unit.Parts.Count - 1].Value = unit.Parts[unit.Parts.Count - 1].Value.TrimEnd();
         }
 
-        var units = new List<TextUnit>();
-        foreach (InlineCode textPart in unit.Parts.Where(x => x is InlineCode))
+        var units = SplitUnitOnInlineParts(unit);
+        foreach (InlineCode textPart in units.SelectMany(x => x.Parts.Where(x => x is InlineCode)).ToList())
         {
             units.AddRange(textPart.UnitReferences);
         }
-        units.Add(unit);
+
+        return units;
+    }
+
+    internal List<TextUnit> SplitUnitOnInlineParts(TextUnit unit)
+    {
+        var units = new List<TextUnit>();
+
+        var IsSplitOnTagPart = (TextPart? part) => {
+            return part is InlineCode inlineCode && InlineSplitOn.Contains(inlineCode.FormatStyle.Tag);
+        };
+
+        if (!unit.Parts.OfType<InlineCode>().Any(x => IsSplitOnTagPart(x)))
+        {
+            return [unit];
+        }
+
+        var GetTextPart = (int index) => {
+            return index < unit.Parts.Count ? unit.Parts[index] : null;
+        };
+
+        var previousSliceEnd = 0;
+        for (int i = 0; i < unit.Parts.Count; i++)
+        {
+            var textPart = GetTextPart(i);
+            if (IsSplitOnTagPart(textPart) && !IsSplitOnTagPart(GetTextPart(i + 1)) && textPart is InlineCode inlineCode)
+            {
+                var tagCode = inlineCode.FormatStyle.Tag?.ToTag();
+                var newUnit = new TextUnit(unit.Reference + XPathSplitter + units.Count, this)
+                {
+                    Key = unit.Key,
+                    SizeRestrictions = unit.SizeRestrictions,
+                    FormatStyle = unit.FormatStyle,
+                };
+
+                newUnit.Parts = unit.Parts.Skip(previousSliceEnd).Take(i - previousSliceEnd + 1).ToList();
+                previousSliceEnd = i + 1;
+
+                units.Add(newUnit);
+            }
+        }
+
+        if (previousSliceEnd < unit.Parts.Count)
+        {
+            var lastUnit = new TextUnit(unit.Reference + XPathSplitter + units.Count, this)
+            {
+                Key = unit.Key,
+                SizeRestrictions = unit.SizeRestrictions,
+            };
+            lastUnit.Parts = unit.Parts.Skip(previousSliceEnd).Take(unit.Parts.Count - previousSliceEnd).ToList();
+            units.Add(lastUnit);
+        }
+
         return units;
     }
 

@@ -77,7 +77,7 @@ public class HtmlCoderTests : TestBase
         var result = Process("Html/Files/with_br.html");
         
         HtmlAssert.AreEqual(result.Original, result.SourceString);
-        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(1));
+        Assert.That(result.Source.TextUnits.Count(), Is.EqualTo(2));
     }
 
     [Test]
@@ -362,6 +362,25 @@ public class HtmlCoderTests : TestBase
         AssertCorrectSizeRestrictions(transformation2.GetUnits().First().SizeRestrictions);
 
         DisplayXml(transformation2.Serialize());
+    }
+
+    [Test]
+    public void Line_break_splititng()
+    {
+        var result = Process("Html/Files/zendesk.html");
+
+        foreach(var unit in result.Source.TextUnits)
+        {
+            if (unit.Parts.OfType<InlineCode>().Any(x => x.FormatStyle.Tag == HtmlTag.LineBreak)) 
+            {
+                var lastPart = unit.Parts.Last();
+                Assert.Multiple(() =>
+                {
+                    Assert.That(lastPart, Is.TypeOf<InlineCode>());
+                    Assert.That(((InlineCode)lastPart).FormatStyle.Tag, Is.EqualTo(HtmlTag.LineBreak));
+                });
+            }
+        }
     }
 
 }

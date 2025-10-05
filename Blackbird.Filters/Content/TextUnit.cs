@@ -39,6 +39,11 @@ public class TextUnit(string reference, IContentCoder coder)
     public SizeRestrictions SizeRestrictions { get; set; } = new SizeRestrictions();
 
     /// <summary>
+    /// If set, denotes that this text unit should be semantically grouped wtih another. F.e. Different <br> separated parts of a paragraph.
+    /// </summary>
+    public TextUnit? GroupedWith { get; set; }
+
+    /// <summary>
     /// Get the plain text without any tags.
     /// </summary>
     /// <returns>The plain text without any tags</returns>

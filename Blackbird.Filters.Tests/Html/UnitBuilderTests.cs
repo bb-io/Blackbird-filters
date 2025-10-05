@@ -29,7 +29,7 @@ public class UnitBuilderTests : TestBase
     public void Single_br()
     {
         // Arrange
-        var original = "Sentence one.<br>Sentence two.";
+        var original = "Sentence one.<br>";
         var unit = GetUnitFromString(original);
         var html = unit.GetCodedText();
 
@@ -38,7 +38,7 @@ public class UnitBuilderTests : TestBase
 
         // Assert
         Assert.That(html, Is.EqualTo(original));
-        Assert.That(unit.Parts.Count(), Is.EqualTo(3));
+        Assert.That(unit.Parts.Count(), Is.EqualTo(2));
     }
 
     [Test]

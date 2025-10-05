@@ -34,6 +34,6 @@ public class FormatStyle
     internal string GetPartialTag()
     {
         if (!Tag.HasValue) return string.Empty;
-        return $"{Tag.Value.ToTag()} {Attributes.ToAttributeString()}".Trim();
+        return $"{Tag.Value.ToTag()} {Attributes.Where(x => x.Key != "style" && x.Key != "class").ToDictionary().ToAttributeString()}".Trim();
     }
 }
