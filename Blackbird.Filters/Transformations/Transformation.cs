@@ -8,7 +8,7 @@ using System.Net.Mime;
 using System.Xml.Linq;
 
 namespace Blackbird.Filters.Transformations;
-public class Transformation(string? sourceLanguage, string? targetLanguage) : Node
+public class Transformation(string? sourceLanguage, string? targetLanguage = null) : Node
 {
     public string? SourceLanguage { get; set; } = sourceLanguage;
     public string? TargetLanguage { get; set; } = targetLanguage;
